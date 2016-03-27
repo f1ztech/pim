@@ -1,0 +1,97 @@
+<div id="publication-panel" kendo-splitter k-panes="[{collapsible: true, size: '250px'}, {collapsible: true}]" k-orientation="'horizontal'">
+	<div>	
+		<div ng-include="'/partials/workbench/resources-tree.html'" class="resources-tree-wrapper">
+		</div>
+	</div>
+	
+	<div>
+		<div id="floating-toolbar" class="floating span-toolbar well well-sm hidden-phone hidden-touch hidden-collapsed-toolbar ui-draggable">
+	    <button class="close pull-right" data-category="Toolbar Click" data-mm-key="ctrl+b meta+b" data-event-type="Expand/Collapse" data-mm-target="body" data-mm-class="collapsed-toolbar" data-mm-role="toggle-class" title="Hide toolbar (Ctrl+b)" data-placement="left" data-toggle="tooltip" data-original-title="">
+	    	<i class="toggle fa fa-remove"></i>
+	    </button>
+	    <div class="toolbar-inner">
+			<div class="btn-toolbar" id="toolbarEdit">
+	        	<div class="btn-group">
+					<button data-toggle="tooltip" data-placement="bottom" title="Zoom&nbsp;in&nbsp;(z)" data-category="Toolbar Click" data-event-type="Zoom in" class="btn btn-default scaleUp" data-original-title=""><i class="glyphicon glyphicon-zoom-in"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Zoom&nbsp;out&nbsp;(Shift+z)" data-category="Toolbar Click" data-event-type="Zoom out" class="btn btn-default scaleDown" data-original-title=""><i class="glyphicon glyphicon-zoom-out"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Re-center view (Esc or 0)" data-category="Toolbar Click" data-event-type="Zoom reset" class="btn btn-default resetView" data-original-title=""><i class="glyphicon glyphicon-refresh"></i></button>
+				</div>
+	
+				<div class="btn-group">
+					<button data-toggle="tooltip" data-placement="bottom" title="Select&nbsp;subtree&nbsp;({)" data-category="Toolbar Click" data-event-type="Select subtree" class="btn btn-default activateNodeAndChildren" data-original-title=""><i class="fa fa-sitemap"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Select&nbsp;all children&nbsp;([)" data-category="Toolbar Click" data-event-type="Select all children" class="btn btn-default activateChildren" data-original-title=""><i class="glyphicon glyphicon-th-list"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Select all siblings (=)" data-category="Toolbar Click" data-event-type="Select all siblings" class="btn btn-default activateSiblingNodes" data-original-title=""><i class="fa fa-ellipsis-v"></i></button>
+				</div>
+	
+				<div class="btn-group">
+					<button id="menuAdd" data-toggle="tooltip" data-placement="bottom" title="Add child (Tab)" data-category="Toolbar Click" data-event-type="Add idea" class="btn btn-default addSubIdea" data-original-title=""><i class="fa fa-sign-in"></i></button>
+					<button id="menuInsertSibling" data-toggle="tooltip" data-placement="bottom" title="Insert sibling (Enter)" data-category="Toolbar Click" data-event-type="Insert Sibling" class="btn btn-default addSiblingIdea" data-original-title=""><i class="fa fa-sign-in icon-rotate-90"></i></button>
+					<button id="menuInsertIntermediate" data-toggle="tooltip" data-placement="bottom" title="Insert parent (Shift+Tab)" data-category="Toolbar Click" data-event-type="Insert Intermediate" class="btn btn-default insertIntermediate" data-original-title=""><i class="fa fa-sign-in icon-rotate-180"></i></button>
+				</div>
+				<div class="btn-group">
+					<button id="menuEdit" data-toggle="tooltip" data-placement="bottom" title="Edit node (Spacebar)" data-category="Toolbar Click" data-event-type="Edit idea" class="btn btn-default editNode" data-original-title=""><i class="fa fa-pencil"></i></button>
+					<button id="menuCollapse" data-toggle="tooltip" data-placement="bottom" title="Expand/collapse node (/ or F)" data-category="Toolbar Click" data-event-type="Collapse idea" class="btn btn-default toggleCollapse" data-original-title=""><i class="fa fa-expand"></i></button>
+					<button id="menuDelete" data-toggle="tooltip" data-placement="bottom" title="Delete node (Backspace)" data-category="Toolbar Click" data-event-type="Delete idea" class="btn btn-default removeSubIdea" data-original-title=""><i class="fa fa-remove"></i></button>
+				</div>
+				<div class="btn-group">
+					<button data-toggle="tooltip" data-placement="bottom" title="Copy (Ctrl+c)" data-category="Toolbar Click" data-event-type="Copy" class="btn btn-default copy" data-original-title=""><i class="fa fa-copy"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Paste (Ctrl+v)" data-category="Toolbar Click" data-event-type="Paste" class="btn btn-default paste" data-original-title=""><i class="fa fa-paste"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Cut (Ctrl+x)" data-category="Toolbar Click" data-event-type="Cut" class="btn btn-default cut" data-original-title=""><i class="fa fa-cut"></i></button>
+				</div>
+				<div class="btn-group">
+					<button class="btn btn-default" data-toggle="tooltip" title="Node color (Shift+Spacebar)" data-category="Toolbar Click" data-event-type="Node Color" data-original-title="">
+					  <input data-mm-target-property="background" class="updateStyle hide" type="hidden" value="" style="display: none;"><div class="colorPicker-picker">&nbsp;</div>&nbsp;
+					</button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Icon/Image (I)" data-category="Toolbar Click" data-event-type="Edit Icon" class="btn btn-default editIcon" data-original-title=""><i class="fa fa-picture-o"></i></button>
+					<button data-toggle="tooltip" data-placement="bottom" title="Connect (Alt+click)" data-category="Toolbar Click" data-event-type="Link" class="btn btn-default toggleAddLinkMode" data-original-title=""><i class="toggle glyphicon glyphicon-resize-horizontal"></i></button>
+				</div>
+				<div class="btn-group">
+			        <button data-toggle="tooltip" data-placement="bottom" title="Attachment (A)" data-category="Toolbar Click" data-event-type="Open Attachment" class="btn btn-default openAttachment" data-original-title=""><i class="glyphicon glyphicon-paperclip"></i></button>
+			        <button data-toggle="tooltip" data-placement="bottom" title="Measurements (M)" data-category="Toolbar Click" data-event-type="Open Measurements" class="btn btn-default" data-mm-role="activatedNodesMeasureSheet" data-original-title=""><i class="fa fa-table"></i></button>
+			        <button data-toggle="tooltip" data-placement="bottom" title="Storyboard (S)" data-category="Toolbar Click" data-event-type="Open Storyboard" class="btn btn-default" data-mm-role="storyboard-toggler" data-original-title=""><i class="fa fa-film"></i></button>
+				</div>
+			</div>
+			<a class="pull-right small" title="Keyboard shortcuts" data-category="Toolbar Click" data-event-type="Keyboard shortcuts" target="_blank" href="http://discover.mindmup.com/keyboard-shortcuts">Hotkeys</a>
+	      </div>
+	    </div>	
+		<div id="mindmap-wrapper">
+<!-- 			<input type="button" class="resetView" value="0"></input> -->
+<!-- 			<input type="button" class="scaleUp" value="+"></input> -->
+<!-- 			<input type="button" class="scaleDown" value="-"></input> -->
+<!-- 			<input type="button" class="addSubIdea" value="add"></input> -->
+<!-- 			<input type="button" class="editNode" value="edit"></input> -->
+<!-- 			<input type="button" class="removeSubIdea" value="delete"></input> -->
+<!-- 			<input type="button" class="insertIntermediate" value="insert parent"></input> -->
+<!-- 			<input type="button" class="toggleCollapse" value="exp/col"></input> -->
+<!-- 			<input type="button" onclick="mapModel.setInputEnabled(false)" value="disable"></input> -->
+<!-- 			<input type="button" onclick="mapModel.setInputEnabled(true)" value="enable"></input> -->
+<!-- 			<input type="button" class="undo" value="undo"></input> -->
+<!-- 			<input type="button" class="redo" value="redo"></input> -->
+<!-- 			<input type="button" data-mm-action="export-image" value="Export To Image"/> -->
+<!-- 			<input type="button" class="cut" value="cut"></input> -->
+<!-- 			<input type="button" class="copy" value="copy"></input> -->
+<!-- 			<input type="button" class="paste" value="paste"></input> -->
+<!-- 			<input type="button" class="openAttachment" value="open attachment"></input> -->
+<!-- 			<input type="button" class="toggleAddLinkMode" value="add link"></input> -->
+<!-- 			Background: <input type="text" class='updateStyle' data-mm-target-property='background'></input> -->
+<!-- 		    Frames: <span id="framerate"></span> -->
+<!-- 		    Cycle: <span id="cyclerate"></span> -->
+<!-- 			<div id="linkEditWidget"> -->
+<!-- 				<input class="delete" type="button" value="Delete"></input> -->
+<!-- 				<select class="color"> -->
+<!-- 					<option value="red">Red</option> -->
+<!-- 					<option value="blue">Blue</option> -->
+<!-- 				</select> -->
+<!-- 				<select class="lineStyle"> -->
+<!-- 					<option value="solid">Solid</option> -->
+<!-- 					<option value="dashed">Dashed</option> -->
+<!-- 				</select> -->
+<!-- 				<button class="arrow">Arrow</button> -->
+<!-- 			</div> -->
+			<div id="mindmap-container"></div>
+		</div>		
+	</div>
+</div>
+
+
+

@@ -1,0 +1,24 @@
+<div id="content">
+	<h2>Настройки импорта почты</h2>
+	<div ng-if="callback" class="alert alert-success"><b>Авторизация успешна!</b> Импортированная почта будет доступна на Вашем рабочем столе.</div>
+	<div ng-if="!callback" class="well well-sm">Укажите email адрес для импорта почты. На данный момент поддерживается импорт только с серверов <b>gmail</b>.</div>
+	<form class="mail-configs-form">
+		<div class="form-group">
+			<label>Ваш Email адрес:</label>
+			<input type="email" class="form-control" placeholder="Email" ng-model="userConfigs.oauthEmailUser">
+		</div>
+		<div ng-if="allFolders">
+			<div class="form-group">
+				<label>Выберите каталоги для сихронизации:</label>
+
+				<div class="checkbox">
+					<label><input type="checkbox" ng-change="checkAll()" ng-model="checkState.all">Все</label>
+				</div>
+				<div ng-repeat="folder in allFolders" class="checkbox">
+					<label><input type="checkbox" ng-model="folder.$checked"> {{folder.name}}</label>
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-default" ng-click="saveCredentials()">Сохранить</button>
+	</form>
+</div>

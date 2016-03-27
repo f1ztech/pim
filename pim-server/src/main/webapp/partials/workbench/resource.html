@@ -1,0 +1,14 @@
+<div class="panel panel-default">
+	<div class="narrower-resources panel-heading"><span>Вложенные ресурсы</span><button class="btn btn-default"><i class="fa fa-plus"></i> Добавить</button></div>
+	<div ng-repeat="resource in narrowerResources" class="pim-list-item {{resource.id == detailedResource.id ? 'pim-selected' : ''}}"
+		 ng-click="viewDetails(resource)" 
+		 ng-dblclick="workbenchService.navigateToResource(resource.id)"
+		 data-id="{{resource.id}}">
+		 
+		<span class="pim-draggable"> </span>
+		<i ng-class="resource.icon" style="top: 2px;"></i>
+		<span class="pim-title" ng-bind-html="resource.title"></span>
+		<span class="pim-year">{{resource.year}}</span>
+		
+	</div>
+</div>

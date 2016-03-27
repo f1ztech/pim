@@ -1,0 +1,15 @@
+# here we specify the fully qualified class name of the Annotation index provider.
+# Can be excluded and the default will be used.
+annotation.provider = com.clarkparsia.empire.util.PropertiesAnnotationProvider
+
+# named contexts start prefixed with 0 and must at least have a name & a factory 
+# property so they can be referenced (by name) in the application code
+
+annotation.index = empire.annotation.config
+
+0.name = pim
+0.factory = sesame
+# the following are factory implementation/context specific properties
+0.url = http://localhost:8001/openrdf-sesame/
+0.repo = PIM
+

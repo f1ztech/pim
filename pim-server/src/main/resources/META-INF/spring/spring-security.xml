@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/util 
+		http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<http pattern="/resources" security="none" />
+	
+	<beans:bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<authentication-manager id="authenticationManager">
+	        <authentication-provider user-service-ref="customUserDetailsService">
+	        		<password-encoder ref="bCryptPasswordEncoder"/>
+	        </authentication-provider>
+	</authentication-manager>
+	
+	<http realm="Protected API"
+			use-expressions="true"
+			auto-config="false"
+			create-session="stateless"
+			entry-point-ref="unauthorizedEntryPoint"
+			authentication-manager-ref="authenticationManager"
+			pattern="/rest/**">
+		<custom-filter ref="authenticationTokenProcessingFilter" position="FORM_LOGIN_FILTER" />
+		<intercept-url pattern="/rest/authenticate" access="permitAll" />
+		<intercept-url method="GET" pattern="/rest/publications/**" access="isAuthenticated()" />
+		<intercept-url method="PUT" pattern="/rest/publications/**" access="isAuthenticated()" />
+		<intercept-url method="POST" pattern="/rest/publications/**" access="isAuthenticated()" />
+		<intercept-url method="DELETE" pattern="/rest/publications/**" access="isAuthenticated()" />
+	</http>
+	
+	<http use-expressions="true" authentication-manager-ref="authenticationManager">
+		<form-login login-page="/login" authentication-failure-url="/login/failure" default-target-url="/#/workbench"/>
+		
+		<access-denied-handler error-page="/denied"/>
+		
+		<logout invalidate-session="true" 
+			logout-success-url="/#/publications/" 
+			logout-url="/logout"/>
+	</http>	
+
+	<beans:bean id="unauthorizedEntryPoint" class="ru.mipt.pim.server.rest.UnauthorizedEntryPoint" />
+
+	<beans:bean class="ru.mipt.pim.server.rest.AuthenticationTokenProcessingFilter" id="authenticationTokenProcessingFilter">
+		<beans:constructor-arg ref="customUserDetailsService" />
+	</beans:bean>
+	
+</beans:beans>

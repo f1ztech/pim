@@ -1,0 +1,13 @@
+/pim-server/target/
+/pim-server/.project
+/pim-server/.classpath
+/pim-server/.settings/
+/pim-fs-adapter/target/
+/pim-fs-adapter/.project
+/pim-fs-adapter/.classpath
+/pim-fs-adapter/.settings/
+/pim-fs-adapter/packed/
+/pim-fs-common/target/
+/pim-fs-common/.project
+/pim-fs-common/.classpath
+/pim-fs-common/.settings/

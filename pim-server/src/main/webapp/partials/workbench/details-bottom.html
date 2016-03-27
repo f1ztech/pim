@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+	<div class="panel-heading">Свойства</div>
+	<div class="panel-body pim-details">
+		<div class="row">
+			<div class="col-md-4 pim-details-col">
+				<div>Наименование</div>
+				<div kendo-editor k-tools="inlineEditorTools" ng-model="detailedResource.title" k-on-change="updateResource('title')"></div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Название файла</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">{{detailedResource.publicationFile.title}}</div>
+				<div>Теги</div>
+				<div>
+					<select kendo-multi-select="tagsSelect" k-options="tagSelectOptions" k-ng-model="detailedResource.tags" k-on-change="updateResource('tags')" ></select>
+				</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Авторы</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">
+					<span ng-repeat="author in detailedResource.authors" ng-if="author.lastName || author.firstName || author.middleName">
+						<span>{{[author.lastName, author.firstName, author.middleName] | filter : '' | joinBy: ' '}}</span><span ng-if="!$last">,</span>
+					</span>
+				</div>
+
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Цитирует</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">
+					<span ng-repeat="title in resource.cites">{{title}}<span ng-if="!$last">,</span></span>
+				</div>
+			</div>
+			<div class="col-md-2 pim-details-col">
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Год</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'"><input kendo-numeric-text-box k-format="'#'" k-ng-model="detailedResource.year" k-on-change="updateResource('year')"/></div>
+				<div>Дата загрузки</div>
+				<div><input kendo-date-time-picker k-ng-model="detailedResource.dateCreated" k-on-change="updateResource('dateCreated')"/></div>
+				<div>Дата изменения</div>
+				<div><input kendo-date-time-picker k-ng-model="detailedResource.dateModified" k-on-change="updateResource('dateModified')"/></div>
+				<div>Размер</div>
+				<div>{{size ? size + ' КБ' : '' }}</div>
+			</div>
+			<div class="col-md-5 pim-details-col">
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Ключевые слова</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">
+					{{detailedResource.keywords.join(', ')}}
+				</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Аннотация</div>
+				<div ng-if="detailedResource.resourceType == 'PUBLICATION'" class="html-content-editor" kendo-editor k-tools="inlineEditorTools" ng-model="detailedResource.abstractText" k-on-change="updateResource('abstractText')"></div>
+				<div>Содержание</div>
+				<div class="html-content-editor" kendo-editor k-tools="inlineEditorTools" ng-model="detailedResource.htmlContent" k-on-change="updateResource('htmlContent')"></div>
+			</div>
+		</div>
+	</div>
+</div>

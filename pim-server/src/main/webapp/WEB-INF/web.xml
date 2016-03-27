@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:/META-INF/spring/application-context.xml
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>appServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:/META-INF/spring/dispatcher-servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>appServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+<!-- 	<filter> -->
+<!-- 		<filter-name>UrlRewriteFilter</filter-name> -->
+<!-- 		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>logLevel</param-name> -->
+<!-- 			<param-value>DEBUG</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>UrlRewriteFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 		<dispatcher>REQUEST</dispatcher> -->
+<!-- 		<dispatcher>FORWARD</dispatcher> -->
+<!-- 	</filter-mapping> -->
+
+	<!-- Path to properties files and GROBID_HOME -->
+	<env-entry>
+	  <env-entry-name>org.grobid.property</env-entry-name>
+	  <env-entry-type>java.lang.String</env-entry-type>
+	  <env-entry-value>F:/Google Drive/аспер/source/PIM/grobid/grobid-home/config/grobid.properties</env-entry-value>
+	</env-entry>
+
+	<env-entry>
+	  <env-entry-name>org.grobid.home</env-entry-name>
+	  <env-entry-type>java.lang.String</env-entry-type>
+	  <env-entry-value>F:/Google Drive/аспер/source/PIM/grobid/grobid-home</env-entry-value>
+	</env-entry>
+
+</web-app>

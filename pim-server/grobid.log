@@ -1,0 +1,878 @@
+26 июл 2015 13:24.09 [INFO ] DefaultTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+26 июл 2015 13:24.09 [INFO ] DefaultTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@22a637e7, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1d119efb, org.springframework.test.context.transaction.TransactionalTestExecutionListener@659a969b, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@76908cc0]
+26 июл 2015 13:24.10 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/application-context.xml]
+26 июл 2015 13:24.10 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcContentNegotiationManager': replacing [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:24.10 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcUriComponentsContributor': replacing [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:24.10 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/sesame-context.xml]
+26 июл 2015 13:24.10 [INFO ] GenericApplicationContext - Refreshing org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:24:10 MSK 2015]; root of context hierarchy
+26 июл 2015 13:24.11 [INFO ] PropertiesFactoryBean     - Loading properties file from class path resource [META-INF/spring/spring.properties]
+26 июл 2015 13:24.11 [INFO ] AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/remove],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.remove(java.lang.String,java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/load],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.FileAdapterController.load(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/save],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$SaveResult ru.mipt.pim.server.controllers.FileAdapterController.save(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/upload],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.upload(java.io.InputStream)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/isExists],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$ExistsResult ru.mipt.pim.server.controllers.FileAdapterController.isExists(java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/getFileTrees],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$FileTreesResult ru.mipt.pim.server.controllers.FileAdapterController.getFileTrees()
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/addFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.addFolder(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/removeFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.removeFolder(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/dashboard],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.dashboard()
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.home(java.util.Locale,org.springframework.ui.Model)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/pr],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.projects()
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/failure],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.failure()
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/test],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.test()
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/authenticate],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$AuthenticateResult ru.mipt.pim.server.controllers.LoginController.authenticate(java.lang.String,java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/mindmap/{resourceId}],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.presentations.MindMap ru.mipt.pim.server.controllers.MindMapController.buildMindMap(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/select],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.RepositoryController.select(java.lang.String,java.io.Writer) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.QueryEvaluationException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/persist],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.RepositoryController.persist(java.lang.String,boolean,javax.servlet.http.HttpServletResponse) throws org.openrdf.repository.RepositoryException,org.openrdf.rio.RDFParseException,java.io.IOException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.UserController.register(org.springframework.ui.Model)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.UserController.saveRegister(ru.mipt.pim.server.model.User,org.springframework.validation.BindingResult,org.springframework.ui.Model)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/{id}],methods=[DELETE],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.delete(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/recommendations],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Tag> ru.mipt.pim.server.controllers.WorkbenchController.getRecommendations(java.lang.String) throws java.io.IOException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findRoots()
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/update],methods=[PUT],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.updateResource(ru.mipt.pim.server.controllers.WorkbenchController$UpdateResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.model.Resource ru.mipt.pim.server.controllers.WorkbenchController.newResource(ru.mipt.pim.server.controllers.WorkbenchController$NewResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/changeParent],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.changeParent(ru.mipt.pim.server.controllers.WorkbenchController$ChangeParentBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/logAction],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.logAction(java.lang.String,java.lang.String) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.UpdateExecutionException
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/narrowerResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findNarrowerResources(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/broaderResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.controllers.WorkbenchController$BroaderResourcesResponse ru.mipt.pim.server.controllers.WorkbenchController.findBroaderResources(java.lang.String)
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/activatedResources],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.getAtctivatedResources()
+26 июл 2015 13:24.12 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:24:10 MSK 2015]; root of context hierarchy
+26 июл 2015 13:24.12 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:24:10 MSK 2015]; root of context hierarchy
+26 июл 2015 13:28.28 [WARN ] GenericApplicationContext - Exception encountered during context initialization - cancelling refresh attempt
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NullPointerException
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:22)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:28.28 [ERROR] TestContextManager        - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8] to prepare test instance [ru.mipt.pim.server.tests.RecommendationEfficiencyTest@a7f0ab6]
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:94)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	... 25 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NullPointerException
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:22)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:28.32 [INFO ] DefaultTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+26 июл 2015 13:28.32 [INFO ] DefaultTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@22a637e7, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1d119efb, org.springframework.test.context.transaction.TransactionalTestExecutionListener@659a969b, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@76908cc0]
+26 июл 2015 13:31.42 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/application-context.xml]
+26 июл 2015 13:32.24 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcContentNegotiationManager': replacing [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:32.24 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcUriComponentsContributor': replacing [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:32.24 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/sesame-context.xml]
+26 июл 2015 13:32.25 [INFO ] GenericApplicationContext - Refreshing org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:32:25 MSK 2015]; root of context hierarchy
+26 июл 2015 13:32.26 [INFO ] PropertiesFactoryBean     - Loading properties file from class path resource [META-INF/spring/spring.properties]
+26 июл 2015 13:32.26 [INFO ] AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/remove],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.remove(java.lang.String,java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/load],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.FileAdapterController.load(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/save],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$SaveResult ru.mipt.pim.server.controllers.FileAdapterController.save(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/addFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.addFolder(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/removeFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.removeFolder(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/upload],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.upload(java.io.InputStream)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/isExists],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$ExistsResult ru.mipt.pim.server.controllers.FileAdapterController.isExists(java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/getFileTrees],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$FileTreesResult ru.mipt.pim.server.controllers.FileAdapterController.getFileTrees()
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/pr],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.projects()
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/dashboard],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.dashboard()
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.home(java.util.Locale,org.springframework.ui.Model)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/failure],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.failure()
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/test],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.test()
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/authenticate],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$AuthenticateResult ru.mipt.pim.server.controllers.LoginController.authenticate(java.lang.String,java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/mindmap/{resourceId}],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.presentations.MindMap ru.mipt.pim.server.controllers.MindMapController.buildMindMap(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/select],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.RepositoryController.select(java.lang.String,java.io.Writer) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.QueryEvaluationException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/persist],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.RepositoryController.persist(java.lang.String,boolean,javax.servlet.http.HttpServletResponse) throws org.openrdf.repository.RepositoryException,org.openrdf.rio.RDFParseException,java.io.IOException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.UserController.register(org.springframework.ui.Model)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.UserController.saveRegister(ru.mipt.pim.server.model.User,org.springframework.validation.BindingResult,org.springframework.ui.Model)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/{id}],methods=[DELETE],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.delete(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/recommendations],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Tag> ru.mipt.pim.server.controllers.WorkbenchController.getRecommendations(java.lang.String) throws java.io.IOException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findRoots()
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/update],methods=[PUT],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.updateResource(ru.mipt.pim.server.controllers.WorkbenchController$UpdateResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.model.Resource ru.mipt.pim.server.controllers.WorkbenchController.newResource(ru.mipt.pim.server.controllers.WorkbenchController$NewResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/changeParent],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.changeParent(ru.mipt.pim.server.controllers.WorkbenchController$ChangeParentBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/logAction],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.logAction(java.lang.String,java.lang.String) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.UpdateExecutionException
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/narrowerResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findNarrowerResources(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/broaderResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.controllers.WorkbenchController$BroaderResourcesResponse ru.mipt.pim.server.controllers.WorkbenchController.findBroaderResources(java.lang.String)
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/activatedResources],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.getAtctivatedResources()
+26 июл 2015 13:32.27 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:32:25 MSK 2015]; root of context hierarchy
+26 июл 2015 13:32.27 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:32:25 MSK 2015]; root of context hierarchy
+26 июл 2015 13:32.29 [WARN ] GenericApplicationContext - Exception encountered during context initialization - cancelling refresh attempt
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NullPointerException
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:22)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:32.29 [ERROR] TestContextManager        - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8] to prepare test instance [ru.mipt.pim.server.tests.RecommendationEfficiencyTest@42c2f48c]
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:94)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	... 25 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NullPointerException
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:22)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:32.33 [INFO ] DefaultTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+26 июл 2015 13:32.33 [INFO ] DefaultTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@22a637e7, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1d119efb, org.springframework.test.context.transaction.TransactionalTestExecutionListener@659a969b, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@76908cc0]
+26 июл 2015 13:32.34 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/application-context.xml]
+26 июл 2015 13:32.57 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcContentNegotiationManager': replacing [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:32.57 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcUriComponentsContributor': replacing [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:32.57 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/sesame-context.xml]
+26 июл 2015 13:32.59 [INFO ] GenericApplicationContext - Refreshing org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:32:59 MSK 2015]; root of context hierarchy
+26 июл 2015 13:33.00 [INFO ] PropertiesFactoryBean     - Loading properties file from class path resource [META-INF/spring/spring.properties]
+26 июл 2015 13:33.00 [INFO ] AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/remove],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.remove(java.lang.String,java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/load],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.FileAdapterController.load(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/save],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$SaveResult ru.mipt.pim.server.controllers.FileAdapterController.save(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/upload],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.upload(java.io.InputStream)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/isExists],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$ExistsResult ru.mipt.pim.server.controllers.FileAdapterController.isExists(java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/getFileTrees],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$FileTreesResult ru.mipt.pim.server.controllers.FileAdapterController.getFileTrees()
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/addFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.addFolder(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/removeFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.removeFolder(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.home(java.util.Locale,org.springframework.ui.Model)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/pr],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.projects()
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/dashboard],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.dashboard()
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/failure],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.failure()
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/test],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.test()
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/authenticate],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$AuthenticateResult ru.mipt.pim.server.controllers.LoginController.authenticate(java.lang.String,java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/mindmap/{resourceId}],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.presentations.MindMap ru.mipt.pim.server.controllers.MindMapController.buildMindMap(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/select],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.RepositoryController.select(java.lang.String,java.io.Writer) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.QueryEvaluationException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/persist],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.RepositoryController.persist(java.lang.String,boolean,javax.servlet.http.HttpServletResponse) throws org.openrdf.repository.RepositoryException,org.openrdf.rio.RDFParseException,java.io.IOException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.UserController.register(org.springframework.ui.Model)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.UserController.saveRegister(ru.mipt.pim.server.model.User,org.springframework.validation.BindingResult,org.springframework.ui.Model)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/{id}],methods=[DELETE],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.delete(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/logAction],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.logAction(java.lang.String,java.lang.String) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.UpdateExecutionException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/recommendations],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Tag> ru.mipt.pim.server.controllers.WorkbenchController.getRecommendations(java.lang.String) throws java.io.IOException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findRoots()
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/update],methods=[PUT],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.updateResource(ru.mipt.pim.server.controllers.WorkbenchController$UpdateResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.model.Resource ru.mipt.pim.server.controllers.WorkbenchController.newResource(ru.mipt.pim.server.controllers.WorkbenchController$NewResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/changeParent],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.changeParent(ru.mipt.pim.server.controllers.WorkbenchController$ChangeParentBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/narrowerResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findNarrowerResources(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/broaderResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.controllers.WorkbenchController$BroaderResourcesResponse ru.mipt.pim.server.controllers.WorkbenchController.findBroaderResources(java.lang.String)
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/activatedResources],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.getAtctivatedResources()
+26 июл 2015 13:33.01 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:32:59 MSK 2015]; root of context hierarchy
+26 июл 2015 13:33.01 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:32:59 MSK 2015]; root of context hierarchy
+26 июл 2015 13:33.11 [WARN ] GenericApplicationContext - Exception encountered during context initialization - cancelling refresh attempt
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NullPointerException
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:22)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:33.11 [ERROR] TestContextManager        - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8] to prepare test instance [ru.mipt.pim.server.tests.RecommendationEfficiencyTest@2cfbeac4]
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:94)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	... 25 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NullPointerException
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:22)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:33.39 [INFO ] DefaultTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener]
+26 июл 2015 13:33.39 [INFO ] DefaultTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@22a637e7, org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8, org.springframework.test.context.support.DirtiesContextTestExecutionListener@1d119efb, org.springframework.test.context.transaction.TransactionalTestExecutionListener@659a969b, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@76908cc0]
+26 июл 2015 13:33.42 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/application-context.xml]
+26 июл 2015 13:33.43 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcContentNegotiationManager': replacing [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.accept.ContentNegotiationManagerFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:33.43 [INFO ] DefaultListableBeanFactory - Overriding bean definition for bean 'mvcUriComponentsContributor': replacing [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null] with [Root bean: class [org.springframework.web.servlet.config.AnnotationDrivenBeanDefinitionParser$CompositeUriComponentsContributorFactoryBean]; scope=; abstract=false; lazyInit=false; autowireMode=0; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=null; factoryMethodName=null; initMethodName=null; destroyMethodName=null]
+26 июл 2015 13:33.43 [INFO ] XmlBeanDefinitionReader   - Loading XML bean definitions from class path resource [META-INF/spring/sesame-context.xml]
+26 июл 2015 13:33.43 [INFO ] GenericApplicationContext - Refreshing org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:33:43 MSK 2015]; root of context hierarchy
+26 июл 2015 13:33.43 [INFO ] PropertiesFactoryBean     - Loading properties file from class path resource [META-INF/spring/spring.properties]
+26 июл 2015 13:33.44 [INFO ] AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/remove],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.remove(java.lang.String,java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/load],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.FileAdapterController.load(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/save],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$SaveResult ru.mipt.pim.server.controllers.FileAdapterController.save(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/getFileTrees],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$FileTreesResult ru.mipt.pim.server.controllers.FileAdapterController.getFileTrees()
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/upload],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.upload(java.io.InputStream)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/isExists],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$ExistsResult ru.mipt.pim.server.controllers.FileAdapterController.isExists(java.lang.String,java.lang.String,java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/addFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$UploadResult ru.mipt.pim.server.controllers.FileAdapterController.addFolder(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/files/removeFolder],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$RemoveResult ru.mipt.pim.server.controllers.FileAdapterController.removeFolder(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/pr],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.projects()
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/dashboard],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.dashboard()
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.HomeController.home(java.util.Locale,org.springframework.ui.Model)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/failure],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.failure()
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/login/test],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.LoginController.test()
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/rest/authenticate],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.adapters.fs.common.JsonRequestResults$AuthenticateResult ru.mipt.pim.server.controllers.LoginController.authenticate(java.lang.String,java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/mindmap/{resourceId}],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.presentations.MindMap ru.mipt.pim.server.controllers.MindMapController.buildMindMap(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/select],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.RepositoryController.select(java.lang.String,java.io.Writer) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.QueryEvaluationException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/repository/persist],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.RepositoryController.persist(java.lang.String,boolean,javax.servlet.http.HttpServletResponse) throws org.openrdf.repository.RepositoryException,org.openrdf.rio.RDFParseException,java.io.IOException,org.openrdf.rio.RDFHandlerException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.UserController.register(org.springframework.ui.Model)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/user/register],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.String ru.mipt.pim.server.controllers.UserController.saveRegister(ru.mipt.pim.server.model.User,org.springframework.validation.BindingResult,org.springframework.ui.Model)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/{id}],methods=[DELETE],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.delete(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findRoots()
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources/update],methods=[PUT],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.updateResource(ru.mipt.pim.server.controllers.WorkbenchController$UpdateResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/resources],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.model.Resource ru.mipt.pim.server.controllers.WorkbenchController.newResource(ru.mipt.pim.server.controllers.WorkbenchController$NewResourceBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/changeParent],methods=[POST],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public void ru.mipt.pim.server.controllers.WorkbenchController.changeParent(ru.mipt.pim.server.controllers.WorkbenchController$ChangeParentBody) throws java.lang.IllegalAccessException,java.lang.reflect.InvocationTargetException,java.lang.NoSuchMethodException,java.lang.InstantiationException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/logAction],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.logAction(java.lang.String,java.lang.String) throws org.openrdf.repository.RepositoryException,org.openrdf.query.MalformedQueryException,org.openrdf.query.UpdateExecutionException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/recommendations],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Tag> ru.mipt.pim.server.controllers.WorkbenchController.getRecommendations(java.lang.String) throws java.io.IOException
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/narrowerResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.findNarrowerResources(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/broaderResources],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public ru.mipt.pim.server.controllers.WorkbenchController$BroaderResourcesResponse ru.mipt.pim.server.controllers.WorkbenchController.findBroaderResources(java.lang.String)
+26 июл 2015 13:33.44 [INFO ] RequestMappingHandlerMapping - Mapped "{[/workbench/activatedResources],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.util.List<ru.mipt.pim.server.model.Resource> ru.mipt.pim.server.controllers.WorkbenchController.getAtctivatedResources()
+26 июл 2015 13:33.45 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 13:33.45 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:33:43 MSK 2015]; root of context hierarchy
+26 июл 2015 13:33.45 [INFO ] RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.context.support.GenericApplicationContext@40ef3420: startup date [Sun Jul 26 13:33:43 MSK 2015]; root of context hierarchy
+26 июл 2015 13:33.49 [WARN ] GenericApplicationContext - Exception encountered during context initialization - cancelling refresh attempt
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at com.clarkparsia.empire.util.DefaultEmpireModule.readConfiguration(DefaultEmpireModule.java:212)
+	at com.clarkparsia.empire.util.DefaultEmpireModule.<init>(DefaultEmpireModule.java:75)
+	at com.clarkparsia.empire.Empire.init(Empire.java:172)
+	at com.clarkparsia.empire.Empire.init(Empire.java:159)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:23)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:33.49 [ERROR] TestContextManager        - Caught exception while allowing TestExecutionListener [org.springframework.test.context.support.DependencyInjectionTestExecutionListener@6fe7aac8] to prepare test instance [ru.mipt.pim.server.tests.RecommendationEfficiencyTest@6f667ad1]
+java.lang.IllegalStateException: Failed to load ApplicationContext
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:94)
+	at org.springframework.test.context.DefaultTestContext.getApplicationContext(DefaultTestContext.java:72)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.injectDependencies(DependencyInjectionTestExecutionListener.java:117)
+	at org.springframework.test.context.support.DependencyInjectionTestExecutionListener.prepareTestInstance(DependencyInjectionTestExecutionListener.java:83)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:212)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.createTest(SpringJUnit4ClassRunner.java:200)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner$1.runReflectiveCall(SpringJUnit4ClassRunner.java:252)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.methodBlock(SpringJUnit4ClassRunner.java:254)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:217)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:83)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:68)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:163)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:50)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:675)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileAdapterController': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:762)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:757)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:480)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:125)
+	at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:109)
+	at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:261)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:68)
+	at org.springframework.test.context.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:86)
+	... 25 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'fileRepository': Injection of resource dependencies failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:308)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1202)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:537)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:476)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:303)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:299)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:461)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 41 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory': FactoryBean threw exception on object creation; nested exception is java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:175)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.getObjectFromFactoryBean(FactoryBeanRegistrySupport.java:103)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getObjectForBeanInstance(AbstractBeanFactory.java:1517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:314)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:194)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.findAutowireCandidates(DefaultListableBeanFactory.java:1127)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1051)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:949)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:457)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:435)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:559)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:169)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:305)
+	... 54 more
+Caused by: java.lang.NoSuchMethodError: com.google.common.io.Closeables.closeQuietly(Ljava/io/InputStream;)V
+	at com.clarkparsia.empire.util.DefaultEmpireModule.readConfiguration(DefaultEmpireModule.java:212)
+	at com.clarkparsia.empire.util.DefaultEmpireModule.<init>(DefaultEmpireModule.java:75)
+	at com.clarkparsia.empire.Empire.init(Empire.java:172)
+	at com.clarkparsia.empire.Empire.init(Empire.java:159)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:23)
+	at ru.mipt.pim.server.persistence.EntityManagerFactory.getObject(EntityManagerFactory.java:1)
+	at org.springframework.beans.factory.support.FactoryBeanRegistrySupport.doGetObjectFromFactoryBean(FactoryBeanRegistrySupport.java:168)
+	... 67 more
+26 июл 2015 13:43.50 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 13:43.55 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 13:43.55 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 13:43.55 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 13:43.55 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 13:45.06 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 13:45.07 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 13:45.07 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 13:45.07 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 13:45.07 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:11.36 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 14:11.37 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:11.37 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:11.37 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:11.37 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:11.41 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:11.41 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:11.41 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:11.41 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:13.35 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 14:13.36 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:13.36 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:13.36 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:13.36 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:14.07 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:14.07 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:14.07 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:14.07 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:15.37 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 14:15.38 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:15.38 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:15.38 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:15.38 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:15.50 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:15.50 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:15.50 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:15.50 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:54.45 [INFO ] Version                   - HV000001: Hibernate Validator 5.1.1.Final
+26 июл 2015 14:54.46 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:54.46 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:54.46 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:54.46 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath
+26 июл 2015 14:54.49 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:54.49 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:54.49 [WARN ] HibernatePersistence      - HHH015016: Encountered a deprecated javax.persistence.spi.PersistenceProvider [org.hibernate.ejb.HibernatePersistence]; use [org.hibernate.jpa.HibernatePersistenceProvider] instead.
+26 июл 2015 14:54.49 [INFO ] PersistenceXmlParser      - HHH000318: Could not find any META-INF/persistence.xml file in the classpath

@@ -1,0 +1,25 @@
+<div ng-controller="ResourcesTreeCtrl" class="resources-tree-ctrl">
+	<div class="tree-search"><input class="form-control"/><i class="glyphicon glyphicon-search"></i></div>
+	<div id="resources-tree" kendo-tree-view="resourcesTree" k-data-source="treeDatasource" k-on-select="treeItemSelected(kendoEvent)" k-on-expand="expand(kendoEvent)"
+		 k-drag-and-drop="true" k-on-drop="onResourceDrop(kendoEvent)">
+		<span k-template>
+		     <i class="{{dataItem.icon}}" style="top: 2px;"></i> {{dataItem.title}}
+		</span>
+	</div>
+	<ul kendo-context-menu k-filter="'#resources-tree .k-in, .pim-list-item, .resources-tree-ctrl'" k-on-select="onSelectResourceContextMenu(kendoEvent)">
+    	<li data-action="create-mindmap"><i class="fa fa-sitemap"></i> Создать интеллект-карту</li>
+    	<li data-action="delete"><i class="fa fa-times"></i> Удалить</li>
+    	<li><i class="fa fa-plus"></i> Добавить
+    		<ul>
+		    	<li data-action="add" data-resource-type="NOTE"><i class="fa fa-file-text-o"></i> Новая заметка</li>
+		    	<li data-action="add" data-resource-type="TAG"><i class="glyphicon glyphicon-tag"></i> Новый тег</li>
+		    	<li data-action="add" data-resource-type="MESSAGE"><i class="fa fa-envelope-o"></i> Новое сообщение</li>
+		    	<li data-action="add" data-resource-type="PROJECT"><i class="fa fa-rocket"></i> Новый проект</li>
+		    	<li data-action="add" data-resource-type="BOOKMARK"><i class="fa fa-bookmark"></i> Новая закладка</li>
+		 		<li data-action="add" data-resource-type="EVENT"><i class="fa fa-calendar-o"></i> Новое событие</li>
+		 		<li data-action="add" data-resource-type="PERSON"><i class="fa fa-user"></i> Новая персона</li>
+		 		<li data-action="add" data-resource-type="MINDMAP"><i class="fa fa-sitemap"></i> Новая карта памяти</li>
+		 	</ul>
+	 	</li>
+	</ul>
+</div>

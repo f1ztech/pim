@@ -1,0 +1,24 @@
+<div id="publication-panel" kendo-splitter k-panes="[{collapsible: true, size: '250px'}, {collapsible: true}, {collapsible: true, size: '250px'}]" k-orientation="'horizontal'">
+	<div>
+		<div ng-include="'/partials/workbench/resources-tree.html'" ng-init="mode = 'workbench'" class="resources-tree-wrapper">
+		</div>
+	</div>
+
+	<div>
+		<div id="publication-items-panel" kendo-splitter k-panes="[{collapsible: true, size: '60%'}, {collapsible: true, size: '40%'}]" k-orientation="'vertical'">
+			<div>
+				<div ui-view="resource">
+				</div>
+			</div>
+			<div>
+				<div ui-view="details-bottom">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div>
+		<div ui-view="details-right">
+		</div>
+	</div>
+</div>

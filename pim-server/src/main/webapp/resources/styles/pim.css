@@ -1,0 +1,523 @@
+html, body {
+	height: 100%
+}
+
+.pim-header {
+	color: white;
+	height: 74px;
+	padding: 0px 20px;
+	background-color: #222222;
+}
+
+.pim-top-menu {
+	border-radius: 0px;
+	padding-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	margin: 0px;
+}
+
+.pim-header-title {
+	float: left;
+}
+
+.pim-header-title a {
+	color: white;
+}
+
+.pim-header-title a:hover {
+	text-decoration: none;
+}
+
+.pim-login {
+	margin-top: 20px;
+	float: right;
+}
+
+.pim-login .popover .arrow {
+	display: none;
+}
+
+.login-field {
+	margin-bottom: 10px;
+}
+
+.login-submit {
+	float: right;
+	margin-bottom: 10px;
+}
+
+.login-context {
+	float: right;
+	padding-top: 8px;
+	padding-right: 10px;
+}
+
+.login-context a {
+	margin-left: 10px;
+}
+
+.pim-home {
+	font-size: 14px;
+}
+
+.pim-details-col > div:nth-child(odd) {
+	font-weight: bold;
+}
+
+.pim-details-col > div:nth-child(even) {
+	margin-bottom: 7px;
+}
+
+.pim-list-item {
+	border: 1px solid #cccccc;
+	height: 32px;
+	cursor: pointer;
+	padding-left: 5px;
+	padding-right: 5px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	margin-top: -1px;
+	white-space: nowrap;
+}
+
+.pim-list-item.pim-selected {
+	background: #ebf2f9;
+}
+
+.pim-list-item>span {
+	vertical-align: middle;
+}
+
+.pim-draggable {
+	height: 82%;
+	padding: 3px 5px 3px 0px;
+	cursor: move;
+	display: inline-block;
+}
+
+.pim-draggable::before {
+	content: " ";
+	background-image: url("/resources/images/dot.png");
+	height: 100%;
+	float: left;
+	min-height: 24px;
+	display: inline-block;
+	width: 6px;
+}
+
+.pim-title, .pim-year {
+	margin-right: 5px;
+}
+
+.pim-title {
+	width: 90%;
+	display: inline-block;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.pim-year {
+	width: 5%;
+	font-weight: bold;
+	text-align: right;
+}
+
+.scholar {
+	background-image: url("/resources/images/gs.png");
+	background-position: top left;
+	background-repeat: no-repeat;
+	padding-left: 20px;
+}
+
+.more {
+	padding-top: 10px;
+	font-weight: normal !important;
+}
+
+.pim-related>div {
+	margin-bottom: 5px;
+}
+
+.add-tag {
+	font-size: 16px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.db-search {
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 20px;
+}
+
+.db-search .form-group {
+	position: relative;
+	width: 100%;
+}
+
+.db-search .glyphicon-search {
+	position: absolute;
+	left: 9px;
+	top: 10px;
+	font-size: 16px;
+	color: #777777;
+}
+
+.db-search input {
+	padding-left: 34px;
+}
+
+.db-panel {
+	margin-bottom: 0px;
+}
+
+.db-panel .panel-heading .glyphicon, .pim-list-item .glyphicon {
+	margin-right: 5px;
+}
+
+.pim-list-item.small {
+	display: inline-block;
+	max-width: 215px;
+	height: 25px;
+	border-width: 1px;
+	margin: 2px;
+	border-radius: 2px;
+}
+
+.pim-list-item.small>span {
+	line-height: 18px;
+}
+
+.pim-list-item.small .pim-title {
+	width: 95%;
+}
+
+.pim-list-item.small .pim-draggable::before {
+	min-height: 18px;
+}
+
+.db-more {
+	text-align: center;
+	margin-top: 7px;
+}
+
+.db-more .glyphicon {
+	font-size: 11px;
+}
+
+.db-more span {
+	border-bottom: 1px dashed #777777;
+}
+
+.db-watched-subjects {
+	margin-bottom: 10px;
+}
+
+.db-watched-subjects .col-md-4 {
+	text-align: center;
+}
+
+.db-watched-body .col-md-4 {
+	border-right: 1px solid #CCCCCC;
+}
+
+.db-watched-body .col-md-4:last-child {
+	border: 0px;
+}
+
+.popover {
+	max-width: 370px;
+	border-radius: 2px;
+}
+
+.db-add {
+	font-size: 20px;
+	vertical-align: middle;
+}
+
+.db-add-watched {
+	float: right;
+}
+
+.db-panel .db-add-watched .glyphicon {
+	margin: 0px;
+	vertical-align: bottom;
+}
+
+.db-add-watched span {
+	border-bottom: 1px dashed #777777;
+	font-size: 13px;
+}
+
+.pim-tree li .glyphicon {
+	margin-right: 5px;
+}
+
+.pim-content {
+	width: 100%;
+	display: table;
+}
+
+.pim-left, .pim-main, .pim-right {
+	display: table-cell;
+}
+
+.pim-left, .pim-right {
+	width: 300px;
+}
+
+.pim-left {
+	border-right: 1px solid #dddddd;
+	padding-left: 10px;
+}
+
+.pim-right {
+	border-left: 1px solid #dddddd;
+}
+
+.pim-panel .panel-heading {
+	border-bottom: 1px solid #dddddd;
+	border-radius: 0px;
+	background-color: #f8f8f8;
+}
+
+.pim-panel+.pim-panel {
+	border-top: 1px solid #dddddd;
+}
+
+.pim-main {
+	padding: 0px 10px;
+}
+
+.pim-wrapper {
+
+}
+
+.k-editor-inline {
+	border-width: 1px;
+}
+
+.k-editor-inline:hover {
+	border-color: #8ebc00;
+}
+
+#pim-success, #pim-failure {
+	display: none;
+	position: fixed;
+	top: 10px;
+	right: 10px;
+}
+
+.alert-text {
+	white-space: nowrap;
+	padding-right: 20px;
+}
+
+#publication-items-panel {
+	height: 100%;
+}
+
+.panel-default {
+	border: 0px;
+	box-shadow: none;
+}
+
+.row, .col-md-6, .form-control {
+	box-sizing: border-box !important;
+}
+
+#resources-tree {
+	overflow: hidden;
+}
+
+#mindmap-container {
+	background-color: #FFFFFF;
+	box-sizing: border-box;
+}
+
+.mapjs-node span {
+	max-width: 300px !important;
+}
+
+#floating-toolbar {
+	position: absolute;
+	top: 100px;
+	right: 25px;
+	z-index: 999;
+	border: 1px solid #08c;
+	border-radius: 9px;
+}
+
+.toolbar-inner {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+.span-toolbar {
+	width: 126px;
+	cursor: move;
+}
+
+#toolbarEdit .btn-group {
+	margin-left: 0;
+}
+
+#toolbarEdit button {
+	margin-top: 5px;
+	width: 40px;
+	height: 32px;
+	padding: 0px;
+}
+
+.icon-rotate-90:before {
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+.icon-rotate-180:before {
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	transform: rotate(180deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+
+div.colorPicker-picker {
+	display: inline;
+	float: left;
+	background: 0 0;
+}
+
+div.colorPicker-picker {
+	height: 18px;
+	width: 18px;
+	padding: 0 !important;
+	border: 1px solid #ccc;
+	background: url(arrow.gif) no-repeat top right;
+	cursor: pointer;
+	line-height: 16px;
+	margin-left: 10px;
+}
+
+.mapjs-node span {
+	display: inline-block !important;
+}
+
+.mapjs-node i {
+	vertical-align: top;
+}
+
+.tree-search {
+	position: relative;
+}
+
+.tree-search i {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.tree-search input {
+	border-radius: 0px;
+	border-left: 0px;
+    border-right: 0px;
+}
+
+.narrower-resources {
+	height: 25px;
+}
+
+.narrower-resources span {
+	padding-top: 5px;
+	display: inline-block;
+	float: left;
+}
+
+.narrower-resources button {
+	float: right;
+	margin-top: -5px;
+}
+
+.html-content-editor {
+	height: 70px;
+	overflow-y: auto;
+}
+
+.resources-tree-wrapper, .resources-tree-ctrl {
+	height: 100%;
+}
+
+.pim-index p {
+	color: white;
+}
+
+.btn-outline-inverse {
+	border: 1px solid white;
+    color: white;
+}
+
+.btn-outline-inverse:hover {
+	color: #D6D6D6;
+	border-color: #D6D6D6;
+}
+
+.pim-index {
+	background-color: #6E6874;
+    padding: 80px 0;
+}
+
+#user {
+	padding-top: 20px;
+}
+
+.top-search {
+	width: 700px;
+}
+
+.top-search-results {
+	position: absolute;
+    width: 700px;
+    background-color: white;
+    z-index: 10;
+    border: 1px solid #dadada;
+    margin-top: 3px;
+}
+
+.top-search-results div {
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+.top-search-results div:hover {
+	background-color: #ebebeb;
+}
+
+#content {
+	padding: 0px 10px;
+}
+
+.mail-configs-form {
+	max-width: 600px;
+}
+
+.html-content-editor pre {
+	background: none;
+	border: none;
+}
+
+.container.index {
+	padding-top: 30px;
+	padding-bottom: 10px;
+}
+
+.container.register {
+	width: 700px;
+}
