@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import ru.mipt.pim.server.index.IndexFinder;
 import ru.mipt.pim.server.index.IndexingService;
+import ru.mipt.pim.server.index.TermsStatisticsService;
 import ru.mipt.pim.server.model.Publication;
 import ru.mipt.pim.server.model.Tag;
 import ru.mipt.pim.server.model.User;
@@ -37,6 +38,9 @@ public class RecommendationService {
 	
 	@Resource
 	private IndexFinder indexFinder;
+	
+	@Resource
+	private TermsStatisticsService termsStatisticsService;
 
 	@Resource
 	private TagRepository tagRepository;
@@ -77,7 +81,7 @@ public class RecommendationService {
 					multiplier += abstractDocuments.contains(docId) ? ABSTRACT_MULTIPLIER : 0;
 				}
 
-				weight += multiplier * indexingService.computeTfIdf(reader, term, docId);
+				weight += multiplier * termsStatisticsService.computeTfIdf(reader, term, docId);
 			}
 		}
 		return allDocuments.isEmpty() ? 0 : weight / allDocuments.size();
@@ -92,7 +96,7 @@ public class RecommendationService {
 			String strTerm = term.utf8ToString();
 			if (strTerm.length() > 2) {
 //				long start = System.currentTimeMillis();
-				float tfIdf = indexingService.computeTfIdf(reader, strTerm, docId);
+				float tfIdf = termsStatisticsService.computeTfIdf(reader, strTerm, docId);
 
 				if (tfIdf < 0.07) {
 					continue;
@@ -133,7 +137,7 @@ public class RecommendationService {
 		try {
 			indexingService.countTermsSec = 0;
 			indexingService.seekDocSes = 0;
-			indexingService.clearDocTerms();
+			termsStatisticsService.clearDocTerms();
 			termScores = new HashMap<>();
 			tagScores = new HashMap<>();
 			termTfIdfs = new HashMap<>();
