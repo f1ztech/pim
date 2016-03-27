@@ -95,7 +95,7 @@ public class IndexingService {
 		return DirectoryReader.open(getIndexDirectory(user));
 	}	
 	
-	IndexWriter createIndexWriter(User user, Analyzer analyzer) throws IOException {
+	public IndexWriter createIndexWriter(User user, Analyzer analyzer) throws IOException {
 		FSDirectory indexDir = getIndexDirectory(user);
 		
 		IndexWriterConfig config = new IndexWriterConfig(analyzer);
