@@ -23,6 +23,7 @@ import ru.mipt.pim.adapters.fs.common.JsonRequestResults.FileTreesResult;
 import ru.mipt.pim.adapters.fs.common.JsonRequestResults.RemoveResult;
 import ru.mipt.pim.adapters.fs.common.JsonRequestResults.SaveResult;
 import ru.mipt.pim.adapters.fs.common.JsonRequestResults.UploadResult;
+import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.File;
 import ru.mipt.pim.server.model.Folder;
 import ru.mipt.pim.server.model.User;
@@ -31,7 +32,6 @@ import ru.mipt.pim.server.repositories.FileRepository;
 import ru.mipt.pim.server.repositories.FolderRepository;
 import ru.mipt.pim.server.services.FileService;
 import ru.mipt.pim.server.services.FileStorageService;
-import ru.mipt.pim.server.services.IndexingService;
 import ru.mipt.pim.server.services.UserService;
 
 @Controller

@@ -1,30 +1,25 @@
-package ru.mipt.pim.server.services;
+package ru.mipt.pim.server.index;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -46,29 +41,20 @@ import org.apache.lucene.index.PostingsEnum;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.search.similarities.TFIDFSimilarity;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Bits;
 import org.apache.tika.Tika;
-import org.apache.tika.exception.TikaException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.cybozu.labs.langdetect.DetectorFactory;
+import com.cybozu.labs.langdetect.LangDetectException;
 
 import ru.mipt.pim.server.model.Folder;
 import ru.mipt.pim.server.model.User;
-import ru.mipt.pim.util.Exceptions;
-
-import com.cybozu.labs.langdetect.Detector;
-import com.cybozu.labs.langdetect.DetectorFactory;
-import com.cybozu.labs.langdetect.LangDetectException;
+import ru.mipt.pim.server.services.FileStorageService;
 
 @Service
 public class IndexingService {
@@ -146,14 +132,7 @@ public class IndexingService {
 
 		private void indexFile(User user, File contentFile, String fileId, String title, String tagId) throws LangDetectException, IOException, FileNotFoundException {
 			if (contentFile.length() > 0) {
-				Detector langDetector = DetectorFactory.create();
-				langDetector.append(new FileReader(contentFile));
-				String lang = "en";
-				try {
-					lang = langDetector.detect();
-				} catch (LangDetectException e) {
-					logger.error("Error while detecting language", e);
-				}
+				String lang = languageDetector.detectLang(contentFile);
 		
 				Analyzer analyzer = createAnalyzer(lang);
 				try {
@@ -188,7 +167,7 @@ public class IndexingService {
 				}
 			}
 		}
-		
+
 //		private int countWords(File contentFile) throws FileNotFoundException {
 //		    Scanner input = new Scanner(contentFile); 
 //		    int countWords = 0;
@@ -227,14 +206,21 @@ public class IndexingService {
 	}
 	
 	
-	private static final String ID_FIELD = "id";
-	private static final String CONTENT_FIELD = "content";
-	private static final String TITLE_FIELD = "title";
-	private static final String ABSTRACT_FIELD = "abstract";
+	public static final String ID_FIELD = "id";
+	public static final String CONTENT_FIELD = "content";
+	public static final String TITLE_FIELD = "title";
+	public static final String ABSTRACT_FIELD = "abstract";
 //	private static final String WORDS_COUNT_FIELD = "words";
-	private static final String TAG_FIELD = "tagId";
+	public static final String TAG_FIELD = "tagId";
+	
 	@Resource
 	private FileStorageService fileStorageService;
+	
+	@Resource
+	private IndexFinder indexFinder;
+	
+	@Autowired
+	private LanguageDetector languageDetector;
 	
 	private Map<String, Integer> resourceTermsCount = new HashMap<String, Integer>();
 	private Map<Integer, Integer> docTermsCount = new HashMap<Integer, Integer>();
@@ -275,8 +261,8 @@ public class IndexingService {
 		return new IndexWriter(indexDir, config);
 	}
 	
-	@SuppressWarnings("resource")
-	private Analyzer createAnalyzer(String lang) {
+	@SuppressWarnings("resource") 
+	Analyzer createAnalyzer(String lang) {
 		return lang.equals("ru") ? new RussianAnalyzer() : new StandardAnalyzer();
 	}
 	
@@ -296,7 +282,7 @@ public class IndexingService {
 	}
 	
 	public void indexResource(User user, ru.mipt.pim.server.model.Resource resource) throws LangDetectException, IOException {
-		Analyzer analyzer = createAnalyzer(detectLang(resource.getTitle()));
+		Analyzer analyzer = createAnalyzer(languageDetector.detectLang(resource.getTitle()));
 		IndexWriter writer = createIndexWriter(user, analyzer);
 		try {
 			Document document = new Document();
@@ -318,116 +304,6 @@ public class IndexingService {
 	}
 
 	// =================================
-	// Query index
-	// =================================
-	
-	public List<Integer> findByTagAndTerm(IndexReader reader, String tagId, String term) throws IOException {
-		long start = System.nanoTime();
-		IndexSearcher searcher = new IndexSearcher(reader);
-		
-		Query tagQuery = new TermQuery(new Term(TAG_FIELD, tagId));
-		Query contentQuery = new TermQuery(new Term(CONTENT_FIELD, term));
-		Query titleQuery = new TermQuery(new Term(TITLE_FIELD, term));
-		
-		BooleanQuery finalQuery = new BooleanQuery();
-		finalQuery.add(tagQuery, Occur.MUST);
-		
-		BooleanQuery titleOrContentQuery = new BooleanQuery();
-		titleOrContentQuery.add(contentQuery, Occur.SHOULD);
-		titleOrContentQuery.add(titleQuery, Occur.SHOULD);
-		finalQuery.add(titleOrContentQuery, Occur.MUST);
-		
-		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
-		
-		List<Integer> ret = Arrays.asList(hits).stream().map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		querySec += System.nanoTime() - start;
-		return ret;
-	}
-	
-	public List<Integer> findByTagAndContent(IndexReader reader, String tagId, String term) throws IOException {
-		long start = System.nanoTime();
-		IndexSearcher searcher = new IndexSearcher(reader);
-		
-		Query tagQuery = new TermQuery(new Term(TAG_FIELD, tagId));
-		Query contentQuery = new TermQuery(new Term(CONTENT_FIELD, term));
-		
-		BooleanQuery finalQuery = new BooleanQuery();
-		finalQuery.add(tagQuery, Occur.MUST);
-		finalQuery.add(contentQuery, Occur.MUST);
-		
-		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
-		
-		List<Integer> ret = Arrays.asList(hits).stream().map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		querySec += System.nanoTime() - start;
-		return ret;
-	}
-	
-	public List<Integer> findByTagAndTitle(IndexReader reader, String tagId, String term) throws IOException {
-		long start = System.nanoTime();
-		IndexSearcher searcher = new IndexSearcher(reader);
-		
-		Query tagQuery = new TermQuery(new Term(TAG_FIELD, tagId));
-		Query titleQuery = new TermQuery(new Term(TITLE_FIELD, term));
-		
-		BooleanQuery finalQuery = new BooleanQuery();
-		finalQuery.add(tagQuery, Occur.MUST);
-		finalQuery.add(titleQuery, Occur.MUST);
-		
-		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
-		
-		List<Integer> ret = Arrays.stream(hits).map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		querySec += System.nanoTime() - start;
-		return ret;
-	}
-	
-	public List<String> findIdsByText(User user, String text) throws IOException, LangDetectException, ParseException {
-		DirectoryReader reader = createIndexReader(user);
-		try {
-			IndexSearcher searcher = new IndexSearcher(reader);
-			
-			MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(new String[] {TITLE_FIELD, CONTENT_FIELD}, createAnalyzer(detectLang(text)));
-			Query query = multiFieldQueryParser.parse(text);
-			
-			ScoreDoc[] hits = searcher.search(query, 40).scoreDocs;
-			return Arrays.stream(hits).map(Exceptions.wrap(hit -> { return searcher.doc(hit.doc).get(ID_FIELD); })).collect(Collectors.toList());
-		} finally {
-			reader.close();
-		}
-	}
-
-	private String detectLang(String text) throws LangDetectException {
-		Detector langDetector = DetectorFactory.create();
-		langDetector.append(text);
-		String lang = langDetector.detect();
-		return lang;
-	}
-	
-	
-	public List<Integer> findByTagAndAbstract(IndexReader reader, String tagId, String term) throws IOException {
-		long start = System.nanoTime();
-		IndexSearcher searcher = new IndexSearcher(reader);
-		
-		Query tagQuery = new TermQuery(new Term(TAG_FIELD, tagId));
-		Query abstractQuery = new TermQuery(new Term(ABSTRACT_FIELD, term));
-		
-		BooleanQuery finalQuery = new BooleanQuery();
-		finalQuery.add(tagQuery, Occur.MUST);
-		finalQuery.add(abstractQuery, Occur.MUST);
-		
-		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
-		
-		List<Integer> ret = Arrays.asList(hits).stream().map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		querySec += System.nanoTime() - start;
-		return ret;
-	}	
-	
-	public Integer findDocIdByResourceId(String resourceId, IndexReader reader) throws IOException {
-		IndexSearcher searcher = new IndexSearcher(reader);
-		ScoreDoc[] hits = searcher.search(new TermQuery(new Term(ID_FIELD, resourceId)), 1).scoreDocs;
-		return hits.length == 0 ? null : hits[0].doc;
-	}	
-	
-	// =================================
 	// Tags
 	// =================================
 
@@ -435,7 +311,7 @@ public class IndexingService {
 		DirectoryReader reader = createIndexReader(user);
 		IndexWriter writer = createIndexWriter(user, new StandardAnalyzer());
 		try {
-			Integer docId = findDocIdByResourceId(resourceId, reader);
+			Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
 			if (docId != null) {
 				Document oldDocument = reader.document(docId);
 				
@@ -463,7 +339,7 @@ public class IndexingService {
 		DirectoryReader reader = createIndexReader(user);
 		IndexWriter writer = createIndexWriter(user, new StandardAnalyzer());
 		try {
-			Integer docId = findDocIdByResourceId(resourceId, reader);
+			Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
 			if (docId != null) {
 				writer.tryDeleteDocument(reader, docId);
 			}
@@ -478,7 +354,7 @@ public class IndexingService {
 	// =================================
 	
 	public float computeTfIdf(IndexReader reader, String term, String resourceId) throws IOException {
-		Integer docId = findDocIdByResourceId(resourceId, reader);
+		Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
 		
 		if (docId != null) {
 			return computeTfIdf(reader, term, docId);

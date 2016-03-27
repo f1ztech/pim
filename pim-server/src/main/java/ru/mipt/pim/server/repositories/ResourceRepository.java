@@ -11,9 +11,10 @@ import org.openrdf.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ru.mipt.pim.server.index.IndexFinder;
+import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
-import ru.mipt.pim.server.services.IndexingService;
 
 import com.cybozu.labs.langdetect.LangDetectException;
 
@@ -24,7 +25,7 @@ public class ResourceRepository extends CommonResourceRepository<Resource> {
 	private Repository repository;
 
 	@Autowired
-	private IndexingService indexingService;
+	private IndexFinder indexFinder;
 
 	public ResourceRepository() {
 		super(Resource.class);
@@ -39,7 +40,7 @@ public class ResourceRepository extends CommonResourceRepository<Resource> {
 	}
 
 	public List<Resource> findByFulltext(User user, String text) throws IOException, LangDetectException, ParseException {
-		List<String> ids = indexingService.findIdsByText(user, text);
+		List<String> ids = indexFinder.findIdsByText(user, text);
 		Query query = prepareQuery("where { "
 				+ "		?result <http://mipt.ru/pim/id> ?id. "
 				+ "		FILTER(?id IN (" + ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(",")) + ")) "

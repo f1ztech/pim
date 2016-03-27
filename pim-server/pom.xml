@@ -32,7 +32,7 @@
 
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 
-		<sesame.version>2.7.12</sesame.version>
+		<sesame.version>2.8.10</sesame.version>
 
 		<cglib.version>3.1</cglib.version>
 

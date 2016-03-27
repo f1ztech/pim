@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
@@ -18,9 +17,9 @@ import org.apache.lucene.index.Terms;
 import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.util.BytesRef;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
-import ru.mipt.pim.server.model.Folder;
+import ru.mipt.pim.server.index.IndexFinder;
+import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.Publication;
 import ru.mipt.pim.server.model.Tag;
 import ru.mipt.pim.server.model.User;
@@ -35,6 +34,9 @@ public class RecommendationService {
 
 	@Resource
 	private IndexingService indexingService;
+	
+	@Resource
+	private IndexFinder indexFinder;
 
 	@Resource
 	private TagRepository tagRepository;
@@ -49,19 +51,19 @@ public class RecommendationService {
 
 	private float computeWordTagWeight(IndexReader reader, String term, Tag tag, int... excludeDocs) throws IOException {
 		float weight = 0;
-		List<Integer> contentDocuments = indexingService.findByTagAndContent(reader, tag.getId(), term);
+		List<Integer> contentDocuments = indexFinder.findByTagAndContent(reader, tag.getId(), term);
 
 		HashSet<Integer> allDocuments = new HashSet<>();
 		allDocuments.addAll(contentDocuments);
 
 		List<Integer> titleDocuments = null;
 		if (useTitles) {
-			titleDocuments = indexingService.findByTagAndTitle(reader, tag.getId(), term);
+			titleDocuments = indexFinder.findByTagAndTitle(reader, tag.getId(), term);
 			allDocuments.addAll(titleDocuments);
 		}
 		List<Integer> abstractDocuments = null;
 		if (useAbstracts) {
-			abstractDocuments = indexingService.findByTagAndAbstract(reader, tag.getId(), term);
+			abstractDocuments = indexFinder.findByTagAndAbstract(reader, tag.getId(), term);
 		}
 
 		for (Integer docId : allDocuments) {
@@ -136,7 +138,7 @@ public class RecommendationService {
 			tagScores = new HashMap<>();
 			termTfIdfs = new HashMap<>();
 			List<Tag> recommendedTags = new ArrayList<Tag>();
-			Integer docId = indexingService.findDocIdByResourceId(resource.getId(), reader);
+			Integer docId = indexFinder.findDocIdByResourceId(resource.getId(), reader);
 			if (docId != null) {
 				HashMap<Tag, Float> weightsMap = new HashMap<>();
 				Terms terms = indexingService.getContentTerms(reader, docId);
