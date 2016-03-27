@@ -1,25 +1,14 @@
 package ru.mipt.pim.server.index;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
@@ -45,7 +34,6 @@ import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.search.similarities.TFIDFSimilarity;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Bits;
-import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,153 +47,6 @@ import ru.mipt.pim.server.services.FileStorageService;
 @Service
 public class IndexingService {
 
-	private class IndexTask {
-		private User user;
-		private File ioFile;
-		private ru.mipt.pim.server.model.File file;
-		private Folder folder;
-
-		public IndexTask(User user, File ioFile, ru.mipt.pim.server.model.File file, Folder folder) {
-			this.user = user;
-			this.ioFile = ioFile;
-			this.file = file;
-			this.folder = folder;
-		}
-
-		public User getUser() {
-			return user;
-		}
-
-		public File getIoFile() {
-			return ioFile;
-		}
-
-		public ru.mipt.pim.server.model.File getFile() {
-			return file;
-		}
-
-		public Folder getFolder() {
-			return folder;
-		}
-	}
-
-	private class Indexer implements Runnable {
-		
-		private BlockingQueue<IndexTask> queue = new LinkedBlockingQueue<>();
-
-		@Override
-		public void run() {
-			IndexTask nextTask;
-			try {
-				while ((nextTask = queue.take()) != null) {
-					addFileToIndex(nextTask.getUser(), nextTask.getIoFile(), nextTask.getFile(), nextTask.getFolder());
-				}
-			} catch (InterruptedException e) {
-				logger.info("PublicationParser interrupted");
-				e.printStackTrace();
-			}
-		}
-		
-		public void scheduleIndexing(User user, File ioFile, ru.mipt.pim.server.model.File file, Folder folder) {
-			queue.add(new IndexTask(user, ioFile, file, folder));
-		}
-		
-		// =================================
-		// Write index
-		// =================================
-		/**
-		 * Gets content of the file, determines language and than add file to index
-		 */
-		private void addFileToIndex(User user, File ioFile, ru.mipt.pim.server.model.File file, Folder folder) {
-			try {
-				File contentFile = readContentToTempFile(ioFile);
-				
-				try {
-					indexFile(user, contentFile, file.getId(), StringUtils.substringBeforeLast(file.getTitle(), "."), folder.getId());
-				} finally {
-					contentFile.delete();
-				}
-			} catch (Exception e) {
-				logger.error("Error while indexing ", e);
-			}
-		}
-
-		private void indexFile(User user, File contentFile, String fileId, String title, String tagId) throws LangDetectException, IOException, FileNotFoundException {
-			if (contentFile.length() > 0) {
-				String lang = languageDetector.detectLang(contentFile);
-		
-				Analyzer analyzer = createAnalyzer(lang);
-				try {
-					IndexWriter indexWriter = createIndexWriter(user, analyzer);
-					InputStreamReader contentReader = new InputStreamReader(new FileInputStream(contentFile), "UTF-8");
-					String abstractText = "";
-					Scanner contentScanner = new Scanner(contentFile, "UTF-8");
-					int words = 0;
-					while (contentScanner.hasNext() && words < 500) {
-						words++;
-						abstractText += contentScanner.next() + " ";
-					}
-					contentScanner.close();
-					
-					try {
-						Document document = new Document();
-						document.add(new Field(CONTENT_FIELD, IOUtils.toString(contentReader), createContentFieldType()));
-						document.add(new Field(TITLE_FIELD, title, createContentFieldType()));
-						document.add(new Field(ABSTRACT_FIELD, abstractText, createContentFieldType()));
-//						document.add(new IntField(WORDS_COUNT_FIELD, countWords(contentFile), Store.YES));
-						document.add(new StringField(ID_FIELD, fileId, Store.YES));
-						if (tagId != null) {
-							document.add(new StringField(TAG_FIELD, tagId, Store.YES));
-						}
-						indexWriter.addDocument(document);
-					} finally {
-						contentReader.close();
-						indexWriter.close();
-					}
-				} finally {
-					analyzer.close();
-				}
-			}
-		}
-
-//		private int countWords(File contentFile) throws FileNotFoundException {
-//		    Scanner input = new Scanner(contentFile); 
-//		    int countWords = 0;
-	//
-//		    while (input.hasNextLine()) {
-//		        while(input.hasNext()) {
-//		            input.next();
-//		            countWords++;
-//		        }
-//		    }
-//		    
-//		    input.close();
-//		    return countWords;
-//		}
-
-		private File readContentToTempFile(File file) throws IOException {
-			Tika tika = new Tika();
-			Reader contentReader = tika.parse(file);
-			
-			File contentFile = File.createTempFile("text_content", ".tmp");
-			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(contentFile), "UTF-8");
-			
-			try {
-				char[] buffer = new char[8 * 1024];
-				int charsRead;
-			    while ((charsRead = contentReader.read(buffer)) != -1) {
-			    	writer.write(buffer, 0, charsRead);
-			    }
-			} finally {
-				writer.close();
-				contentReader.close();
-			}
-			
-			return contentFile;
-		}
-	}
-	
-	
 	public static final String ID_FIELD = "id";
 	public static final String CONTENT_FIELD = "content";
 	public static final String TITLE_FIELD = "title";
@@ -219,8 +60,7 @@ public class IndexingService {
 	@Resource
 	private IndexFinder indexFinder;
 	
-	@Autowired
-	private LanguageDetector languageDetector;
+	@Autowired LanguageDetector languageDetector;
 	
 	private Map<String, Integer> resourceTermsCount = new HashMap<String, Integer>();
 	private Map<Integer, Integer> docTermsCount = new HashMap<Integer, Integer>();
@@ -230,13 +70,14 @@ public class IndexingService {
 	public static long querySec = 0;
 	public static long termVectorSec = 0;
 	
-	private Log logger = LogFactory.getLog(getClass());
+	Log logger = LogFactory.getLog(getClass());
+	
 	private Indexer indexer;
 	
 	@PostConstruct
 	private void init() throws LangDetectException, URISyntaxException {
 		DetectorFactory.loadProfile(new File(getClass().getClassLoader().getResource("META-INF/langdetect").toURI()));
-		indexer = new Indexer();
+		indexer = new Indexer(this);
 		new Thread(indexer).start();
 	}
 	
@@ -254,15 +95,14 @@ public class IndexingService {
 		return DirectoryReader.open(getIndexDirectory(user));
 	}	
 	
-	private IndexWriter createIndexWriter(User user, Analyzer analyzer) throws IOException {
+	IndexWriter createIndexWriter(User user, Analyzer analyzer) throws IOException {
 		FSDirectory indexDir = getIndexDirectory(user);
 		
 		IndexWriterConfig config = new IndexWriterConfig(analyzer);
 		return new IndexWriter(indexDir, config);
 	}
 	
-	@SuppressWarnings("resource") 
-	Analyzer createAnalyzer(String lang) {
+	public Analyzer createAnalyzer(String lang) {
 		return lang.equals("ru") ? new RussianAnalyzer() : new StandardAnalyzer();
 	}
 	
@@ -295,7 +135,7 @@ public class IndexingService {
 		}
 	}
 	
-	private FieldType createContentFieldType() {
+	FieldType createContentFieldType() {
 		FieldType type = new FieldType();
 		type.setStored(true);
 		type.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
