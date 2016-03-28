@@ -1,4 +1,4 @@
-package ru.mipt.pim.server.services;
+package ru.mipt.pim.server.recommendations;
 
 import java.io.IOException;
 import java.util.ArrayList;

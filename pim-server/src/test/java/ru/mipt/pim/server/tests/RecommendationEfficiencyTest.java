@@ -18,9 +18,9 @@ import ru.mipt.pim.server.model.File;
 import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.Tag;
 import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.recommendations.RecommendationService;
 import ru.mipt.pim.server.repositories.FileRepository;
 import ru.mipt.pim.server.repositories.UserRepository;
-import ru.mipt.pim.server.services.RecommendationService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/application-context.xml" })
