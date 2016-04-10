@@ -12,21 +12,33 @@ import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import ru.mipt.pim.server.index.Indexable;
+import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.services.UserHolder;
 import ru.mipt.pim.util.RdfUtils;
 
 public class CommonResourceRepository<T extends Resource> extends CommonRepository<T> {
 
-	private Class<T> clazz;
-
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private Repository repository;
+	
+	@Autowired
+	private UserHolder userHolder;
+	
+	@Autowired
+	private IndexingService indexingService;
+
+	private Class<T> clazz;
 	private ValueFactory valueFactory;
 	private URI pNarrower;
-
 
 	public CommonResourceRepository(Class<T> clazz) {
 		super(clazz);
@@ -52,6 +64,20 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		return super.merge(object);
 	}
 
+	@Override
+	protected void afterResourceUpdate(T resource) {
+		if (resource.getOwner() == null) {
+			resource.setOwner(userHolder.getCurrentUser());
+		}
+		if (resource instanceof Indexable) {
+			try {
+				indexingService.indexResource(userHolder.getCurrentUser(), resource);
+			} catch (Exception e) {
+				logger.error("indexing error", e);
+			}
+		}
+	}
+	
 	public List<T> findAll(User user) {
 		Query query = prepareQuery("where { "
 				+ "		?result rdf:type ??uri. "
@@ -65,6 +91,18 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 			throw new RuntimeException(e);
 		}
 		return query.getResultList();
+	}
+	
+	public List<T> findAll() {
+		try {
+			Query query = prepareQuery("where { "
+				+ "		?result rdf:type ??uri. "
+				+ " }");
+			query.setParameter("uri", new java.net.URI(RdfUtils.getRdfUri(clazz)));
+			return query.getResultList();
+		} catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public List<T> findByTitle(User user, String title) {

@@ -9,6 +9,8 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 
+import ru.mipt.pim.server.index.Indexable;
+
 @Entity
 @Namespaces({
 	"foaf", "http://xmlns.com/foaf/0.1/",
@@ -20,7 +22,7 @@ import com.clarkparsia.empire.annotation.RdfsClass;
 	"ncal", "http://www.semanticdesktop.org/ontologies/2007/04/02/ncal/#"
 })
 @RdfsClass("pim:MindMapNode")
-public class MindMapNode extends Resource {
+public class MindMapNode extends Resource implements Indexable {
 
 	@RdfProperty("pim:represents")
 	private Resource representedResource;

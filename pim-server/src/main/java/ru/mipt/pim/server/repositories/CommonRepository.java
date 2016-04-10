@@ -7,9 +7,9 @@ import java.util.WeakHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import ru.mipt.pim.server.model.ObjectWithRdfId;
-
 import com.clarkparsia.empire.impl.RdfQuery;
+
+import ru.mipt.pim.server.model.ObjectWithRdfId;
 
 @SuppressWarnings({ "unchecked" })
 public class CommonRepository<T extends ObjectWithRdfId> {
@@ -54,20 +54,20 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 	}
 
 	public void save(T object) {
-		populateId(object);
+		afterResourceUpdate(object);
 		synchronized (getSyncObject(object.getId())) {
 			em.persist(object);
 		}
 	}
 
-	protected void populateId(T object) {
+	protected void afterResourceUpdate(T object) {
 		if (object.getId() == null) {
 			object.setId(UUID.randomUUID().toString());
 		}
 	}
 
 	public T merge(T object) {
-		populateId(object);
+		afterResourceUpdate(object);
 		synchronized (getSyncObject(object.getId())) {
 			return em.merge(object);
 		}

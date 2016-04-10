@@ -1,4 +1,4 @@
-package ru.mipt.pim.server.services;
+package ru.mipt.pim.server.mail;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,8 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ru.mipt.pim.server.mail.GmailAdapter;
-import ru.mipt.pim.server.mail.MailAdapter;
 import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.services.FileStorageService;
 
 import com.google.api.client.util.store.FileDataStoreFactory;
 

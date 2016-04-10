@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.cybozu.labs.langdetect.Detector;
@@ -16,7 +16,7 @@ import com.cybozu.labs.langdetect.LangDetectException;
 @Component
 public class LanguageDetector {
 	
-	private Log logger = LogFactory.getLog(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	public String detectLang(String text) throws LangDetectException {
 		Detector langDetector = DetectorFactory.create();

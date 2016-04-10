@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import com.clarkparsia.empire.annotation.Namespaces;
-import com.clarkparsia.empire.annotation.RdfId;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 

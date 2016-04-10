@@ -1,7 +1,5 @@
 package ru.mipt.pim.server.services;
 
-import info.aduna.iteration.Iterations;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -11,8 +9,6 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openrdf.model.Literal;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Statement;
@@ -23,26 +19,25 @@ import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import info.aduna.iteration.Iterations;
 import ru.mipt.pim.server.model.User;
 import ru.mipt.pim.server.repositories.ActivationRepository;
-import ru.mipt.pim.server.repositories.ResourceRepository;
 import ru.mipt.pim.util.Exceptions;
 
 @Service
 public class ActivationService {
 	
-	private final Log logger = LogFactory.getLog(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private static int activationDecay = 10;
 	private static BigDecimal activationStep = new BigDecimal(50);
 	private static BigDecimal maxActivation = new BigDecimal(100);
 	private static int maxDepth = 3;
-	
-	@Autowired
-	private ResourceRepository resourceRepository;
 
 	@Autowired
 	private ActivationRepository activationRepository;

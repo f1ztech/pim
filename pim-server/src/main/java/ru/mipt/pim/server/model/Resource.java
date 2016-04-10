@@ -13,10 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.ComparatorUtils;
 import org.apache.commons.collections4.comparators.NullComparator;
-import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.beans.support.PropertyComparator;
 
 import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;

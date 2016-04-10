@@ -3,14 +3,17 @@ package ru.mipt.pim.server.index;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.ru.RussianAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -25,6 +28,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.index.Terms;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,7 @@ import com.cybozu.labs.langdetect.DetectorFactory;
 import com.cybozu.labs.langdetect.LangDetectException;
 
 import ru.mipt.pim.server.model.Folder;
+import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
 import ru.mipt.pim.server.services.FileStorageService;
 
@@ -47,31 +52,71 @@ public class IndexingService {
 //	private static final String WORDS_COUNT_FIELD = "words";
 	public static final String TAG_FIELD = "tagId";
 	
-	@Resource
+	public static final String SIMILARITY_ID_FIELD = "similarityId";
+	public static final String SIMILARITY_HASH_FIELD = "similarityHash";
+	
+	public static class IndexableResource {
+		
+		private String id;
+		private String title;
+		private String content;
+		private String abstractText;
+		private List<String> tagIds = new ArrayList<>();
+		
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getAbstractText() {
+			return abstractText;
+		}
+		public void setAbstractText(String abstractText) {
+			this.abstractText = abstractText;
+		}
+		public List<String> getTagIds() {
+			return tagIds;
+		}
+		public void setTagIds(List<String> tagIds) {
+			this.tagIds = tagIds;
+		}
+	}
+	
+	@Autowired
 	private FileStorageService fileStorageService;
 	
-	@Resource
+	@Autowired
 	private IndexFinder indexFinder;
 	
-	@Autowired LanguageDetector languageDetector;
+	@Autowired 
+	private LanguageDetector languageDetector;
 	
-	public static Map<String, Integer> resourceTermsCount = new HashMap<String, Integer>();
-	public static Map<Integer, Integer> docTermsCount = new HashMap<Integer, Integer>();
+	private ConcurrentHashMap<String, IndexReader> readersCache = new ConcurrentHashMap<>();
+	private Object readersLock = new Object();
+	// key is <userId, lang> pair
+	private ConcurrentHashMap<Pair<String, String>, IndexWriter> writersCache = new ConcurrentHashMap<>();
+	private Object writersLock = new Object();
 	
-	public static long seekDocSes = 0;
-	public static long countTermsSec = 0;
-	public static long querySec = 0;
-	public static long termVectorSec = 0;
-	
-	Log logger = LogFactory.getLog(getClass());
-	
-	private Indexer indexer;
+	private FileIndexer fileIndexer;
 	
 	@PostConstruct
 	private void init() throws LangDetectException, URISyntaxException {
 		DetectorFactory.loadProfile(new File(getClass().getClassLoader().getResource("META-INF/langdetect").toURI()));
-		indexer = new Indexer(this);
-		new Thread(indexer).start();
+		fileIndexer = new FileIndexer(this);
+		new Thread(fileIndexer).start();
 	}
 	
 	// =================================
@@ -84,19 +129,46 @@ public class IndexingService {
 		return FSDirectory.open(userIndexFolder.toPath());
 	}
 	
-	public DirectoryReader createIndexReader(User user) throws IOException {
-		return DirectoryReader.open(getIndexDirectory(user));
+	public IndexReader getReader(User user) throws IOException {
+		String userId = user.getId();
+		IndexReader reader = readersCache.get(userId);
+		if (reader == null) {
+			synchronized (readersLock) {
+				reader = readersCache.get(userId);
+				if (reader == null) {
+					reader = DirectoryReader.open(getIndexDirectory(user));
+					readersCache.put(userId, reader);
+				}
+			}
+		}
+		return reader;
 	}	
 	
-	public IndexWriter createIndexWriter(User user, Analyzer analyzer) throws IOException {
-		FSDirectory indexDir = getIndexDirectory(user);
-		
-		IndexWriterConfig config = new IndexWriterConfig(analyzer);
-		return new IndexWriter(indexDir, config);
+	public IndexWriter getWriter(User user) throws IOException {
+		return getWriter(user, null);
+	}
+	
+	public IndexWriter getWriter(User user, String lang) throws IOException {
+		String userId = user.getId();
+		Pair<String, String> key = Pair.of(user.getId(), lang);
+		IndexWriter writer = writersCache.get(key);
+		if (writer == null) {
+			synchronized (writersLock) {
+				writer = writersCache.get(userId);
+				if (writer == null) {
+					FSDirectory indexDir = getIndexDirectory(user);
+					IndexWriterConfig config = new IndexWriterConfig(createAnalyzer(lang));
+					writer = new IndexWriter(indexDir, config);
+					
+					writersCache.put(key, writer);
+				}
+			}
+		}
+		return writer;
 	}
 	
 	public Analyzer createAnalyzer(String lang) {
-		return lang.equals("ru") ? new RussianAnalyzer() : new StandardAnalyzer();
+		return "ru".equals(lang) ? new RussianAnalyzer() : new StandardAnalyzer();
 	}
 	
 	public Terms getContentTerms(IndexReader reader, int docId) throws IOException {
@@ -110,25 +182,43 @@ public class IndexingService {
 	// =================================
 	// Indexing
 	// =================================
-	public void addFileToIndex(User user, File ioFile, ru.mipt.pim.server.model.File file, Folder folder) {
-		indexer.scheduleIndexing(user, ioFile, file, folder);
+	public void scheduleFileIndexing(User user, File ioFile, Resource resource, Folder folder) {
+		fileIndexer.scheduleIndexing(user, ioFile, resource, folder);
 	}
 	
-	public void indexResource(User user, ru.mipt.pim.server.model.Resource resource) throws LangDetectException, IOException {
-		Analyzer analyzer = createAnalyzer(languageDetector.detectLang(resource.getTitle()));
-		IndexWriter writer = createIndexWriter(user, analyzer);
-		try {
-			Document document = new Document();
-			document.add(new Field(CONTENT_FIELD, resource.getHtmlContent(), createContentFieldType()));
-			document.add(new Field(TITLE_FIELD, resource.getTitle(), createContentFieldType()));
+	public void indexResource(User user, Resource resource) throws IOException, LangDetectException {
+		indexResource(user, r -> {
+			r.setId(resource.getId());
+			r.setTitle(resource.getTitle());
+			r.setContent(resource.getHtmlContent());
+		});
+	}
+	
+	public void indexResource(User user, Consumer<IndexableResource> consumer) throws IOException, LangDetectException {
+		IndexableResource indexableResource = new IndexableResource();
+		consumer.accept(indexableResource);
+		indexResource(user, indexableResource);
+	}
+	
+	public void indexResource(User user, IndexableResource resource) throws IOException, LangDetectException {
+		updateDocument(user, resource.getId(), document -> {
 			document.add(new StringField(ID_FIELD, resource.getId(), Store.YES));
-			writer.addDocument(document);
-		} finally {
-			writer.close();
-		}
+			if (resource.getTitle() != null) {
+				document.add(new Field(TITLE_FIELD, resource.getTitle(), createContentFieldType()));
+			}
+			if (resource.getAbstractText() != null) {
+				document.add(new Field(ABSTRACT_FIELD, resource.getAbstractText(), createContentFieldType()));
+			}
+			if (resource.getContent() != null) {
+				document.add(new Field(CONTENT_FIELD, resource.getContent(), createContentFieldType()));
+			}
+			for (String tagId : resource.getTagIds()) {
+				document.add(new StringField(IndexingService.TAG_FIELD, tagId, Store.YES));
+			}
+		});
 	}
 	
-	FieldType createContentFieldType() {
+	private FieldType createContentFieldType() {
 		FieldType type = new FieldType();
 		type.setStored(true);
 		type.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS);
@@ -136,50 +226,83 @@ public class IndexingService {
 		return type;
 	}
 
+	private void updateDocument(User user, String resourceId, Consumer<Document> updater) throws IOException, LangDetectException {
+		IndexReader reader = getReader(user);
+		Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
+
+		Document document;
+		if (docId != null) {
+			document = cloneDocument(reader.document(docId));
+			updater.accept(document);
+		} else {
+			document = new Document();
+			updater.accept(document);
+		}
+
+		IndexWriter writer = getWriter(user, languageDetector.detectLang(StringUtils.defaultIfBlank(document.get(TITLE_FIELD), document.get(CONTENT_FIELD))));
+		try {			
+			if (docId != null) {
+				writer.updateDocument(new Term(ID_FIELD, resourceId), document);
+			} else {
+				writer.addDocument(document);
+			}
+		} finally {
+			writer.commit();
+		}			
+	}
+
+	private Document cloneDocument(Document oldDocument) {
+		Document document = new Document();
+		document.add(new Field(CONTENT_FIELD, oldDocument.get(CONTENT_FIELD), createContentFieldType()));
+		document.add(new Field(TITLE_FIELD, oldDocument.get(TITLE_FIELD), createContentFieldType()));
+		document.add(new Field(ABSTRACT_FIELD, oldDocument.get(ABSTRACT_FIELD), createContentFieldType()));
+		document.add(new StringField(ID_FIELD, oldDocument.get(ID_FIELD), Store.YES));
+//		document.add(new IntField(WORDS_COUNT_FIELD, ((IntField) oldDocument.getField(WORDS_COUNT_FIELD)).numericValue().intValue(), Store.YES));
+		for (IndexableField field : oldDocument.getFields(TAG_FIELD)) {
+			document.add(new StringField(TAG_FIELD, field.stringValue(), Store.YES));
+		}
+		return document;
+	}
+	
 	// =================================
 	// Tags
 	// =================================
 
-	public void addTag(User user, String resourceId, String tagId) throws IOException {
-		DirectoryReader reader = createIndexReader(user);
-		IndexWriter writer = createIndexWriter(user, new StandardAnalyzer());
-		try {
-			Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
-			if (docId != null) {
-				Document oldDocument = reader.document(docId);
-				
-				Document document = new Document();
-				document.add(new Field(CONTENT_FIELD, oldDocument.get(CONTENT_FIELD), createContentFieldType()));
-				document.add(new Field(TITLE_FIELD, oldDocument.get(TITLE_FIELD), createContentFieldType()));
-				document.add(new Field(ABSTRACT_FIELD, oldDocument.get(ABSTRACT_FIELD), createContentFieldType()));
-				document.add(new StringField(ID_FIELD, oldDocument.get(ID_FIELD), Store.YES));
-//				document.add(new IntField(WORDS_COUNT_FIELD, ((IntField) oldDocument.getField(WORDS_COUNT_FIELD)).numericValue().intValue(), Store.YES));
-				for (IndexableField field : oldDocument.getFields(TAG_FIELD)) {
-					document.add(new StringField(TAG_FIELD, field.stringValue(), Store.YES));
-				}
-				document.add(new StringField(TAG_FIELD, tagId, Store.YES));
-				writer.addDocument(document);
-				
-				writer.tryDeleteDocument(reader, docId);
-			}
-		} finally {
-			reader.close();
-			writer.close();
-		}			
+	public void addTag(User user, String resourceId, String tagId) throws IOException, LangDetectException {
+		updateDocument(user, resourceId, newDocument -> {
+			newDocument.add(new StringField(TAG_FIELD, tagId, Store.YES));	
+		});
 	}
 	
-	public void removeTag(User user, String resourceId, String tagId) throws IOException {
-		DirectoryReader reader = createIndexReader(user);
-		IndexWriter writer = createIndexWriter(user, new StandardAnalyzer());
+	public void setTags(User user, String resourceId, List<String> tagIds) throws IOException, LangDetectException {
+		updateDocument(user, resourceId, newDocument -> {
+			newDocument.removeFields(TAG_FIELD);
+			tagIds.forEach(tagId -> newDocument.add(new StringField(TAG_FIELD, tagId, Store.YES)));	
+		});
+	}
+
+
+	// =================================
+	// Similarity Hashes
+	// =================================
+	
+	public void storeSimilarityHashes(User user, String resourceId, long[] hashes) throws IOException {
+		IndexWriter writer = getWriter(user);
 		try {
-			Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
-			if (docId != null) {
-				writer.tryDeleteDocument(reader, docId);
-			}
+			storeSimilarityHashes(resourceId, hashes, writer);
 		} finally {
-			writer.close();
-			reader.close();
+			writer.commit();
 		}			
+	}
+
+	public void storeSimilarityHashes(String resourceId, long[] hashes, IndexWriter writer) throws IOException {
+		String similarityId = "similarity_" + resourceId;
+		Document document = new Document();
+		document.add(new StringField(SIMILARITY_ID_FIELD, similarityId, Store.YES));
+		document.add(new StringField(SIMILARITY_HASH_FIELD, Arrays.stream(hashes)
+				.mapToObj(String::valueOf).collect(Collectors.joining(" ")), Store.YES));	
+		
+		writer.updateDocument(new Term(SIMILARITY_ID_FIELD, similarityId), document);
 	}
 
 }

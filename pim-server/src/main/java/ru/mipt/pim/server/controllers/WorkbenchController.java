@@ -23,6 +23,8 @@ import org.openrdf.query.UpdateExecutionException;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -34,19 +36,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.cybozu.labs.langdetect.LangDetectException;
+
+import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.ResourceType;
 import ru.mipt.pim.server.model.Tag;
 import ru.mipt.pim.server.model.User;
 import ru.mipt.pim.server.model.UserAction;
 import ru.mipt.pim.server.model.UserAction.UserActionType;
+import ru.mipt.pim.server.recommendations.RecommendationService;
 import ru.mipt.pim.server.repositories.ContactRepository;
 import ru.mipt.pim.server.repositories.ResourceRepository;
 import ru.mipt.pim.server.repositories.TagRepository;
 import ru.mipt.pim.server.repositories.UserActionRepository;
 import ru.mipt.pim.server.services.ActivationService;
 import ru.mipt.pim.server.services.PermissionService;
-import ru.mipt.pim.server.services.RecommendationService;
 import ru.mipt.pim.server.services.ResourceComparator;
 import ru.mipt.pim.server.services.UserService;
 
@@ -186,11 +191,14 @@ public class WorkbenchController {
 
 	@Autowired
 	private PermissionService permissionService;
+	
+	@Autowired
+	private IndexingService indexingService;
 
 	private ValueFactory valueFactory;
 	private URI pNarrower;
 
-	private final Log logger = LogFactory.getLog(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private URI pRelated;
 
@@ -257,7 +265,7 @@ public class WorkbenchController {
 
 	@RequestMapping(value = "resources/update", method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
-	public void updateResource(@RequestBody UpdateResourceBody updateBody) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, RepositoryException {
+	public void updateResource(@RequestBody UpdateResourceBody updateBody) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, RepositoryException, IOException, LangDetectException {
 		Resource resource = resourceRepository.find(updateBody.getUri());
 		assertCanManage(resource);
 
@@ -285,6 +293,9 @@ public class WorkbenchController {
 					connection.add(valueFactory.createURI(resource.getUri()), pRelated, valueFactory.createURI(tag.getUri()));
 				}
 			}
+			
+			indexingService.setTags(userService.getCurrentUser(), resource.getId(), newTags.stream().map(Tag::getId).collect(Collectors.toList()));
+			
 			connection.commit();
 		}
 	}

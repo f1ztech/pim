@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import ru.mipt.pim.server.mail.MailAdapter;
+import ru.mipt.pim.server.mail.MailAdapterService;
 import ru.mipt.pim.server.mail.MailException;
 import ru.mipt.pim.server.mail.MessageFolder;
 import ru.mipt.pim.server.mail.OAuthAdapter;
@@ -28,7 +29,6 @@ import ru.mipt.pim.server.repositories.EmailFolderRepository;
 import ru.mipt.pim.server.repositories.ResourceRepository;
 import ru.mipt.pim.server.repositories.UserConfigsRepository;
 import ru.mipt.pim.server.repositories.UserRepository;
-import ru.mipt.pim.server.services.MailAdapterService;
 import ru.mipt.pim.server.services.UserService;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;

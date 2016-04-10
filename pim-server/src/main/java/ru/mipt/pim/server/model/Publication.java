@@ -3,21 +3,19 @@ package ru.mipt.pim.server.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import ru.mipt.pim.server.index.Indexable;
 
 @Entity
 @Namespaces({
@@ -29,7 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 	"cito", "http://purl.org/spar/cito/" })
 @RdfsClass("pim:Publication")
 @JsonSerialize
-public class Publication extends Resource {
+public class Publication extends Resource implements Indexable {
 
 	@RdfProperty("pim:publicationFile")
 	private File publicationFile;

@@ -6,13 +6,15 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 
+import ru.mipt.pim.server.index.Indexable;
+
 @Entity
 @Namespaces({
 	"foaf", "http://xmlns.com/foaf/0.1/", 
 	"pim",  "http://mipt.ru/pim/"
 })
 @RdfsClass("foaf:Person")
-public class Person extends Resource {
+public class Person extends Resource implements Indexable {
 
 	@RdfProperty("foaf:firstName")
 	private String firstName;

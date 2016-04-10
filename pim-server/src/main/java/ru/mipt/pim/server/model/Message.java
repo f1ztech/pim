@@ -14,6 +14,8 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
 
+import ru.mipt.pim.server.index.Indexable;
+
 @Entity
 @Namespaces({
 	"foaf", "http://xmlns.com/foaf/0.1/",
@@ -26,7 +28,7 @@ import com.clarkparsia.empire.annotation.RdfsClass;
 	"nco",  "http://www.semanticdesktop.org/ontologies/2007/03/22/nco/#"
 })
 @RdfsClass("nmo:Message")
-public class Message extends Resource {
+public class Message extends Resource implements Indexable {
 
 	@RdfProperty("nmo:messageId")
 	private String messageId;

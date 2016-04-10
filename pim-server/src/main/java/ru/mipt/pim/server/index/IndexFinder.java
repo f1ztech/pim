@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -13,6 +12,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
@@ -23,6 +23,7 @@ import com.cybozu.labs.langdetect.LangDetectException;
 
 import ru.mipt.pim.server.model.User;
 import ru.mipt.pim.util.Exceptions;
+import ru.mipt.pim.util.Exceptions.FunctionWithExceptions;
 
 @Component
 public class IndexFinder {
@@ -56,8 +57,8 @@ public class IndexFinder {
 		
 		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
 		
-		List<Integer> ret = Arrays.asList(hits).stream().map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		IndexingService.querySec += System.nanoTime() - start;
+		List<Integer> ret = getDocIds(hits);
+		TermsStatisticsService.querySec += System.nanoTime() - start;
 		return ret;
 	}
 	
@@ -74,8 +75,8 @@ public class IndexFinder {
 		
 		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
 		
-		List<Integer> ret = Arrays.asList(hits).stream().map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		IndexingService.querySec += System.nanoTime() - start;
+		List<Integer> ret = getDocIds(hits);
+		TermsStatisticsService.querySec += System.nanoTime() - start;
 		return ret;
 	}
 	
@@ -92,25 +93,23 @@ public class IndexFinder {
 		
 		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
 		
-		List<Integer> ret = Arrays.stream(hits).map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		IndexingService.querySec += System.nanoTime() - start;
+		List<Integer> ret = getDocIds(hits);
+		TermsStatisticsService.querySec += System.nanoTime() - start;
 		return ret;
 	}
-	
+
 	public List<String> findIdsByText(User user, String text) throws IOException, LangDetectException, ParseException {
-		DirectoryReader reader = indexingService.createIndexReader(user);
-		try {
-			IndexSearcher searcher = new IndexSearcher(reader);
-			
-			MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(new String[] {IndexingService.TITLE_FIELD, IndexingService.CONTENT_FIELD}, 
-						indexingService.createAnalyzer(languageDetector.detectLang(text)));
-			Query query = multiFieldQueryParser.parse(text);
-			
-			ScoreDoc[] hits = searcher.search(query, 40).scoreDocs;
-			return Arrays.stream(hits).map(Exceptions.wrap(hit -> { return searcher.doc(hit.doc).get(IndexingService.ID_FIELD); })).collect(Collectors.toList());
-		} finally {
-			reader.close();
-		}
+		IndexReader reader = indexingService.getReader(user);
+		IndexSearcher searcher = new IndexSearcher(reader);
+		
+		MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(
+				new String[] {IndexingService.TITLE_FIELD, IndexingService.CONTENT_FIELD}, 
+				indexingService.createAnalyzer(languageDetector.detectLang(text))
+		);
+		Query query = multiFieldQueryParser.parse(text);
+		
+		ScoreDoc[] hits = searcher.search(query, 40).scoreDocs;
+		return getResourceIds(searcher, hits);
 	}
 
 	public List<Integer> findByTagAndAbstract(IndexReader reader, String tagId, String term) throws IOException {
@@ -127,7 +126,7 @@ public class IndexFinder {
 		ScoreDoc[] hits = searcher.search(finalQuery, reader.numDocs()).scoreDocs;
 		
 		List<Integer> ret = Arrays.asList(hits).stream().map(Exceptions.wrap(hit -> hit.doc)).collect(Collectors.toList());
-		IndexingService.querySec += System.nanoTime() - start;
+		TermsStatisticsService.querySec += System.nanoTime() - start;
 		return ret;
 	}	
 	
@@ -135,6 +134,29 @@ public class IndexFinder {
 		IndexSearcher searcher = new IndexSearcher(reader);
 		ScoreDoc[] hits = searcher.search(new TermQuery(new Term(IndexingService.ID_FIELD, resourceId)), 1).scoreDocs;
 		return hits.length == 0 ? null : hits[0].doc;
-	}	
+	}
 	
+	public List<String> findAllIndexedResourceIds(User user) throws IOException {
+		IndexSearcher searcher = new IndexSearcher(indexingService.getReader(user));
+		ScoreDoc[] hits = searcher.search(new MatchAllDocsQuery(), indexingService.getReader(user).numDocs()).scoreDocs;
+		return getResourceIds(searcher, hits);
+	}
+
+	
+	// =========================================
+	// Support
+	// =========================================
+
+	private List<String> getResourceIds(IndexSearcher searcher, ScoreDoc[] hits) {
+		return mapSearchResults(hits, hit -> searcher.doc(hit.doc).get(IndexingService.ID_FIELD));
+	}
+
+	private List<Integer> getDocIds(ScoreDoc[] hits) {
+		return mapSearchResults(hits, hit -> hit.doc);
+	}
+	
+	private <R> List<R> mapSearchResults(ScoreDoc[] hits, FunctionWithExceptions<ScoreDoc, R> runnable) {
+		return Arrays.stream(hits).map(Exceptions.wrap(runnable)).collect(Collectors.toList());
+	}
+
 }

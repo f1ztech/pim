@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfsClass;
 
+import ru.mipt.pim.server.index.Indexable;
+
 @Entity
 @Namespaces({
 	"foaf", "http://xmlns.com/foaf/0.1/",
@@ -15,6 +17,6 @@ import com.clarkparsia.empire.annotation.RdfsClass;
 	"pimo", "http://www.semanticdesktop.org/ontologies/2007/11/01/pimo/#"
 })
 @RdfsClass("pimo:Note")
-public class Note extends Resource {
+public class Note extends Resource implements Indexable {
 
 }

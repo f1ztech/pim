@@ -1,15 +1,14 @@
 package ru.mipt.pim.server.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
 
 import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfProperty;
 import com.clarkparsia.empire.annotation.RdfsClass;
+
+import ru.mipt.pim.server.index.Indexable;
 
 
 
@@ -25,7 +24,7 @@ import com.clarkparsia.empire.annotation.RdfsClass;
 	"nco",  "http://www.semanticdesktop.org/ontologies/2007/03/22/nco/#"
 })
 @RdfsClass("pim:EmailFolder")
-public class EmailFolder extends Resource {
+public class EmailFolder extends Resource implements Indexable {
 
 	@RdfProperty("pim:folderId")
 	private String folderId;

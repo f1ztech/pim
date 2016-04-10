@@ -7,9 +7,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class PublicationParsingService {
 	private static int MAX_PUBLICATION_PARSERS = 5;
 	private static int MAX_PARSER_BUSYNESS = 5;
 
-	private final Log logger = LogFactory.getLog(getClass());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	// currently working parsers. May be up to MAX_PUBLICATION_PARSERS
 	// concurrently working instances.

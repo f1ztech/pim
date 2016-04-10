@@ -7,9 +7,14 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.cybozu.labs.langdetect.LangDetectException;
+
+import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.Contact;
 import ru.mipt.pim.server.model.Email;
 import ru.mipt.pim.server.model.EmailFolder;
@@ -19,11 +24,12 @@ import ru.mipt.pim.server.repositories.ContactRepository;
 import ru.mipt.pim.server.repositories.EmailRepository;
 import ru.mipt.pim.server.repositories.EmailFolderRepository;
 import ru.mipt.pim.server.repositories.UserRepository;
-import ru.mipt.pim.server.services.MailAdapterService;
 
 @Component
 public class MailSynchronizer {
 
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Resource
 	private UserRepository userRepository;
 
@@ -35,6 +41,9 @@ public class MailSynchronizer {
 
 	@Resource
 	private EmailRepository emailRepository;
+	
+	@Resource
+	private IndexingService indexingService;
 
 	@Resource
 	private MailAdapterService mailAdapterService;
@@ -42,11 +51,15 @@ public class MailSynchronizer {
 	@Scheduled(fixedDelay = 1 * 60 * 1000) // every 10 minutes
 	public void synchronizeMail() throws IOException, MailException, MessagingException {
 		for (User user : userRepository.findByNotNullOauthEmailUser()) {
-			synchronizeUserMails(user);
+			try {
+				synchronizeUserMails(user);
+			} catch (Exception e) {
+				logger.error("Error while synchornizing mails for user " + user.getId(), e);
+			}
 		}
 	}
 
-	private void synchronizeUserMails(User user) throws IOException, MailException, MessagingException {
+	private void synchronizeUserMails(User user) throws IOException, MailException, MessagingException, LangDetectException {
 		MailAdapter mailAdapter = mailAdapterService.getAdapter(user);
 		if (mailAdapter != null) {
 			UserConfigs userConfigs = user.getUserConfigs();

@@ -11,12 +11,11 @@ import org.openrdf.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cybozu.labs.langdetect.LangDetectException;
+
 import ru.mipt.pim.server.index.IndexFinder;
-import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
-
-import com.cybozu.labs.langdetect.LangDetectException;
 
 @Service
 public class ResourceRepository extends CommonResourceRepository<Resource> {

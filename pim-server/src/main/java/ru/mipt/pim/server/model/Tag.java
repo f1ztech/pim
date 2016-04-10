@@ -9,13 +9,15 @@ import com.clarkparsia.empire.annotation.Namespaces;
 import com.clarkparsia.empire.annotation.RdfsClass;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import ru.mipt.pim.server.index.Indexable;
+
 @Entity
 @Namespaces({
 	"pim",  "http://mipt.ru/pim/",
 	"nao", "http://www.semanticdesktop.org/ontologies/2007/08/15/nao/#"
 })
 @RdfsClass("nao:Tag")
-public class Tag extends Resource {
+public class Tag extends Resource implements Indexable {
 	
 	private List<Resource> taggedResoruces; 
 

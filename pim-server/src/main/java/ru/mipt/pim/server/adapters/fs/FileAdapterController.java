@@ -10,8 +10,8 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,12 +64,7 @@ public class FileAdapterController {
 	
 	private long uploadInfoClearTime = 0;
 
-	private static final Log logger = LogFactory.getLog(FileAdapterController.class);
-
-	@RequestMapping(value = "/rest/files/load")
-	public void load(@RequestParam String hash) {
-
-	}
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private class FileUploadInfo {
 		
@@ -167,7 +162,7 @@ public class FileAdapterController {
 			
 			publicationParsingService.scheduleParsing(currentUser, file);
 			try {
-				indexingService.addFileToIndex(currentUser, ioFile, file, folder);
+				indexingService.scheduleFileIndexing(currentUser, ioFile, file, folder);
 			} catch (Exception e) {
 				logger.error("Error while indexing file", e);				
 			}
@@ -200,10 +195,9 @@ public class FileAdapterController {
 			logger.debug("Adding folder " + path);
 			
 			User currentUser = userService.getCurrentUser();
-			Folder folder = folderRepository.findByPath(currentUser, path);
 			
-			if (folder == null) {
-				folder = new Folder();
+			if (folderRepository.findByPath(currentUser, path) == null) {
+				Folder folder = new Folder();
 				folder.setPath(path);
 				folder.setName(StringUtils.substringAfterLast(path, "/"));
 				folder.setTitle(folder.getName());
@@ -221,8 +215,6 @@ public class FileAdapterController {
 				if (parentFolder != null) {
 					folderRepository.addNarrowerResource(parentFolder, folder);					
 				}
-				
-				indexingService.indexResource(currentUser, folder);
 			}
 			
 			return new UploadResult();

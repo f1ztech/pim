@@ -23,12 +23,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ru.mipt.pim.server.mail.Message.Contact;
-import ru.mipt.pim.server.model.EmailFolder;
-import ru.mipt.pim.server.model.User;
-import ru.mipt.pim.server.services.MailAdapterService;
-import ru.mipt.pim.util.Exceptions;
-
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.DataStoreCredentialRefreshListener;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
@@ -48,6 +42,10 @@ import com.google.api.services.gmail.model.ListLabelsResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 
+import ru.mipt.pim.server.mail.Message.Contact;
+import ru.mipt.pim.server.model.EmailFolder;
+import ru.mipt.pim.server.model.User;
+
 public class GmailAdapter implements MailAdapter, OAuthAdapter {
 
 	static final String CLIENT_ID = "33219966533-0bf1l6o2nlq8rv2pv1vsljgh1ii6daba.apps.googleusercontent.com";
@@ -58,7 +56,7 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 	static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
-	private Log log = LogFactory.getLog(getClass());
+	private Log logger = LogFactory.getLog(getClass());
 
 	private GoogleAuthorizationCodeFlow flow;
 	private String stateToken;
@@ -110,21 +108,21 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 	// query folders
 	// ========================================================
 
-	public List<MessageFolder> getFolders() throws IOException, MailException {
+	public List<MessageFolder> getFolders() throws MailException {
 		try {
 			ListLabelsResponse labelsResponse = service.users().labels().list(userId).execute();
 			return labelsResponse.getLabels().stream()
 //					.filter(l -> !l.getType().equals("system"))
 					.map(l -> new MessageFolder(l.getName(), l.getId()))
 					.collect(Collectors.toList());
-		} catch (GoogleJsonResponseException e) {
+		} catch (IOException e) {
 			handleJsonException(e);
-			throw e;
+			throw new MailException(e);
 		}
 	}
 
-	private void handleJsonException(GoogleJsonResponseException e) throws RequireOauthAuthenticationException {
-		if (e.getStatusCode() == 401) {
+	private void handleJsonException(Exception e) throws RequireOauthAuthenticationException {
+		if ((e instanceof GoogleJsonResponseException) && ((GoogleJsonResponseException) e).getStatusCode() == 401) {
 			throw new RequireOauthAuthenticationException();
 		}
 	}
@@ -134,17 +132,17 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 	// ========================================================
 
 	@Override
-	public List<ru.mipt.pim.server.mail.Message> findNewMessages(EmailFolder folder, Date fromInternalDate) throws MailException, IOException, MessagingException {
-		List<Message> messages = findMessagesAfter(folder, fromInternalDate);
-		List<ru.mipt.pim.server.mail.Message> ret = new ArrayList<>();
-		for (Message message : messages) {
-			try {
+	public List<ru.mipt.pim.server.mail.Message> findNewMessages(EmailFolder folder, Date fromInternalDate) throws MailException {
+		try {
+			List<Message> messages = findMessagesAfter(folder, fromInternalDate);
+			List<ru.mipt.pim.server.mail.Message> ret = new ArrayList<>();
+			for (Message message : messages) {
 				ret.add(populateMessage(message, folder));
-			} catch (Exception e) {
-				log.error("Error while populating message", e);
 			}
+			return ret;
+		} catch (IOException | MessagingException e) {
+			throw new MailException(e);
 		}
-		return ret;
 	}
 
 	private List<Message> findMessagesAfter(EmailFolder folder, Date fromInternalDate) throws IOException {

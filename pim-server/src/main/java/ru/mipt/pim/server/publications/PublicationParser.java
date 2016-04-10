@@ -1,4 +1,4 @@
-	package ru.mipt.pim.server.publications;
+package ru.mipt.pim.server.publications;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -6,10 +6,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ru.mipt.pim.server.adapters.fs.FileAdapterController;
 import ru.mipt.pim.server.model.File;
 import ru.mipt.pim.server.model.Person;
 import ru.mipt.pim.server.model.Publication;
@@ -22,7 +21,7 @@ import ru.mipt.pim.server.services.FileStorageService;
 
 public class PublicationParser implements Runnable {
 
-	private static final Log logger = LogFactory.getLog(FileAdapterController.class);
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private BlockingQueue<Pair<User, File>> queue = new LinkedBlockingQueue<>();
 	private Thread thread;

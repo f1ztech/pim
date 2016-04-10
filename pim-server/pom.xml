@@ -300,6 +300,12 @@
 			<version>1.8.3</version>
 		</dependency>
 
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-math3</artifactId>
+		    <version>3.6.1</version>
+		</dependency>
+
 		<!-- TIKA -->
 
 		<dependency>
