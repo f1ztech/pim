@@ -4,51 +4,39 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.Query;
 
-import org.openrdf.model.URI;
-import org.openrdf.model.ValueFactory;
-import org.openrdf.repository.Repository;
-import org.openrdf.repository.RepositoryConnection;
-import org.openrdf.repository.RepositoryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ru.mipt.pim.server.index.Indexable;
 import ru.mipt.pim.server.index.IndexingService;
+import ru.mipt.pim.server.index.LanguageDetector;
 import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.services.RepositoryService;
 import ru.mipt.pim.server.services.UserHolder;
 import ru.mipt.pim.util.RdfUtils;
 
 public class CommonResourceRepository<T extends Resource> extends CommonRepository<T> {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
-	
-	@Autowired
-	private Repository repository;
-	
 	@Autowired
 	private UserHolder userHolder;
 	
 	@Autowired
 	private IndexingService indexingService;
+	
+	@Autowired
+	private LanguageDetector languageDetector;
+	
+	@Autowired
+	private RepositoryService repositoryService;
 
 	private Class<T> clazz;
-	private ValueFactory valueFactory;
-	private URI pNarrower;
 
 	public CommonResourceRepository(Class<T> clazz) {
 		super(clazz);
 		this.clazz = clazz;
-	}
-
-	@PostConstruct
-	public void init() {
-		valueFactory = repository.getValueFactory();
-		pNarrower = valueFactory.createURI("http://www.w3.org/2004/02/skos/core#narrower");
 	}
 
 	@Override
@@ -61,23 +49,31 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 	@Override
 	public T merge(T object) {
 //		object.setDateModified(new Date());
-		return super.merge(object);
+		T ret = super.merge(object);
+		repositoryService.updateNarrowerResources(object);
+		return ret;
 	}
 
 	@Override
-	protected void afterResourceUpdate(T resource) {
-		if (resource.getOwner() == null) {
+	protected void beforeUpdate(T resource) {
+		super.beforeUpdate(resource);
+		
+		if (resource.getOwner() == null && !resource.equals(userHolder.getCurrentUser())) {
 			resource.setOwner(userHolder.getCurrentUser());
 		}
 		if (resource instanceof Indexable) {
-			try {
-				indexingService.indexResource(userHolder.getCurrentUser(), resource);
-			} catch (Exception e) {
-				logger.error("indexing error", e);
-			}
+			indexingService.scheduleIndexing(resource, this::detectLanguage);
 		}
 	}
-	
+
+	protected String detectLanguage(T resource) {
+		return languageDetector.detectLang(getLanguageString(resource));
+	}
+
+	protected String getLanguageString(T resource) {
+		return StringUtils.defaultIfBlank(resource.getTitle(), resource.getName());
+	}
+
 	public List<T> findAll(User user) {
 		Query query = prepareQuery("where { "
 				+ "		?result rdf:type ??uri. "
@@ -90,7 +86,7 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
-		return query.getResultList();
+		return getResultList(query);
 	}
 	
 	public List<T> findAll() {
@@ -99,7 +95,7 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 				+ "		?result rdf:type ??uri. "
 				+ " }");
 			query.setParameter("uri", new java.net.URI(RdfUtils.getRdfUri(clazz)));
-			return query.getResultList();
+			return getResultList(query);
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
@@ -137,7 +133,7 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		query.setParameter("title", ".*" + title + ".*");
 		query.setParameter("classUri", new java.net.URI(RdfUtils.getRdfUri(clazz))); // FIXME add this filters to all queries
 		query.setParameter("login", user.getLogin());
-		return query.getResultList();
+		return getResultList(query);
 	}
 
 	public List<T> findByName(User user, String name) {
@@ -160,27 +156,4 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		return query;
 	}
 
-	public void addNarrowerResource(Resource parent, Resource child) throws RepositoryException {
-		RepositoryConnection connection = repository.getConnection();
-		try {
-			URI parentUri = valueFactory.createURI(parent.getUri());
-			URI childUri = valueFactory.createURI(child.getUri());
-			connection.add(parentUri, pNarrower, childUri);
-			connection.commit();
-		} finally {
-			connection.close();
-		}
-	}
-
-	public void removeNarrowerResource(Resource parent, Resource child) throws RepositoryException {
-		RepositoryConnection connection = repository.getConnection();
-		try {
-			URI parentUri = valueFactory.createURI(parent.getUri());
-			URI childUri = valueFactory.createURI(child.getUri());
-			connection.remove(parentUri, pNarrower, childUri);
-			connection.commit();
-		} finally {
-			connection.close();
-		}
-	}
 }

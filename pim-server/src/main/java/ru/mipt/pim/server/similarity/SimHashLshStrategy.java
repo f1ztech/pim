@@ -11,23 +11,14 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.math3.linear.RealVector;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ru.mipt.pim.server.index.IndexFinder;
-import ru.mipt.pim.server.index.IndexingService;
 import ru.mipt.pim.server.index.TermsStatisticsService;
-import ru.mipt.pim.server.model.ObjectWithRdfId;
-import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.services.FileStorageService;
 
 public abstract class SimHashLshStrategy implements LshStrategy {
 	
 	@Autowired
 	private FileStorageService fileStorageService;
-	
-	@Autowired
-	private IndexingService indexingService;
-	
-	@Autowired
-	private IndexFinder indexFinder;
 	
 	@Autowired
 	private TermsStatisticsService termsStatisticsService;
@@ -67,9 +58,8 @@ public abstract class SimHashLshStrategy implements LshStrategy {
 	}
 
 	@Override
-	public long[] generateHashes(User user, ObjectWithRdfId resource) throws Exception {
-		Integer docId = indexFinder.findDocIdByResourceId(resource.getId(), indexingService.getReader(user));
-		RealVector tfIdf = termsStatisticsService.getTfIdf(user, docId, indexField);
+	public long[] generateHashes(Resource resource) throws Exception {
+		RealVector tfIdf = termsStatisticsService.getTfIdf(resource, indexField);
 		return simHash.generateHashes(tfIdf);
 	}
 

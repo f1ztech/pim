@@ -107,28 +107,24 @@ class FileIndexer implements Runnable {
 	}
 
 	private void indexResource(User user, File contentFile, Resource resource, String title, String tagId) throws LangDetectException, IOException, FileNotFoundException {
-		Analyzer analyzer = new StandardAnalyzer();
 		String content = null;
 		String abstractText = null;
 		
 		if (contentFile != null && contentFile.length() > 0) {
-			try {
-				InputStreamReader contentReader = new InputStreamReader(new FileInputStream(contentFile), "UTF-8");
-				Scanner contentScanner = new Scanner(contentFile, "UTF-8");
-				int words = 0;
-				while (contentScanner.hasNext() && words < 500) {
-					words++;
-					abstractText += contentScanner.next() + " ";
-				}
-				contentScanner.close();
-				content = IOUtils.toString(contentReader);
-			} finally {
-				analyzer.close();
+			InputStreamReader contentReader = new InputStreamReader(new FileInputStream(contentFile), "UTF-8");
+			Scanner contentScanner = new Scanner(contentFile, "UTF-8");
+			int words = 0;
+			while (contentScanner.hasNext() && words < 500) {
+				words++;
+				abstractText += contentScanner.next() + " ";
 			}
+			contentScanner.close();
+			content = IOUtils.toString(contentReader);
 		}
 
 		IndexableResource indexableResource = new IndexableResource();
 		indexableResource.setId(resource.getId());
+		indexableResource.setLanguage(resource.getLanguage());
 		indexableResource.setTitle(title);
 		indexableResource.setContent(content);
 		indexableResource.setAbstractText(abstractText);

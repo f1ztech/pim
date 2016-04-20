@@ -41,8 +41,14 @@
 				<div ng-if="detailedResource.resourceType == 'PUBLICATION'">Аннотация</div>
 				<div ng-if="detailedResource.resourceType == 'PUBLICATION'" class="html-content-editor" kendo-editor k-tools="inlineEditorTools" ng-model="detailedResource.abstractText" k-on-change="updateResource('abstractText')"></div>
 				<div>Содержание</div>
+				<div ng-if="detailedResource.resourceType != 'EMAIL'" class="html-content-editor" kendo-editor k-tools="inlineEditorTools" ng-model="detailedResource.htmlContent" k-on-change="updateResource('htmlContent')"></div>
+			</div>
+		</div>
+		<div class="row" ng-if="detailedResource.resourceType == 'EMAIL'">
+			<div class="col-md-12">
 				<div class="html-content-editor" kendo-editor k-tools="inlineEditorTools" ng-model="detailedResource.htmlContent" k-on-change="updateResource('htmlContent')"></div>
 			</div>
 		</div>
+		
 	</div>
 </div>

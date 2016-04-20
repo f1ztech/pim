@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.Resource;
-
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.lucene.index.IndexReader;
@@ -19,8 +18,10 @@ import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.search.similarities.DefaultSimilarity;
 import org.apache.lucene.search.similarities.TFIDFSimilarity;
 import org.apache.lucene.util.BytesRef;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
 
 @Component
@@ -31,13 +32,13 @@ public class TermsStatisticsService {
 	public static long querySec = 0;
 	public static long termVectorSec = 0;
 	
-	@Resource
+	@Autowired
 	private IndexFinder indexFinder;
 	
-	@Resource
+	@Autowired
 	private IndexingService indexingService;
 
-	private ConcurrentHashMap<User, TermsStatistics> statisticsCache = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<Pair<String, String>, TermsStatistics> statisticsCache = new ConcurrentHashMap<>();
 	
 	// ====================================================
 	// TermsStatistics
@@ -70,8 +71,8 @@ public class TermsStatisticsService {
 		}
 	}
 	
-	public void populateTermsStatistics(User user) throws IOException {
-		IndexReader reader = indexingService.getReader(user);
+	private void populateTermsStatistics(TermsStatistics termsStatistics, User user, String language) throws IOException {
+		IndexReader reader = indexingService.getReader(user, language);
 		
 		Terms contentTerms = SlowCompositeReaderWrapper.wrap(reader).terms(IndexingService.CONTENT_FIELD);
 		TermsEnum contentTermsEnum = contentTerms.iterator();
@@ -92,17 +93,18 @@ public class TermsStatisticsService {
 			}
 		}
 
-		TermsStatistics termsStatistics = getStatistics(user);
 		termsStatistics.setTermIndexes(termIndexes);
 		termsStatistics.setTotalTermsCount(termIndexes.size());
 	}
 
-	public TermsStatistics getStatistics(User user) throws IOException {
+	public TermsStatistics getStatistics(User user, String language) throws IOException {
+		Pair<String, String> key = Pair.of(user.getId(), language); 
+		
 		TermsStatistics newStatistics = new TermsStatistics();
-		statisticsCache.putIfAbsent(user, newStatistics);
-		TermsStatistics termsStatistics = statisticsCache.get(user);
+		statisticsCache.putIfAbsent(key, newStatistics);
+		TermsStatistics termsStatistics = statisticsCache.get(key);
 		if (termsStatistics == newStatistics) {
-			populateTermsStatistics(user);
+			populateTermsStatistics(newStatistics, user, language);
 		}
 		return termsStatistics;
 	}
@@ -112,27 +114,24 @@ public class TermsStatisticsService {
 	// TF-IDF calculation
 	// =================================
 	
-	public double computeTfIdf(User user, String term, String resourceId) throws IOException {
-		return computeTfIdf(user, term, resourceId, indexingService.getReader(user));
+	public double computeTfIdf(User user, String term, Resource resource) throws IOException {
+		return computeTfIdf(user, term, resource, indexingService.getReader(resource));
 	}
 
-	public double computeTfIdf(User user, String term, String resourceId, IndexReader reader) throws IOException {
-		Integer docId = indexFinder.findDocIdByResourceId(resourceId, reader);
+	public double computeTfIdf(User user, String term, Resource resource, IndexReader reader) throws IOException {
+		Integer docId = indexFinder.findDocIdByResourceId(resource.getId(), reader);
 		
 		if (docId != null) {
-			return computeTfIdf(user, term, docId);
+			return computeTfIdf(user, term, resource.getLanguage(), docId, reader);
 		} else {
 			return 0;
 		}
 	}
 
-	public double computeTfIdf(User user, String term, Integer docId) throws IOException {
-		return computeTfIdf(user, term, docId, indexingService.getReader(user));
-	}
 
-	public double computeTfIdf(User user, String term, Integer docId, IndexReader reader) throws IOException {
+	public double computeTfIdf(User user, String term, String lang, Integer docId, IndexReader reader) throws IOException {
 		BytesRef targetTerm = new Term(IndexingService.CONTENT_FIELD, term).bytes();
-		return computeTfIdf(reader, getStatistics(user), docId, IndexingService.CONTENT_FIELD, targetTerm);
+		return computeTfIdf(reader, getStatistics(user, lang), docId, IndexingService.CONTENT_FIELD, targetTerm);
 	}
 
 	private double computeTfIdf(IndexReader reader, TermsStatistics statistics, Integer docId, String field, BytesRef targetTerm) throws IOException {
@@ -174,8 +173,8 @@ public class TermsStatisticsService {
 		return count;
 	}
 
-	public void clearDocTerms(User user) throws IOException {
-		getStatistics(user).getDocTermsCount().clear();
+	public void clearDocTerms(User user, String language) throws IOException {
+		getStatistics(user, language).getDocTermsCount().clear();
 	}
 	
 	private boolean seekToDocument(PostingsEnum termDocsEnum, Integer docId) throws IOException {
@@ -194,12 +193,13 @@ public class TermsStatisticsService {
 		return 0;
 	}
 	
-	public RealVector getTfIdf(User user, Integer docId, String field) throws IOException {
-		TermsStatistics statistics = getStatistics(user);
+	public RealVector getTfIdf(Resource resource, String field) throws IOException {
+		TermsStatistics statistics = getStatistics(resource.getOwner(), resource.getLanguage());
 		RealVector tfidf = new ArrayRealVector(statistics.getTotalTermsCount());
-		IndexReader reader = indexingService.getReader(user);
+		IndexReader reader = indexingService.getReader(resource);
 		HashMap<BytesRef, Integer> termIndexes = statistics.getTermIndexes();
 		
+		int docId = indexFinder.findDocIdByResourceId(resource.getId(), reader);
 		TermsEnum termsEnum = reader.getTermVector(docId, field).iterator();
 		while (termsEnum.next() != null) {
 			tfidf.setEntry(termIndexes.get(termsEnum.term()), computeTfIdf(reader, statistics, docId, field, termsEnum.term()));

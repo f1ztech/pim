@@ -22,6 +22,7 @@ import ru.mipt.pim.server.repositories.FileRepository;
 import ru.mipt.pim.server.repositories.PersonRepository;
 import ru.mipt.pim.server.repositories.PublicationRepository;
 import ru.mipt.pim.server.services.FileStorageService;
+import ru.mipt.pim.server.services.RepositoryService;
 import ru.mipt.pim.server.services.UserService;
 
 @Service
@@ -49,7 +50,7 @@ public class PublicationParsingService {
 	private GrobidService grobidService;
 	
 	@Autowired
-	private UserService userService;
+	private RepositoryService repositoryService;
 	
 	@Autowired
 	private FileStorageService fileStorageService;
@@ -131,8 +132,8 @@ public class PublicationParsingService {
 			
 			// replace all occurrences of file to publication
 			for (Resource broaderResource : file.getBroaderResources()) {
-				fileRepository.removeNarrowerResource(broaderResource, file);
-				fileRepository.addNarrowerResource(broaderResource, publication);
+				repositoryService.removeNarrowerResource(broaderResource, file);
+				repositoryService.addNarrowerResource(broaderResource, publication);
 			}
 			
 			file.setOwner(null);

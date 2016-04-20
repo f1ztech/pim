@@ -8,6 +8,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import ru.mipt.pim.server.model.Bookmark;
+import ru.mipt.pim.server.model.Contact;
+import ru.mipt.pim.server.model.ContactGroup;
 import ru.mipt.pim.server.model.EmailFolder;
 import ru.mipt.pim.server.model.Event;
 import ru.mipt.pim.server.model.File;
@@ -56,6 +58,10 @@ public class Utilities {
 			return "fa fa-calendar-o";
 		} else if (Person.class.isAssignableFrom(clazz)) {
 			return "fa fa-user";
+		} else if (Contact.class.isAssignableFrom(clazz)) {
+			return "fa fa-user";			
+		} else if (ContactGroup.class.isAssignableFrom(clazz)) {
+			return "fa fa-users";			
 		} else if (Project.class.isAssignableFrom(clazz)) {
 			return "fa fa-rocket";
 		} else if (MindMap.class.isAssignableFrom(clazz)) {

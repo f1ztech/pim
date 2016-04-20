@@ -33,23 +33,34 @@ public class SimilarityIndexingJob {
 	@Autowired
 	private ResourceRepository resourceRepository;
 	
-	@Scheduled(cron = "0 1 * * *") // every day
+	@Scheduled(cron = "0 0 1 * * *") // every day
 	public void indexSimilarity() {
 		for (User user : userRepository.findAll()) {
 			try {
-				indexSimilarity(user);
+				storeSimilarityHashes(user);
+				storeSimilarResources(user);
 			} catch (Exception e) {
 				logger.error("Error while refreshing similarity for user " + user.getId(), e);
 			}
 		}
 	}
 
-	public void indexSimilarity(User user) throws Exception {
+	private void storeSimilarityHashes(User user) throws Exception {
 		for (String resourceId : indexFinder.findAllIndexedResourceIds(user)) {
 			Resource resource = resourceRepository.findById(resourceId);
 			
-			long[] hashes = similarityService.getSimilarityHashes(user, resource);
-			indexingService.storeSimilarityHashes(user, resourceId, hashes);
+			long[] hashes = similarityService.getSimilarityHashes(resource);
+			indexingService.storeSimilarityHashes(resource, hashes);
 		}
 	}
+	
+	private void storeSimilarResources(User user) throws Exception {
+		for (String resourceId : indexFinder.findAllIndexedResourceIds(user)) {
+			Resource resource = resourceRepository.findById(resourceId);
+			
+			resource.getRelatedResources().clear();
+			resource.getRelatedResources().addAll(similarityService.getSimilarResources(resource));
+		}
+	}
+
 }

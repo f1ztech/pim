@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import ru.mipt.pim.server.model.User;
@@ -29,7 +30,12 @@ public class UserRepository extends CommonResourceRepository<User> {
 				+ " 	?userConfigs <http://mipt.ru/pim/oauthEmailUser> ?oauthUser"
 				+ " }");
 
-		return query.getResultList();
+		return getResultList(query);
+	}
+	
+	@Override
+	protected String getLanguageString(User resource) {
+		return StringUtils.defaultIfBlank(super.getLanguageString(resource), resource.getLogin());
 	}
 
 }

@@ -38,6 +38,7 @@ public class EmailFolder extends Resource implements Indexable {
 	public EmailFolder(String name, String folderId) {
 		this.folderId = folderId;
 		setName(name);
+		setTitle(name);
 	}
 
 	public String getFolderId() {

@@ -1,17 +1,36 @@
 package ru.mipt.pim.server.repositories;
 
+import javax.annotation.Resource;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ru.mipt.pim.server.index.LanguageDetector;
 import ru.mipt.pim.server.model.File;
 import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.services.FileStorageService;
 
 @Service
 public class FileRepository extends CommonResourceRepository<File> {
 
+	@Autowired
+	private LanguageDetector languageDetector;
+
+	@Resource
+	private FileStorageService fileStorageService;
+	
 	public FileRepository() {
 		super(File.class);
+	}
+	
+	@Override
+	protected String detectLanguage(File resource) {
+		java.io.File ioFile = null;
+		if (resource.getPath() != null) {
+			ioFile = new java.io.File(fileStorageService.getAbsolutePath(resource.getPath()));
+		}
+		return ioFile != null && ioFile.exists() ? languageDetector.detectLang(ioFile) : super.detectLanguage(resource);
 	}
 
 	public File findByNameAndFolderAndHash(User user, String name, String folderPath, String hash) {

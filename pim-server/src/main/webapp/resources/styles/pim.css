@@ -446,6 +446,10 @@ div.colorPicker-picker {
 	margin-top: -5px;
 }
 
+.col-md-12 .html-content-editor {
+	height: 300px;
+}
+
 .html-content-editor {
 	height: 70px;
 	overflow-y: auto;

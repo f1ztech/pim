@@ -9,6 +9,6 @@ public interface MailAdapter {
 
 	List<MessageFolder> getFolders() throws MailException;
 
-	List<Message> findNewMessages(EmailFolder folder, Date fromDate) throws MailException;
+	MessageQueryResults findNewMessages(EmailFolder folder, Date fromDate, MessageQueryResults lastResults) throws MailException;
 
 }

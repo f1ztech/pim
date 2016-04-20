@@ -23,8 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import info.aduna.iteration.Iterations;
-import ru.mipt.pim.server.model.ObjectWithRdfId;
-import ru.mipt.pim.server.model.User;
+import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.services.FileStorageService;
 
 @Component("structure")
@@ -68,7 +67,7 @@ public class StructureHashingStrategy implements LshStrategy {
 	}
 	
 	@Override
-	public long[] generateHashes(User user, ObjectWithRdfId resource) throws Exception {
+	public long[] generateHashes(Resource resource) throws Exception {
 		URI resourceUri = valueFactory.createURI(resource.getUri());
 		RepositoryConnection connection = repository.getConnection();
 		

@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.openrdf.repository.RepositoryException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ import ru.mipt.pim.server.repositories.FileRepository;
 @Service
 public class FileService {
 
+	@Autowired
+	private RepositoryService repositoryService;
+	
 	@Resource
 	private FileRepository fileRepository;
 	
@@ -39,7 +43,7 @@ public class FileService {
 		file.setHash(hash);
 		file.setDateCreated(new Date());
 		fileRepository.save(file);
-		fileRepository.addNarrowerResource(folder, file);
+		repositoryService.addNarrowerResource(folder, file);
 		return file;
 	}
 

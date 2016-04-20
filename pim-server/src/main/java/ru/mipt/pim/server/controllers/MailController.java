@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.mail.MessagingException;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.openrdf.repository.RepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.mipt.pim.server.mail.MailAdapter;
 import ru.mipt.pim.server.mail.MailAdapterService;
 import ru.mipt.pim.server.mail.MailException;
+import ru.mipt.pim.server.mail.MailSynchronizer;
 import ru.mipt.pim.server.mail.MessageFolder;
 import ru.mipt.pim.server.mail.OAuthAdapter;
 import ru.mipt.pim.server.mail.RequireOauthAuthenticationException;
@@ -31,6 +36,7 @@ import ru.mipt.pim.server.repositories.UserConfigsRepository;
 import ru.mipt.pim.server.repositories.UserRepository;
 import ru.mipt.pim.server.services.UserService;
 
+import com.cybozu.labs.langdetect.LangDetectException;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -56,6 +62,9 @@ public class MailController {
 
 	@Autowired
 	public MailAdapterService mailAdapterService;
+	
+	@Autowired
+	public MailSynchronizer mailSynchronizer;
 
 	public static class UserConfigsResponse {
 		private UserConfigs userConfigs;
@@ -93,21 +102,30 @@ public class MailController {
 	}
 
 	@RequestMapping(value = "userConfigs", method = RequestMethod.POST)
-	public @ResponseBody ObjectNode saveUserConfigs(@RequestBody UserConfigs body) throws IOException, MailException {
+	public @ResponseBody ObjectNode saveUserConfigs(@RequestBody UserConfigs body) throws Exception {
 		User currentUser = userService.loadCurrentUser();
 
-		UserConfigs configs = currentUser.getUserConfigs();
-		if (configs == null) {
-			configs = new UserConfigs();
-			currentUser.setUserConfigs(configs);
-		}
+		UserConfigs configs = ObjectUtils.defaultIfNull(currentUser.getUserConfigs(), new UserConfigs());
+		currentUser.setUserConfigs(configs);
 		configs.setOauthEmailUser(body.getOauthEmailUser());
-		configs.getSynchronizedEmailFolders().forEach(f -> emailFolderRepository.remove(f));
-		configs.setSynchronizedEmailFolders(body.getSynchronizedEmailFolders());
-
-		configs.getSynchronizedEmailFolders().forEach(f -> emailFolderRepository.save(f));
+		
+		List<String> newFolders = body.getSynchronizedEmailFolders().stream().map(EmailFolder::getName).collect(Collectors.toList());
+		configs.getSynchronizedEmailFolders().stream()
+			.filter(f -> !newFolders.contains(f.getName()))
+			.forEach(f -> emailFolderRepository.remove(f));
+		
+		List<String> savedFolders = configs.getSynchronizedEmailFolders().stream().map(EmailFolder::getName).collect(Collectors.toList());
+		body.getSynchronizedEmailFolders().stream()
+			.filter(f -> !savedFolders.contains(f.getName()))
+			.forEach(f -> {
+				configs.getSynchronizedEmailFolders().add(f);
+				emailFolderRepository.save(f);
+			});
+		
 		userConfigsRepository.merge(configs);
 		userRepository.merge(currentUser);
+		
+		mailSynchronizer.triggerSynchronization(currentUser);
 
 		MailAdapter mailAdapter = mailAdapterService.getAdapter(currentUser);
 		if (mailAdapter instanceof OAuthAdapter && !((OAuthAdapter) mailAdapter).isHasCredential()) {
@@ -128,7 +146,8 @@ public class MailController {
 		ret.setUserConfigs(currentUser.getUserConfigs());
 		MailAdapter mailAdapter = getMailAdapter();
 		if (mailAdapter != null) {
-			ret.setAllFolders(mailAdapter.getFolders().stream()
+			List<MessageFolder> remoteFolders = mailAdapter.getFolders();
+			ret.setAllFolders(remoteFolders.stream()
 					.map(f -> new EmailFolder(f.getName(), f.getId()))
 					.sorted().collect(Collectors.toList()));
 		}

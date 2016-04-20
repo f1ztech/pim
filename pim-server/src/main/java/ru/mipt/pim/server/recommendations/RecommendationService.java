@@ -53,7 +53,7 @@ public class RecommendationService {
 	private Map<Tag, List<Object[]>> tagScores;
 	private Map<String, Float> termTfIdfs;
 
-	private float computeWordTagWeight(User user, IndexReader reader, String term, Tag tag, int... excludeDocs) throws IOException {
+	private float computeWordTagWeight(User user, IndexReader reader, String term, String language, Tag tag, int... excludeDocs) throws IOException {
 		float weight = 0;
 		List<Integer> contentDocuments = indexFinder.findByTagAndContent(reader, tag.getId(), term);
 
@@ -81,13 +81,13 @@ public class RecommendationService {
 					multiplier += abstractDocuments.contains(docId) ? ABSTRACT_MULTIPLIER : 0;
 				}
 
-				weight += multiplier * termsStatisticsService.computeTfIdf(user, term, docId, reader);
+				weight += multiplier * termsStatisticsService.computeTfIdf(user, term, language, docId, reader);
 			}
 		}
 		return allDocuments.isEmpty() ? 0 : weight / allDocuments.size();
 	}
 
-	private float computeResourceTagWeight(User user, IndexReader reader, int docId, Terms terms, Tag tag) throws IOException {
+	private float computeResourceTagWeight(User user, IndexReader reader, String language, int docId, Terms terms, Tag tag) throws IOException {
 		TermsEnum it = terms.iterator();
 
 		float weight = 0;
@@ -96,14 +96,14 @@ public class RecommendationService {
 			String strTerm = term.utf8ToString();
 			if (strTerm.length() > 2) {
 //				long start = System.currentTimeMillis();
-				double tfIdf = termsStatisticsService.computeTfIdf(user, strTerm, docId, reader);
+				double tfIdf = termsStatisticsService.computeTfIdf(user, strTerm, language, docId, reader);
 
 				if (tfIdf < 0.07) {
 					continue;
 				}
 
 //				termTfIdfs.put(strTerm, tfIdf);
-				float wtw = computeWordTagWeight(user, reader, strTerm, tag, docId);
+				float wtw = computeWordTagWeight(user, reader, strTerm, language, tag, docId);
 //				if (!termScores.containsKey(strTerm)) {
 //					termScores.put(strTerm, new ArrayList<>());
 //				}
@@ -131,13 +131,13 @@ public class RecommendationService {
 			resource = ((Publication) resource).getPublicationFile();
 		}
 
-		IndexReader reader = indexingService.getReader(user);
+		IndexReader reader = indexingService.getReader(resource);
 //		System.out.println("open");
 //		System.out.println(System.currentTimeMillis() - start);
 		try {
 			termsStatisticsService.countTermsSec = 0;
 			termsStatisticsService.seekDocSes = 0;
-			termsStatisticsService.clearDocTerms(user);
+			termsStatisticsService.clearDocTerms(user, resource.getLanguage());
 			termScores = new HashMap<>();
 			tagScores = new HashMap<>();
 			termTfIdfs = new HashMap<>();
@@ -150,7 +150,7 @@ public class RecommendationService {
 					return Collections.emptyList();
 				}
 				for (Tag tag : tagRepository.findAll(user)) {
-					float weight = computeResourceTagWeight(user, reader, docId, terms, tag);
+					float weight = computeResourceTagWeight(user, reader, resource.getLanguage(), docId, terms, tag);
 					weightsMap.put(tag, weight);
 				}
 

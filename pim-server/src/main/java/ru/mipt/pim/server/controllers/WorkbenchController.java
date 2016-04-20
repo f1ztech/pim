@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.ArrayUtils;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
@@ -45,6 +44,7 @@ import ru.mipt.pim.server.model.Tag;
 import ru.mipt.pim.server.model.User;
 import ru.mipt.pim.server.model.UserAction;
 import ru.mipt.pim.server.model.UserAction.UserActionType;
+import ru.mipt.pim.server.presentations.BeanWrapper;
 import ru.mipt.pim.server.recommendations.RecommendationService;
 import ru.mipt.pim.server.repositories.ContactRepository;
 import ru.mipt.pim.server.repositories.ResourceRepository;
@@ -107,9 +107,9 @@ public class WorkbenchController {
 
 	public static class BroaderResourcesResponse {
 		private List<String> path;
-		private List<Resource> data;
+		private List<BeanWrapper<Resource>> data;
 
-		public BroaderResourcesResponse(List<String> path, List<Resource> data) {
+		public BroaderResourcesResponse(List<String> path, List<BeanWrapper<Resource>> data) {
 			this.path = path;
 			this.data = data;
 		}
@@ -120,10 +120,10 @@ public class WorkbenchController {
 		public void setPath(List<String> path) {
 			this.path = path;
 		}
-		public List<Resource> getData() {
+		public List<BeanWrapper<Resource>> getData() {
 			return data;
 		}
-		public void setData(List<Resource> data) {
+		public void setData(List<BeanWrapper<Resource>> data) {
 			this.data = data;
 		}
 	}
@@ -214,23 +214,28 @@ public class WorkbenchController {
 	}
 
 	@RequestMapping(value = "resources", method = RequestMethod.GET)
-	public @ResponseBody List<Resource> findRoots() {
+	public @ResponseBody List<BeanWrapper<Resource>> findRoots() {
 		List<Resource> rootResources = resourceRepository.findRootResources(userService.getCurrentUser());
-		rootResources.iterator().next().getId();
-		rootResources.forEach(r -> resourceComparator.isHasNarrowerResources(r));
-		rootResources.sort(resourceComparator);
-		return rootResources;
+//		rootResources.forEach(r -> resourceComparator.isHasNarrowerResources(r));
+//		rootResources.sort(resourceComparator);
+		return mapToPresentations(rootResources);
+	}
+
+	private List<BeanWrapper<Resource>> mapToPresentations(List<Resource> rootResources, String... extraProperties) {
+		return rootResources.stream().map(r -> {
+			return new BeanWrapper<>(r, ArrayUtils.addAll(extraProperties, "id", "title", "name", "hasNarrowerResources", "icon", "uri"));
+		}).collect(Collectors.toList());
 	}
 
 	@RequestMapping(value = "narrowerResources", method = RequestMethod.GET)
-	public @ResponseBody List<Resource> findNarrowerResources(@RequestParam("uri") String uri) {
+	public @ResponseBody List<BeanWrapper<Resource>> findNarrowerResources(@RequestParam("uri") String uri) {
 		Resource resource = resourceRepository.find(uri);
 		assertCanManage(resource);
 
 		List<Resource> ret = resource != null ? resource.getNarrowerResources() : Collections.emptyList();
-		ret.forEach(r -> resourceComparator.isHasNarrowerResources(r));
-		ret.sort(resourceComparator);
-		return ret;
+//		ret.forEach(r -> resourceComparator.isHasNarrowerResources(r));
+//		ret.sort(resourceComparator);
+		return mapToPresentations(ret);
 	}
 
 	@RequestMapping(value = "broaderResources", method = RequestMethod.GET)
@@ -257,12 +262,19 @@ public class WorkbenchController {
 			narrowerResource.setIncludeNarrowerResourcesToJson(true);
 
 			narrowerResources = narrowerResource.getNarrowerResources();
-			narrowerResources.sort(resourceComparator);
+//			narrowerResources.sort(resourceComparator);
 		}
 
-		return new BroaderResourcesResponse(path.stream().map(Resource::getId).collect(Collectors.toList()), rootResources);
+		return new BroaderResourcesResponse(path.stream().map(Resource::getId).collect(Collectors.toList()), mapToPresentations(rootResources));
 	}
 
+	@RequestMapping(value = "resources/{id}", method = RequestMethod.GET)
+	public @ResponseBody Resource getResource(@PathVariable("id") String resourceId) {
+		Resource resource = resourceRepository.findById(resourceId);
+		assertCanManage(resource);
+		return resource;
+	}
+	
 	@RequestMapping(value = "resources/update", method = RequestMethod.PUT)
 	@ResponseStatus(value = HttpStatus.OK)
 	public void updateResource(@RequestBody UpdateResourceBody updateBody) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, RepositoryException, IOException, LangDetectException {
@@ -294,7 +306,7 @@ public class WorkbenchController {
 				}
 			}
 			
-			indexingService.setTags(userService.getCurrentUser(), resource.getId(), newTags.stream().map(Tag::getId).collect(Collectors.toList()));
+			indexingService.setTags(resource, newTags.stream().map(Tag::getId).collect(Collectors.toList()));
 			
 			connection.commit();
 		}

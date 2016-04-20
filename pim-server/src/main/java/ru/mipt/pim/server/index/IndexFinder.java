@@ -17,10 +17,12 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.cybozu.labs.langdetect.LangDetectException;
 
+import ru.mipt.pim.server.model.Resource;
 import ru.mipt.pim.server.model.User;
 import ru.mipt.pim.util.Exceptions;
 import ru.mipt.pim.util.Exceptions.FunctionWithExceptions;
@@ -29,6 +31,7 @@ import ru.mipt.pim.util.Exceptions.FunctionWithExceptions;
 public class IndexFinder {
 
 	@Autowired
+	@Lazy
 	private IndexingService indexingService;
 	
 	@Autowired
@@ -99,12 +102,14 @@ public class IndexFinder {
 	}
 
 	public List<String> findIdsByText(User user, String text) throws IOException, LangDetectException, ParseException {
-		IndexReader reader = indexingService.getReader(user);
+		String language = languageDetector.detectLang(text);
+		
+		IndexReader reader = indexingService.getReader(user, language);
 		IndexSearcher searcher = new IndexSearcher(reader);
 		
 		MultiFieldQueryParser multiFieldQueryParser = new MultiFieldQueryParser(
 				new String[] {IndexingService.TITLE_FIELD, IndexingService.CONTENT_FIELD}, 
-				indexingService.createAnalyzer(languageDetector.detectLang(text))
+				indexingService.createAnalyzer(language)
 		);
 		Query query = multiFieldQueryParser.parse(text);
 		
@@ -137,11 +142,56 @@ public class IndexFinder {
 	}
 	
 	public List<String> findAllIndexedResourceIds(User user) throws IOException {
-		IndexSearcher searcher = new IndexSearcher(indexingService.getReader(user));
-		ScoreDoc[] hits = searcher.search(new MatchAllDocsQuery(), indexingService.getReader(user).numDocs()).scoreDocs;
+		List<String> ret = findIndexedResourcesIds(user, "ru");
+		ret.addAll(findIndexedResourcesIds(user, "en"));
+		return ret;
+	}
+
+	private List<String> findIndexedResourcesIds(User user, String lang) throws IOException {
+		IndexSearcher searcher = new IndexSearcher(indexingService.getReader(user, lang));
+		ScoreDoc[] hits = searcher.search(new MatchAllDocsQuery(), indexingService.getReader(user, lang).numDocs()).scoreDocs;
 		return getResourceIds(searcher, hits);
 	}
 
+	// =========================================
+	// Similarity
+	// =========================================
+	
+	public long[] getSimilarityHashes(Resource resource) throws IOException {
+		IndexReader reader = indexingService.getReader(resource);
+		Integer docId = getSimilarityDocId(reader, resource.getId());
+		if (docId != null) {
+			String[] hashStrings = reader.document(docId).get(IndexingService.SIMILARITY_HASH_FIELD).split(IndexingService.SIMILARITY_HASH_SEPARATOR);
+			return Arrays.stream(hashStrings).mapToLong(Long::parseLong).toArray();
+		} else {
+			return null;
+		}
+	}
+
+	public List<String> findSimilarHashResources(Resource resource, long[] hashes, int count) throws IOException {
+		List<String> hashStrings = Arrays.stream(hashes).mapToObj(String::valueOf).collect(Collectors.toList());
+		return findBySimilarityHashes(indexingService.getReader(resource), hashStrings, count);
+	}
+	
+	public Integer getSimilarityDocId(IndexReader reader, String similarityId) throws IOException {
+		IndexSearcher searcher = new IndexSearcher(reader);
+		ScoreDoc[] hits = searcher.search(new TermQuery(new Term(IndexingService.SIMILARITY_ID_FIELD, similarityId)), 1).scoreDocs;
+		return hits.length == 0 ? null : hits[0].doc;
+	}
+
+	public List<String> findBySimilarityHashes(IndexReader reader, List<String> hashes, int count) throws IOException {
+		IndexSearcher searcher = new IndexSearcher(reader);
+		
+		BooleanQuery finalQuery = new BooleanQuery();
+		
+		for (String hash : hashes) {
+			Query query = new TermQuery(new Term(IndexingService.SIMILARITY_HASH_FIELD, hash));
+			finalQuery.add(query, Occur.SHOULD);
+		}
+		
+		ScoreDoc[] hits = searcher.search(finalQuery, count).scoreDocs;
+		return mapSearchResults(hits, hit -> searcher.doc(hit.doc).get(IndexingService.SIMILARITY_ID_FIELD));
+	}
 	
 	// =========================================
 	// Support

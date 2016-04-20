@@ -1,9 +1,10 @@
 package ru.mipt.pim.server.index;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
+import java.net.URISyntaxException;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,24 +18,44 @@ import com.cybozu.labs.langdetect.LangDetectException;
 public class LanguageDetector {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-
-	public String detectLang(String text) throws LangDetectException {
-		Detector langDetector = DetectorFactory.create();
-		langDetector.append(text);
-		String lang = langDetector.detect();
-		return lang;
+	
+	@PostConstruct
+	private void init() throws LangDetectException, URISyntaxException {
+		DetectorFactory.loadProfile(new File(getClass().getClassLoader().getResource("META-INF/langdetect").toURI()));
 	}
 
-	public String detectLang(File contentFile) throws LangDetectException, IOException, FileNotFoundException {
-		Detector langDetector = DetectorFactory.create();
-		langDetector.append(new FileReader(contentFile));
+	public String detectLang(String text) {
+		Detector langDetector = cerateDetector();
+		langDetector.append(text);
+		return detectLang(langDetector);
+	}
+
+	private String detectLang(Detector langDetector) {
 		String lang = "en";
 		try {
 			lang = langDetector.detect();
 		} catch (LangDetectException e) {
 			logger.error("Error while detecting language", e);
 		}
-		return lang;
+		return "ru".equals(lang) ? lang : "en";
+	}
+
+	public String detectLang(File contentFile) {
+		Detector langDetector = cerateDetector();
+		try {
+			langDetector.append(new FileReader(contentFile));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return detectLang(langDetector);
+	}
+
+	private Detector cerateDetector() {
+		try {
+			return DetectorFactory.create();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

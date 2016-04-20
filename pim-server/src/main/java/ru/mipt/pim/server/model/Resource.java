@@ -31,7 +31,8 @@ import ru.mipt.pim.util.Utilities;
 	"pim",  "http://mipt.ru/pim/",
 	"skos", "http://www.w3.org/2004/02/skos/core#",
 	"nao", "http://www.semanticdesktop.org/ontologies/2007/08/15/nao/#",
-	"nie", "http://www.semanticdesktop.org/ontologies/2007/01/19/nie/"
+	"nie", "http://www.semanticdesktop.org/ontologies/2007/01/19/nie/",
+	"purl", "http://purl.org/dc/elements/1.1/"
 })
 @RdfsClass("pim:Resource")
 @JsonSerialize
@@ -76,7 +77,11 @@ public class Resource extends ObjectWithRdfId implements Comparable<Resource> {
 
 	private boolean includeNarrowerResourcesToJson = false;
 
-	private Boolean hasNarrowerResources;
+	@RdfProperty("pim:hasNarrowerResources")
+	private boolean hasNarrowerResources;
+	
+	@RdfProperty("purl:language")
+	private String language;
 
 	@JsonProperty("tags")
 	public List<Tag> getTags() {
@@ -195,11 +200,19 @@ public class Resource extends ObjectWithRdfId implements Comparable<Resource> {
 	@Override
 	public int compareTo(Resource o) {
 		NullComparator<String> nullComparator = new NullComparator<String>();
-		return Comparator.comparing(Resource::getTitle, nullComparator).thenComparing(Resource::getName, nullComparator).compare(this, o);
+		return Comparator.comparing(Resource::getTitle, nullComparator).thenComparing(Resource::getName, nullComparator).thenComparing(Resource::getId, nullComparator).compare(this, o);
 	}
 
 	@Override
 	public Class<? extends Resource> getRealClass() {
 		return (Class<? extends Resource>) super.getRealClass();
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 }

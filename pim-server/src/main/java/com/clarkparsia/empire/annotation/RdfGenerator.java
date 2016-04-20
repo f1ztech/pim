@@ -501,7 +501,7 @@ public final class RdfGenerator {
 					// in that case might work) the set call will fail.
 					// TODO: shouldnt this be an error?
 
-					LOGGER.warn("Probable type mismatch: {} {}", aValue, aAccess);
+//					LOGGER.info("Probable type mismatch: {} {}", aValue, aAccess);
 				}
 				catch (RuntimeException e) {
 					// TODO: i dont like keying on a RuntimeException here to get the error condition, but since the

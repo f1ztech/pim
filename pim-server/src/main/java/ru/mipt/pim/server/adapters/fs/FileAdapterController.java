@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +33,7 @@ import ru.mipt.pim.server.repositories.FileRepository;
 import ru.mipt.pim.server.repositories.FolderRepository;
 import ru.mipt.pim.server.services.FileService;
 import ru.mipt.pim.server.services.FileStorageService;
+import ru.mipt.pim.server.services.RepositoryService;
 import ru.mipt.pim.server.services.UserService;
 
 @Controller
@@ -59,6 +61,9 @@ public class FileAdapterController {
 	
 	@Resource
 	private IndexingService indexingService;
+	
+	@Autowired
+	private RepositoryService repositoryService;
 	
 	private HashMap<String, FileUploadInfo> uploadInfoMap = new HashMap<String, FileAdapterController.FileUploadInfo>();
 	
@@ -213,7 +218,7 @@ public class FileAdapterController {
 				
 				folderRepository.save(folder);
 				if (parentFolder != null) {
-					folderRepository.addNarrowerResource(parentFolder, folder);					
+					repositoryService.addNarrowerResource(parentFolder, folder);					
 				}
 			}
 			

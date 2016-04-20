@@ -3,7 +3,7 @@
 	<div id="resources-tree" kendo-tree-view="resourcesTree" k-data-source="treeDatasource" k-on-select="treeItemSelected(kendoEvent)" k-on-expand="expand(kendoEvent)"
 		 k-drag-and-drop="true" k-on-drop="onResourceDrop(kendoEvent)">
 		<span k-template>
-		     <i class="{{dataItem.icon}}" style="top: 2px;"></i> {{dataItem.title}}
+		     <i class="{{dataItem.icon}}" style="top: 2px;"></i> {{dataItem.title || dataItem.name}}
 		</span>
 	</div>
 	<ul kendo-context-menu k-filter="'#resources-tree .k-in, .pim-list-item, .resources-tree-ctrl'" k-on-select="onSelectResourceContextMenu(kendoEvent)">

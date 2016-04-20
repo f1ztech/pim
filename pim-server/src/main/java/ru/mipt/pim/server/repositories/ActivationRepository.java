@@ -57,7 +57,7 @@ public class ActivationRepository extends CommonRepository<Resource> {
 				+ "}"
 				+ " order by desc(?activation)", Resource.class);
 		query.setParameter("login", user.getLogin());
-		return query.getResultList();
+		return getResultList(query);
 	}
 	
 }

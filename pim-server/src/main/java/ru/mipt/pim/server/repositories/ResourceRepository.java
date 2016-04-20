@@ -1,13 +1,14 @@
 package ru.mipt.pim.server.repositories;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.openrdf.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,6 @@ import ru.mipt.pim.server.model.User;
 public class ResourceRepository extends CommonResourceRepository<Resource> {
 
 	@Autowired
-	private Repository repository;
-
-	@Autowired
 	private IndexFinder indexFinder;
 
 	public ResourceRepository() {
@@ -35,18 +33,20 @@ public class ResourceRepository extends CommonResourceRepository<Resource> {
 								 + "		?user <http://xmlns.com/foaf/0.1/nick> ??login "
 								 + "		FILTER NOT EXISTS {?broaderResource <http://www.w3.org/2004/02/skos/core#narrower> ?result} }");
 		query.setParameter("login", user.getLogin());
-		return query.getResultList();
+		return getResultList(query);
 	}
 
 	public List<Resource> findByFulltext(User user, String text) throws IOException, LangDetectException, ParseException {
+		if (StringUtils.isBlank(text)) {
+			return Collections.emptyList();
+		}
+		
 		List<String> ids = indexFinder.findIdsByText(user, text);
 		Query query = prepareQuery("where { "
 				+ "		?result <http://mipt.ru/pim/id> ?id. "
 				+ "		FILTER(?id IN (" + ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(",")) + ")) "
 				+ "}");
-		return query.getResultList();
+		return getResultList(query);
 	}
 	
-	
-
 }

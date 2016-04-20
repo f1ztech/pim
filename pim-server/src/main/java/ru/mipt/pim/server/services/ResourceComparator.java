@@ -4,8 +4,6 @@ import java.util.Comparator;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
@@ -33,13 +31,7 @@ public class ResourceComparator implements Comparator<Resource> {
 		if (isHasNarrowerResources(o2) && !isHasNarrowerResources(o1)) {
 			return 1;
 		}
-		if (o1.getTitle() != null && o2.getTitle() != null) {
-			return o1.getTitle().compareTo(o2.getTitle());
-		}
-		if (o1.getName() != null && o2.getName() != null) {
-			return o1.getName().compareTo(o2.getName());
-		}
-		return o1.getId() == null ? -1 : o2.getId() == null ? 1 : o1.getId().compareTo(o2.getId());
+		return o1.compareTo(o2);
 	}
 
 

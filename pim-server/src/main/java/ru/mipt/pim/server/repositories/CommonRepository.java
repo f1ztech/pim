@@ -11,7 +11,6 @@ import com.clarkparsia.empire.impl.RdfQuery;
 
 import ru.mipt.pim.server.model.ObjectWithRdfId;
 
-@SuppressWarnings({ "unchecked" })
 public class CommonRepository<T extends ObjectWithRdfId> {
 
 	private static WeakHashMap<String, Object> locks = new WeakHashMap<String, Object>();
@@ -38,8 +37,13 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 		this.clazz = clazz;
 	}
 
+	@SuppressWarnings("unchecked")
+	protected <R> List<R> getResultList(Query query) {
+		return query.getResultList();
+	}
+	
 	protected T getFirst(Query query) {
-		List<T> results = query.getResultList();
+		List<T> results = getResultList(query);
 		return results.isEmpty() ? null : results.get(0);
 	}
 
@@ -54,20 +58,20 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 	}
 
 	public void save(T object) {
-		afterResourceUpdate(object);
+		beforeUpdate(object);
 		synchronized (getSyncObject(object.getId())) {
 			em.persist(object);
 		}
 	}
 
-	protected void afterResourceUpdate(T object) {
+	protected void beforeUpdate(T object) {
 		if (object.getId() == null) {
 			object.setId(UUID.randomUUID().toString());
 		}
 	}
 
 	public T merge(T object) {
-		afterResourceUpdate(object);
+		beforeUpdate(object);
 		synchronized (getSyncObject(object.getId())) {
 			return em.merge(object);
 		}

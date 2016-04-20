@@ -84,7 +84,7 @@ angular.module('pimControllers', ['kendo.directives', 'ngResource', 'ngSanitize'
 		}
 
 	}])
-	.controller('WorkbenchResourceCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', 'workbenchService', function($scope, $rootScope, $state, $stateParams, $filter, workbenchService) {
+	.controller('WorkbenchResourceCtrl', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$http', 'workbenchService', function($scope, $rootScope, $state, $stateParams, $filter, $http, workbenchService) {
 		// FIXME dont use $rootScope
 
 		$rootScope.workbenchService = workbenchService;
@@ -129,7 +129,9 @@ angular.module('pimControllers', ['kendo.directives', 'ngResource', 'ngSanitize'
 		}
 
 		var prepareScope = function(resource) {
-			$rootScope.detailedResource = resource;
+			$http.get('/workbench/resources/' + resource.id).then(function(response) {
+				$rootScope.detailedResource = response.data;
+			});
 			workbenchService.getRecommendations(resource).then(function(recommendations) {
 				$rootScope.recommendations = recommendations;
 			});

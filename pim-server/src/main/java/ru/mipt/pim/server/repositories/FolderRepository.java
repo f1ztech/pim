@@ -17,12 +17,13 @@ public class FolderRepository extends CommonResourceRepository<Folder> {
 		super(Folder.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Folder> findRootFolders(User user) {
 		Query query = prepareQuery("where { ?result <http://mipt.ru/pim/owner> ?user. "
 								 + "		?user <http://xmlns.com/foaf/0.1/nick> ??login "
 								 + "		FILTER NOT EXISTS {?result <http://mipt.ru/pim/narrowerResource> ?subFolder} }");
 		query.setParameter("login", user.getLogin());
-		return query.getResultList();
+		return getResultList(query);
 	}
 
 	public Folder findByPath(User user, String path) {

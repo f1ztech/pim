@@ -1,34 +1,20 @@
 package ru.mipt.pim.server.similarity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 public class MinHash implements Serializable {
-
+	
 	private static final long serialVersionUID = -4048644413662320363L;
 
 	protected static final long LARGE_PRIME =  433494437;
 	
 	private int hashFunctionsCount;
 	private int hashesCount;
-	private List<HashFunction> hashFunctions;
-
-	// function f(x) = a*x + b
-	private class HashFunction {
-		private long a;
-		private long b;
-		
-		public HashFunction(long a, long b) {
-			this.a = a;
-			this.b = b;
-		}
-		
-		public long calculate(int x) {
-			return a * x + b;
-		}
-	}
+	private List<HashFunction> hashFunctions = new ArrayList<>();
 
 	public MinHash(int hashFunctionsCount, int hashesCount) {
 		this.hashesCount = hashesCount;

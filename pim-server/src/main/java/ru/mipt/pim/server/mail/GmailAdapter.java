@@ -86,7 +86,7 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 
 	public String getAuthenticateUrl() {
 		final GoogleAuthorizationCodeRequestUrl url = flow.newAuthorizationUrl();
-		return url.setRedirectUri(CALLBACK_URI).setState(stateToken).build();
+		return url.setRedirectUri(CALLBACK_URI).setState(stateToken).setApprovalPrompt("force").build();
 	}
 
 	public void makeCredential(String authCode) throws IOException, MailException {
@@ -132,43 +132,51 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 	// ========================================================
 
 	@Override
-	public List<ru.mipt.pim.server.mail.Message> findNewMessages(EmailFolder folder, Date fromInternalDate) throws MailException {
+	public MessageQueryResults findNewMessages(EmailFolder folder, Date fromInternalDate, MessageQueryResults lastResults) throws MailException {
 		try {
-			List<Message> messages = findMessagesAfter(folder, fromInternalDate);
-			List<ru.mipt.pim.server.mail.Message> ret = new ArrayList<>();
-			for (Message message : messages) {
-				ret.add(populateMessage(message, folder));
-			}
-			return ret;
+			return findMessagesAfter(folder, fromInternalDate, lastResults);
 		} catch (IOException | MessagingException e) {
 			throw new MailException(e);
 		}
 	}
 
-	private List<Message> findMessagesAfter(EmailFolder folder, Date fromInternalDate) throws IOException {
-		String nextPageToken = null;
+	private MessageQueryResults findMessagesAfter(EmailFolder folder, Date fromInternalDate, MessageQueryResults lastResults) throws IOException, MessagingException {
+		String nextPageToken = lastResults != null ? lastResults.getAttribute("nextPageToken") : null;
+		
 		List<Message> newMessages = new ArrayList<>();
-		while (true) {
-			Messages.List query = findMessages(folder).setMaxResults(100l);
-			if (nextPageToken != null) {
-				query.setPageToken(nextPageToken);
-			}
-			ListMessagesResponse result = query.execute();
-			for (Message message : result.getMessages()) {
-				message = service.users().messages().get(userId, message.getId()).setFormat("raw").execute();
-				if (fromInternalDate != null && !new Date(message.getInternalDate()).after(fromInternalDate)) {
-					return newMessages; // required message found - finish searching
-				} else {
-					newMessages.add(message);
-				}
-			}
-			if (result.getNextPageToken() != null) {
-				nextPageToken = result.getNextPageToken();
+		Messages.List query = findMessages(folder).setMaxResults(100l);
+		if (nextPageToken != null) {
+			query.setPageToken(nextPageToken);
+		}
+
+		boolean finalMessageFound = false;
+		ListMessagesResponse result = query.execute();
+		for (Message message : result.getMessages()) {
+			message = service.users().messages().get(userId, message.getId()).setFormat("raw").execute();
+			if (fromInternalDate != null && !new Date(message.getInternalDate()).after(fromInternalDate)) {
+				finalMessageFound = true;
+				break;
 			} else {
-				break; // all pages iterated
+				newMessages.add(message);
 			}
 		}
-		return newMessages;
+		
+		MessageQueryResults newResults = new MessageQueryResults();
+		if (!finalMessageFound) {
+			newResults.setAttribute("nextPageToken", result.getNextPageToken());
+			newResults.setHasMore(result.getNextPageToken() != null);
+		}
+		List<ru.mipt.pim.server.mail.Message> messages = new ArrayList<>(); // convert from gmail message class to ru.mipt.pim.server.mail message class
+		for (Message message : newMessages) {
+			try {
+				messages.add(populateMessage(message, folder));
+			} catch (Exception e) {
+				logger.error("Error while populating message " + message.getId(), e);
+			}
+		}
+		newResults.setMessages(messages);
+		
+		return newResults;
 	}
 
 	private Messages.List findMessages(EmailFolder folder) throws IOException {
@@ -199,10 +207,19 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 		email.setMessageId(message.getId());
 		email.setSubject(mimeMessage.getSubject());
 		email.setBody(getHtmlContent(mimeMessage));
-		email.getRecipients().addAll(mapToContacts(mimeMessage.getRecipients(RecipientType.TO)));
-		email.getCc().addAll(mapToContacts(mimeMessage.getRecipients(RecipientType.TO)));
+		email.getRecipients().addAll(mapToContacts(getRecipients(mimeMessage, RecipientType.TO)));
+		email.getCc().addAll(mapToContacts(getRecipients(mimeMessage, RecipientType.CC)));
 
 		return email;
+	}
+
+	private Address[] getRecipients(MimeMessage mimeMessage, RecipientType recipientType) {
+		try {
+			return mimeMessage.getRecipients(recipientType);
+		} catch (MessagingException e) {
+			logger.error("Error parsing recepient", e);
+		}
+		return null;
 	}
 
 	private List<Contact> mapToContacts(Address[] addresses) {
