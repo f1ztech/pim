@@ -107,16 +107,12 @@ public class MailSynchronizer {
 		MessageQueryResults lastResults = null;
 		Date lastSynchronizedDate = null;
 		while (true) {
-			MessageQueryResults newResults = mailAdapter.findNewMessages(folder, folder.getLastSynchronizedEmailDate(), lastResults);
+			MessageQueryResults newResults = mailAdapter.findNewMessages(folder, folder.getLastSynchronizedEmailDate(), lastResults, existedMessageIds);
 			if (lastResults == null && !newResults.getMessages().isEmpty()) { // FIXME message may be moved from another folder
-				lastSynchronizedDate = newResults.getMessages().get(0).getInternalReceivedDate();
+				lastSynchronizedDate = newResults.getNewestMessageDate();
 			}
 
 			for (Message newMessage : newResults.getMessages()) {
-				if (existedMessageIds.contains(newMessage.getMessageId())) {
-					continue;
-				}
-				
 				Email email = new Email();
 				email.setFrom(findOrCreateContact(user, newMessage.getFrom()));
 				email.setSentDate(newMessage.getSentDate());

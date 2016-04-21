@@ -2,6 +2,8 @@
 
 angular.module('pimControllers', ['kendo.directives', 'ngResource', 'ngSanitize'])
 	.controller('WorkbenchCtrl', ['$scope', '$rootScope', 'workbenchService', '$q', '$location', '$stateParams', function($scope, $rootScope, workbenchService, $q, $location, $stateParams) {
+		workbenchService.clearCache();
+		
 		$('#publication-panel').height($(window).height() - $('.pim-top-menu').outerHeight() - $('.pim-header').outerHeight() - 2);
 
 		$scope.$on("$destroy", function() {

@@ -18,7 +18,7 @@ public class UserRepository extends CommonResourceRepository<User> {
 	}
 
 	public User findByLogin(String login) {
-		Query query = prepareQuery("where { ?result <http://xmlns.com/foaf/0.1/nick> ??login }");
+		Query query = prepareQuery("where { ?result foaf:nick ??login }");
 		query.setParameter("login", login);
 
 		return getFirst(query);

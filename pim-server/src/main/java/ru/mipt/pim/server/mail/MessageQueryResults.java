@@ -1,5 +1,6 @@
 package ru.mipt.pim.server.mail;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ public class MessageQueryResults {
 
 	private List<Message> messages;
 	private boolean hasMore;
+	private Date newestMessageDate;
 	private Map<String, Object> attributes = new HashMap<>();
 
 	public boolean isHasMore() {
@@ -32,6 +34,14 @@ public class MessageQueryResults {
 	
 	public <T> T getAttribute(String key) {
 		return (T) attributes.get(key);
+	}
+
+	public Date getNewestMessageDate() {
+		return newestMessageDate;
+	}
+
+	public void setNewestMessageDate(Date newestMessageDate) {
+		this.newestMessageDate = newestMessageDate;
 	}
 	
 }

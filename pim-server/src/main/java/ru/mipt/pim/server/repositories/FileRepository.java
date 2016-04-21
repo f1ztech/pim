@@ -36,12 +36,12 @@ public class FileRepository extends CommonResourceRepository<File> {
 	public File findByNameAndFolderAndHash(User user, String name, String folderPath, String hash) {
 		Query query = prepareQuery(
 				" where { " +
-				"		 ?result <http://purl.org/dc/terms/title> ??fileName. " +
+				"		 ?result dc:title ??fileName. " +
 				"		 ?result <http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#hashValue> ??hash. " +
 				"		 ?folder <http://mipt.ru/pim/narrowerResource> ?result. " +
 				"		 ?folder <http://mipt.ru/pim/path> ??folderPath. " +
-				" 		 ?folder <http://mipt.ru/pim/owner> ?user." +
-				"		 ?user <http://xmlns.com/foaf/0.1/nick> ??login " +				
+				" 		 ?folder pim:owner ?user." +
+				"		 ?user foaf:nick ??login " +				
 				" } ");
 		query.setParameter("fileName", name);
 		query.setParameter("hash", hash);
@@ -54,11 +54,11 @@ public class FileRepository extends CommonResourceRepository<File> {
 	public File findByNameAndFolder(User user, String name, String folderPath) {
 		Query query = prepareQuery(
 				" where { " +
-				"		 ?result <http://purl.org/dc/terms/title> ??fileName. " +
+				"		 ?result dc:title ??fileName. " +
 				"		 ?folder <http://mipt.ru/pim/narrowerResource> ?result. " +
 				"		 ?folder <http://mipt.ru/pim/path> ??folderPath. " +
-				" 		 ?folder <http://mipt.ru/pim/owner> ?user." +
-				"		 ?user <http://xmlns.com/foaf/0.1/nick> ??login " +				
+				" 		 ?folder pim:owner ?user." +
+				"		 ?user foaf:nick ??login " +				
 				" } ");
 		query.setParameter("fileName", name);
 		query.setParameter("folderPath", folderPath);

@@ -52,7 +52,7 @@ public class EmailRepository extends CommonResourceRepository<Email> {
 				+ "	?mail pim:owner ?owner. "
 				+ "	?owner pim:id ??ownerId. "
 				+ " ?folder skos:narrower ?mail."
-				+ " ?folder pim:folderId ??folderId. "
+				+ " ?folder pim:id ??folderId. "
 				+ " ?mail nmo:messageId ?messageId. "
 				+ "}");
 		query.setBinding("ownerId", valueFactory.createLiteral(user.getId()));

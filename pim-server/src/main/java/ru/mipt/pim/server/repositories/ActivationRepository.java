@@ -50,8 +50,8 @@ public class ActivationRepository extends CommonRepository<Resource> {
 
 	public List<Resource> findResourcesOrderedByActivation(User user) {
 		Query query = prepareQuery("where { "
-				+ "		?result <http://mipt.ru/pim/owner> ?user. "
-				+ "		?user <http://xmlns.com/foaf/0.1/nick> ??login. "
+				+ "		?result pim:owner ?user. "
+				+ "		?user foaf:nick ??login. "
 				+ "		?result <http://mipt.ru/pim/activationValue> ?activation. "
 				+ "		filter (?activation > 5) "
 				+ "}"

@@ -29,9 +29,9 @@ public class ResourceRepository extends CommonResourceRepository<Resource> {
 	}
 
 	public List<Resource> findRootResources(User user) {
-		Query query = prepareQuery("where { ?result <http://mipt.ru/pim/owner> ?user. "
-								 + "		?user <http://xmlns.com/foaf/0.1/nick> ??login "
-								 + "		FILTER NOT EXISTS {?broaderResource <http://www.w3.org/2004/02/skos/core#narrower> ?result} }");
+		Query query = prepareQuery("where { ?result pim:owner ?user. "
+								 + "		?user foaf:nick ??login "
+								 + "		FILTER NOT EXISTS {?broaderResource skos:narrower ?result} }");
 		query.setParameter("login", user.getLogin());
 		return getResultList(query);
 	}
@@ -43,7 +43,7 @@ public class ResourceRepository extends CommonResourceRepository<Resource> {
 		
 		List<String> ids = indexFinder.findIdsByText(user, text);
 		Query query = prepareQuery("where { "
-				+ "		?result <http://mipt.ru/pim/id> ?id. "
+				+ "		?result pim:id ?id. "
 				+ "		FILTER(?id IN (" + ids.stream().map(id -> "\"" + id + "\"").collect(Collectors.joining(",")) + ")) "
 				+ "}");
 		return getResultList(query);

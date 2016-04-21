@@ -52,6 +52,7 @@ import ru.mipt.pim.server.repositories.TagRepository;
 import ru.mipt.pim.server.repositories.UserActionRepository;
 import ru.mipt.pim.server.services.ActivationService;
 import ru.mipt.pim.server.services.PermissionService;
+import ru.mipt.pim.server.services.RepositoryService;
 import ru.mipt.pim.server.services.ResourceComparator;
 import ru.mipt.pim.server.services.UserService;
 
@@ -194,6 +195,9 @@ public class WorkbenchController {
 	
 	@Autowired
 	private IndexingService indexingService;
+	
+	@Autowired
+	private RepositoryService repositoryService;
 
 	private ValueFactory valueFactory;
 	private URI pNarrower;

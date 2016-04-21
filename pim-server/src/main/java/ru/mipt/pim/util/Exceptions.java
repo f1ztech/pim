@@ -2,6 +2,7 @@ package ru.mipt.pim.util;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Exceptions {
 
@@ -15,6 +16,11 @@ public class Exceptions {
 		public void accept(T param) throws Exception;
 	}
 
+	@FunctionalInterface
+	public static interface SupplierWithExceptions<T> {
+		public T get() throws Exception;
+	}
+	
 	@FunctionalInterface
 	public static interface RunnableWithExceptions {
 		public void run() throws Exception;
@@ -34,6 +40,15 @@ public class Exceptions {
 		}
 	}
 
+	public static <T> Supplier<T> wrap(SupplierWithExceptions<T> runnable) {
+		return () ->  {
+			try {
+				return runnable.get();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		};
+	}
 
 	public static void wrap(Exceptions.RunnableWithExceptions runnable) {
 		try {

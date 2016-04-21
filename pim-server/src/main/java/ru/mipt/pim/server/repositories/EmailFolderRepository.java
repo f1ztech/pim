@@ -22,9 +22,9 @@ public class EmailFolderRepository extends CommonResourceRepository<EmailFolder>
 	public EmailFolder findByFolderId(User user, String folderId) {
 		Query query = prepareQuery(
 				" where { " +
-				" 		 ?result <http://mipt.ru/pim/folderId> ??id." +
-				"		?result <http://mipt.ru/pim/owner> ?user. " +
-				"		?user <http://xmlns.com/foaf/0.1/nick> ??login " +
+				" 		 ?result pim:folderId ??id." +
+				"		?result pim:owner ?user. " +
+				"		?user foaf:nick ??login " +
 				" } ");
 		query.setParameter("id", folderId);
 		query.setParameter("login", user.getLogin());

@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.mail.Address;
@@ -132,15 +133,15 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 	// ========================================================
 
 	@Override
-	public MessageQueryResults findNewMessages(EmailFolder folder, Date fromInternalDate, MessageQueryResults lastResults) throws MailException {
+	public MessageQueryResults findNewMessages(EmailFolder folder, Date fromInternalDate, MessageQueryResults lastResults, Set<String> existedMessageIds) throws MailException {
 		try {
-			return findMessagesAfter(folder, fromInternalDate, lastResults);
+			return findMessagesAfter(folder, fromInternalDate, lastResults, existedMessageIds);
 		} catch (IOException | MessagingException e) {
 			throw new MailException(e);
 		}
 	}
 
-	private MessageQueryResults findMessagesAfter(EmailFolder folder, Date fromInternalDate, MessageQueryResults lastResults) throws IOException, MessagingException {
+	private MessageQueryResults findMessagesAfter(EmailFolder folder, Date fromInternalDate, MessageQueryResults lastResults, Set<String> existedMessageIds) throws IOException, MessagingException {
 		String nextPageToken = lastResults != null ? lastResults.getAttribute("nextPageToken") : null;
 		
 		List<Message> newMessages = new ArrayList<>();
@@ -150,10 +151,21 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 		}
 
 		boolean finalMessageFound = false;
+		boolean first = true;
+		MessageQueryResults newResults = new MessageQueryResults();
 		ListMessagesResponse result = query.execute();
 		for (Message message : result.getMessages()) {
+			if (existedMessageIds.contains(message.getId()) && !first) {
+				continue;
+			}
+			
 			message = service.users().messages().get(userId, message.getId()).setFormat("raw").execute();
-			if (fromInternalDate != null && !new Date(message.getInternalDate()).after(fromInternalDate)) {
+			Date messageDate = new Date(message.getInternalDate());
+			if (first) {
+				newResults.setNewestMessageDate(messageDate);
+				first = false;
+			}
+			if (fromInternalDate != null && !messageDate.after(fromInternalDate)) {
 				finalMessageFound = true;
 				break;
 			} else {
@@ -161,7 +173,6 @@ public class GmailAdapter implements MailAdapter, OAuthAdapter {
 			}
 		}
 		
-		MessageQueryResults newResults = new MessageQueryResults();
 		if (!finalMessageFound) {
 			newResults.setAttribute("nextPageToken", result.getNextPageToken());
 			newResults.setHasMore(result.getNextPageToken() != null);

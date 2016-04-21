@@ -187,14 +187,7 @@ public abstract class ObjectWithRdfId implements SupportsRdfId {
 	protected <T extends ObjectWithRdfId> List<T> getInvertedList(Class<T> objectClazz, Class<?> listClazz, String mappedBy) {
 		List<T> results = (List<T>) invertedProperties.get(mappedBy);
 		if (results == null) {
-			RdfProperty rdfPropertyAnnotation;
-			try {
-				rdfPropertyAnnotation = objectClazz.getDeclaredField(mappedBy).getAnnotation(RdfProperty.class);
-			} catch (NoSuchFieldException | SecurityException e) {
-				throw new RuntimeException(e);
-			}
-
-			String property = rdfPropertyAnnotation.value();
+			String property = RdfUtils.getRdfProperty(objectClazz, mappedBy);
 			property = RdfUtils.expandNamespace(objectClazz, property);
 
 			EntityManager em = Persistence.createEntityManagerFactory("pim").createEntityManager();

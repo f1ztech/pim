@@ -17,10 +17,9 @@ public class FolderRepository extends CommonResourceRepository<Folder> {
 		super(Folder.class);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Folder> findRootFolders(User user) {
-		Query query = prepareQuery("where { ?result <http://mipt.ru/pim/owner> ?user. "
-								 + "		?user <http://xmlns.com/foaf/0.1/nick> ??login "
+		Query query = prepareQuery("where { ?result pim:owner ?user. "
+								 + "		?user foaf:nick ??login "
 								 + "		FILTER NOT EXISTS {?result <http://mipt.ru/pim/narrowerResource> ?subFolder} }");
 		query.setParameter("login", user.getLogin());
 		return getResultList(query);
@@ -29,8 +28,8 @@ public class FolderRepository extends CommonResourceRepository<Folder> {
 	public Folder findByPath(User user, String path) {
 		Query query = prepareQuery("where { "
 								 + "		?result <http://mipt.ru/pim/path> ??path. "				
-								 + " 		?result <http://mipt.ru/pim/owner> ?user."
-								 + "		?user <http://xmlns.com/foaf/0.1/nick> ??login }");
+								 + " 		?result pim:owner ?user."
+								 + "		?user foaf:nick ??login }");
 		query.setParameter("path", path);
 		query.setParameter("login", user.getLogin());
 		return getFirst(query);

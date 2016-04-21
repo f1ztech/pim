@@ -33,12 +33,6 @@ angular.module('pimServices', [])
 	.service('workbenchService', ['$state', '$http', '$q', 'Resource', '$location', '$stateParams', function($state, $http, $q, Resource, $location, $stateParams) {
 		var me = this;
 
-		function makeResolvedPromise(ret) {
-			var defered = $q.defer();
-			defered.resolve(ret);
-			return defered.promise;
-		}
-
 		// actual values, populated when corresponding promise would be resolved
 		me.rootResources = null;
 		me.selectedResource = null;
@@ -82,6 +76,14 @@ angular.module('pimServices', [])
 				}
 				return response.data;
 			});
+		}
+		
+		me.clearCache = function() {
+			console.log('clear cache');
+			me.clearPromises();		
+			me.rootResources = null;
+			me.selectedResource = null;
+			me.activatedResources = null;
 		}
 
 		me.clearPromises = function() {
@@ -227,7 +229,7 @@ angular.module('pimServices', [])
 
 		me.getActivatedResources = function() {
 			if (me.activatedResources) {
-				return makeResolvedPromise(me.activatedResources);
+				return $q.when(me.activatedResources);
 			}
 			if (me.activatedResourcesPromise) {
 				return me.activatedResourcesPromise;

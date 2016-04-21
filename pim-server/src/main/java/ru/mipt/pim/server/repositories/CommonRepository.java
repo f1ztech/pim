@@ -62,6 +62,7 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 		synchronized (getSyncObject(object.getId())) {
 			em.persist(object);
 		}
+		afterUpdate(object);
 	}
 
 	protected void beforeUpdate(T object) {
@@ -70,11 +71,17 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 		}
 	}
 
+	protected void afterUpdate(T object) {
+	}
+
 	public T merge(T object) {
 		beforeUpdate(object);
+		T result;
 		synchronized (getSyncObject(object.getId())) {
-			return em.merge(object);
+			result = em.merge(object);
 		}
+		afterUpdate(object);
+		return result;
 	}
 
 	public void remove(T object) {
@@ -87,8 +94,9 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 		return em.find(clazz, uri);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T findById(String id) {
-		Query query = prepareQuery("where { ?result <http://mipt.ru/pim/id> ??id. }");
+		Query query = prepareQuery("where { ?result pim:id ??id. }");
 		query.setParameter("id", id);
 		return (T) query.getSingleResult();
 	}
