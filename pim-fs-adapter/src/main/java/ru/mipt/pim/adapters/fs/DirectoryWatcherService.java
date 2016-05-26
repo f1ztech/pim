@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import ru.mipt.pim.adapters.fs.common.ClientFile;
@@ -48,6 +49,7 @@ public class DirectoryWatcherService {
 	private Map<String, ClientFileTree> remoteFileTrees;
 	private Map<String, ClientFileTree> localFileTrees = new HashMap<String, ClientFileTree>();
 
+	@Async
 	public void startWatch() {
 		try {
 			populateRemoteFileTrees();

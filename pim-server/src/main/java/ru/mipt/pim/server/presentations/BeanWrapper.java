@@ -9,6 +9,9 @@ public class BeanWrapper<T> extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
 	private T wrappedObject;
 	
+	public BeanWrapper() {
+	}
+	
 	public BeanWrapper(T wrappedObject, String... properties) {
 		this.wrappedObject = wrappedObject;
 		put(properties);

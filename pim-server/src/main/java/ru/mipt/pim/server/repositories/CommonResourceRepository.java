@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openrdf.model.Literal;
+import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.query.BindingSet;
 import org.openrdf.query.MalformedQueryException;
@@ -35,6 +36,8 @@ import ru.mipt.pim.util.Exceptions;
 import ru.mipt.pim.util.RdfUtils;
 
 public class CommonResourceRepository<T extends Resource> extends CommonRepository<T> {
+
+	private static final String RESULT_BINDING = "?result";
 
 	private static final String URI_PROPERTY = "uri";
 
@@ -181,25 +184,27 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		return query;
 	}
 
-	public List<T> find(String... properties) throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		return find(null, Exceptions.wrap(clazz::newInstance), properties);
+	public List<T> find(String... properties) throws Exception {
+		return find(null, null, Exceptions.wrap(clazz::newInstance), null, properties);
 	}
 	
-	public List<T> find(Consumer<QueryBuilder> queryConsumer, Supplier<T> resourceFactory, String... properties) throws RepositoryException, QueryEvaluationException, MalformedQueryException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		RepositoryConnection connection = repository.getConnection();
-		QueryBuilder qb = new QueryBuilder(connection);
-		
-		// prefixes
-		RdfUtils.getNamespacesMap(clazz).forEach(qb::addPrefix);
+	public <R> List<R> find(QueryBuilder qb, Supplier<R> resourceFactory, Consumer<R> resourceAdjuster, String... properties) throws Exception {
+		return find(qb, null, resourceFactory, resourceAdjuster, properties);
+	}
+	
+	private <R> List<R> find(QueryBuilder qb, Consumer<QueryBuilder> queryConsumer, Supplier<R> resourceFactory, Consumer<R> resourceAdjuster, String... properties) throws Exception {
+		if (qb == null) {
+			qb = new QueryBuilder();
+		}
 		
 		// select + where
 		for (String property : properties) {
 			if (property.equals(URI_PROPERTY)) {
-				qb.select("?result");
+				qb.select(RESULT_BINDING);
 			} else {
 				String propertyBinding = "?" + property;
 				qb.select(propertyBinding);
-				qb.where("?result " + RdfUtils.getRdfProperty(clazz, property) + " " + propertyBinding);
+				qb.where(RESULT_BINDING + " " + RdfUtils.getRdfProperty(clazz, property) + " " + propertyBinding, true);
 			}
 		}
 		if (queryConsumer != null) {
@@ -207,28 +212,36 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		}
 		
 		// result handling
-		List<T> ret = new ArrayList<>();
+		RepositoryConnection connection = repository.getConnection();
+		List<R> ret = new ArrayList<>();
 		try {
-			TupleQueryResult result = qb.buildTupleQuery().evaluate();
 			try {
-				while (result.hasNext()) {
-					BindingSet binding = result.next();
-
-					T resource = resourceFactory.get();
-					ret.add(resource);
-					
-					for (String property : properties) {
-						Value value = binding.getValue(property.equals(URI_PROPERTY) ? "result" : property);
+				TupleQueryResult result = qb.buildTupleQuery(connection).evaluate();
+				try {
+					while (result.hasNext()) {
+						BindingSet binding = result.next();
+	
+						R resource = resourceFactory.get();
+						ret.add(resource);
 						
-						Assert.isInstanceOf(Literal.class, value);
-
-						PropertyUtils.setProperty(resource, property, RdfUtils.literalToObject((Literal) value));
+						for (String property : properties) {
+							Value value = binding.getValue(property.equals(URI_PROPERTY) ? "result" : property);
+							
+							Assert.isTrue(value == null || value instanceof Literal || value instanceof URI, "binded value must be a uri or literal");
+	
+							PropertyUtils.setProperty(resource, property, value instanceof URI ? ((URI) value).stringValue(): RdfUtils.literalToObject((Literal) value));
+						}
+						
+						if (resourceAdjuster != null) {
+							resourceAdjuster.accept(resource);
+						}
 					}
+				} finally {
+					result.close();
 				}
-			} finally {
-				result.close();
+			} catch (QueryEvaluationException e) {
+				throw new RuntimeException("Error while executing query: \n" + qb.buildQueryString(), e);
 			}
-			
 		} finally {
 			connection.close();
 		}

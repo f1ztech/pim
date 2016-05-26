@@ -8,12 +8,14 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
 import org.openrdf.model.ValueFactory;
@@ -47,6 +49,7 @@ import ru.mipt.pim.server.model.UserAction.UserActionType;
 import ru.mipt.pim.server.presentations.BeanWrapper;
 import ru.mipt.pim.server.recommendations.RecommendationService;
 import ru.mipt.pim.server.repositories.ContactRepository;
+import ru.mipt.pim.server.repositories.ModelConfiguration;
 import ru.mipt.pim.server.repositories.ResourceRepository;
 import ru.mipt.pim.server.repositories.TagRepository;
 import ru.mipt.pim.server.repositories.UserActionRepository;
@@ -55,6 +58,8 @@ import ru.mipt.pim.server.services.PermissionService;
 import ru.mipt.pim.server.services.RepositoryService;
 import ru.mipt.pim.server.services.ResourceComparator;
 import ru.mipt.pim.server.services.UserService;
+import ru.mipt.pim.util.RdfUtils;
+import ru.mipt.pim.util.Utilities;
 
 @Controller
 @RequestMapping(value = "/workbench")
@@ -217,33 +222,28 @@ public class WorkbenchController {
 		pRelated = valueFactory.createURI("http://www.w3.org/2004/02/skos/core#related");
 	}
 
+	String[] PRESENTATION_PROPERTIES = new String[] { "id", "title", "name", "hasNarrowerResources", "uri" };
+	Consumer<BeanWrapper<Resource>> RESOURCE_ADJUSTER = bean -> {
+		String objectUri = RdfUtils.collapseNamespace((String) bean.get("uri"));
+		String classUri = StringUtils.substringBeforeLast(objectUri, ":");
+		Class<? extends Resource> clazz = ModelConfiguration.CLASS_URI_MAP.get(classUri);
+		bean.put("icon", Utilities.getIcon(clazz));
+	};
+	
 	@RequestMapping(value = "resources", method = RequestMethod.GET)
-	public @ResponseBody List<BeanWrapper<Resource>> findRoots() {
-		List<Resource> rootResources = resourceRepository.findRootResources(userService.getCurrentUser());
-//		rootResources.forEach(r -> resourceComparator.isHasNarrowerResources(r));
-//		rootResources.sort(resourceComparator);
-		return mapToPresentations(rootResources);
-	}
-
-	private List<BeanWrapper<Resource>> mapToPresentations(List<Resource> rootResources, String... extraProperties) {
-		return rootResources.stream().map(r -> {
-			return new BeanWrapper<>(r, ArrayUtils.addAll(extraProperties, "id", "title", "name", "hasNarrowerResources", "icon", "uri"));
-		}).collect(Collectors.toList());
+	public @ResponseBody List<BeanWrapper<Resource>> findRoots() throws Exception {
+		return resourceRepository.findRootResources(userService.getCurrentUser(), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES);
 	}
 
 	@RequestMapping(value = "narrowerResources", method = RequestMethod.GET)
-	public @ResponseBody List<BeanWrapper<Resource>> findNarrowerResources(@RequestParam("uri") String uri) {
+	public @ResponseBody List<BeanWrapper<Resource>> findNarrowerResources(@RequestParam("uri") String uri) throws Exception {
 		Resource resource = resourceRepository.find(uri);
 		assertCanManage(resource);
-
-		List<Resource> ret = resource != null ? resource.getNarrowerResources() : Collections.emptyList();
-//		ret.forEach(r -> resourceComparator.isHasNarrowerResources(r));
-//		ret.sort(resourceComparator);
-		return mapToPresentations(ret);
+		return resourceRepository.findNarrower(resource.getId(), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES);
 	}
 
 	@RequestMapping(value = "broaderResources", method = RequestMethod.GET)
-	public @ResponseBody BroaderResourcesResponse findBroaderResources(@RequestParam("id") String resourceId) {
+	public @ResponseBody BroaderResourcesResponse findBroaderResources(@RequestParam("id") String resourceId) throws Exception {
 		Resource resource = resourceRepository.findById(resourceId);
 		assertCanManage(resource);
 
@@ -256,20 +256,16 @@ public class WorkbenchController {
 			path.add(0, currentResource);
 		}
 
-		List<Resource> rootResources = resourceRepository.findRootResources(userService.getCurrentUser());
-		rootResources.sort(resourceComparator);
-		List<Resource> narrowerResources = rootResources;
+		List<BeanWrapper<Resource>> rootResources = resourceRepository.findRootResources(userService.getCurrentUser(), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES);
+		List<BeanWrapper<Resource>> narrowerResources = rootResources;
 		for (Resource pathResource : path) {
-			Resource narrowerResource = narrowerResources.stream()
-					.filter(res -> res.getUri().equals(pathResource.getUri()))
+			BeanWrapper<Resource> narrowerResource = narrowerResources.stream()
+					.filter(res -> res.get("uri").equals(pathResource.getUri()))
 					.findFirst().orElseThrow(() -> new RuntimeException("resource not found in user repository"));
-			narrowerResource.setIncludeNarrowerResourcesToJson(true);
-
-			narrowerResources = narrowerResource.getNarrowerResources();
-//			narrowerResources.sort(resourceComparator);
+			narrowerResource.put("narrowerRrsources", resourceRepository.findNarrower((String) narrowerResource.get("id"), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES));
 		}
 
-		return new BroaderResourcesResponse(path.stream().map(Resource::getId).collect(Collectors.toList()), mapToPresentations(rootResources));
+		return new BroaderResourcesResponse(path.stream().map(Resource::getId).collect(Collectors.toList()), rootResources);
 	}
 
 	@RequestMapping(value = "resources/{id}", method = RequestMethod.GET)

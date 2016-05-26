@@ -7,9 +7,13 @@ import java.util.WeakHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.openrdf.model.Literal;
+import org.springframework.util.Assert;
+
 import com.clarkparsia.empire.impl.RdfQuery;
 
 import ru.mipt.pim.server.model.ObjectWithRdfId;
+import ru.mipt.pim.util.RdfUtils;
 
 public class CommonRepository<T extends ObjectWithRdfId> {
 
@@ -101,4 +105,8 @@ public class CommonRepository<T extends ObjectWithRdfId> {
 		return (T) query.getSingleResult();
 	}
 	
+	public EntityManager getEm() {
+		return em;
+	}
+
 }

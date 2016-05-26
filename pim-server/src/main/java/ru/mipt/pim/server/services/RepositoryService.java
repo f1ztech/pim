@@ -96,7 +96,7 @@ public class RepositoryService {
 	public void setProperty(RepositoryConnection connection, Resource resource, String propertyUri, Function<ValueFactory, Value> valueProvider) {
 		try {
 			URI parentUri = valueFactory.createURI(resource.getUri());
-			URI property = valueFactory.createURI(RdfUtils.expandNamespace(resource.getClass(), propertyUri));
+			URI property = valueFactory.createURI(RdfUtils.expandNamespace(propertyUri));
 			connection.remove(parentUri, property, null);
 			connection.add(parentUri, property, valueProvider.apply(valueFactory));
 		} catch (Exception e) {

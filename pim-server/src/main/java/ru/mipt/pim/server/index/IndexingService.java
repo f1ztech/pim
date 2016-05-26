@@ -149,6 +149,7 @@ public class IndexingService {
 		String userId = user.getId();
 		Pair<String, String> key = Pair.of(user.getId(), language);
 		IndexReader reader = readersCache.get(key);
+		logger.trace("getReader " + language);
 		if (reader == null) {
 			synchronized (readersLock) {
 				reader = readersCache.get(userId);
@@ -168,6 +169,7 @@ public class IndexingService {
 		String userId = user.getId();
 		Pair<String, String> key = Pair.of(user.getId(), language);
 		IndexWriter writer = writersCache.get(key);
+		logger.trace("getWriter " + language);
 		if (writer == null) {
 			synchronized (writersLock) {
 				writer = writersCache.get(userId);
@@ -210,7 +212,7 @@ public class IndexingService {
 		try {
 			indexResource(resource);
 		} catch (Exception e) {
-			logger.error("indexing error", e);
+			logger.error("Error indexing resource " + resource.getId(), e);
 		}
 	}
 
@@ -326,6 +328,7 @@ public class IndexingService {
 	// =================================
 	
 	public void storeSimilarityHashes(Resource resource, long[] hashes) throws IOException {
+		logger.trace("storing hashes for " + resource.getId());
 		IndexWriter writer = getWriter(resource.getOwner(), resource.getLanguage());
 		try {
 			storeSimilarityHashes(resource.getId(), hashes, writer);

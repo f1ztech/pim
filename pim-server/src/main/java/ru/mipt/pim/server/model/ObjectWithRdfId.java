@@ -155,7 +155,7 @@ public abstract class ObjectWithRdfId implements SupportsRdfId {
 	public String getId() {
 		return id;
 	}
-
+	
 	@Override
 	public boolean equals(final Object theObj) {
 		if (this == theObj) {
@@ -188,7 +188,7 @@ public abstract class ObjectWithRdfId implements SupportsRdfId {
 		List<T> results = (List<T>) invertedProperties.get(mappedBy);
 		if (results == null) {
 			String property = RdfUtils.getRdfProperty(objectClazz, mappedBy);
-			property = RdfUtils.expandNamespace(objectClazz, property);
+			property = RdfUtils.expandNamespace(property);
 
 			EntityManager em = Persistence.createEntityManagerFactory("pim").createEntityManager();
 			Query aQuery = em.createQuery(" where { " +
