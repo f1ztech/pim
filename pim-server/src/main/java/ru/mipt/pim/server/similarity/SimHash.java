@@ -21,7 +21,11 @@ public class SimHash {
 	public long[] generateHashes(RealVector tfIdf) {
 		return hashSignature(signatureGenerator.createSignature(tfIdf));
 	}
-	
+
+	public int getDimension() {
+		return signatureGenerator.getDimension();
+	}
+
     /**
      * Hash a signature.
      * The signature is divided in s stages (or bands).

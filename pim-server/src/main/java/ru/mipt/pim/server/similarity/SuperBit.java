@@ -50,6 +50,7 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 	private static final long serialVersionUID = 8420482803730104714L;
 	
 	private RealVector[] hyperplanes;
+	private int dimension;
 
 	/**
 	 * Initialize SuperBit algorithm. Super-Bit depth N must be [1 .. dimension] and
@@ -58,21 +59,22 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 	 * 
 	 * @param dimension
 	 *            data space dimension
-	 * @param N
+	 * @param depth
 	 *            Super-Bit depth [1 .. dimension]
-	 * @param L
+	 * @param superBitsAmount
 	 *            number of Super-Bit [1 ..
 	 */
-	public SuperBit(int dimension, int N, int L) {
+	public SuperBit(int dimension, int depth, int superBitsAmount) {
+		this.dimension = dimension;
 		if (dimension <= 0) {
 			throw new IllegalArgumentException("Dimension dimension must be >= 1");
 		}
 
-		if (N < 1 || N > dimension) {
+		if (depth < 1 || depth > dimension) {
 			throw new IllegalArgumentException("Super-Bit depth N must be 1 <= N <= dimension");
 		}
 
-		if (L < 1) {
+		if (superBitsAmount < 1) {
 			throw new IllegalArgumentException("Number of Super-Bit L must be >= 1");
 		}
 
@@ -84,12 +86,12 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 		// from the normal distribution
 		// N (0, 1), with each column normalized to unit length. Denote H = [v1,
 		// v2, ..., vK].
-		int K = N * L;
+		int signatureDimension = depth * superBitsAmount;
 
-		double[][] v = new double[K][dimension];
+		double[][] v = new double[signatureDimension][dimension];
 		Random rand = new Random();
 
-		for (int i = 0; i < K; i++) {
+		for (int i = 0; i < signatureDimension; i++) {
 			double[] vector = new double[dimension];
 			for (int j = 0; j < dimension; j++) {
 				vector[j] = rand.nextGaussian();
@@ -110,21 +112,21 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 		// end for
 		// Output: H˜ = [w1, w2, ..., wK]
 
-		double[][] ret = new double[K][dimension];
-		for (int i = 0; i <= L - 1; i++) {
-			for (int j = 1; j <= N; j++) {
-				java.lang.System.arraycopy(v[i * N + j - 1], 0, ret[i * N + j - 1], 0, dimension);
+		double[][] hyperplanesArr = new double[signatureDimension][dimension];
+		for (int i = 0; i <= superBitsAmount - 1; i++) {
+			for (int j = 1; j <= depth; j++) {
+				java.lang.System.arraycopy(v[i * depth + j - 1], 0, hyperplanesArr[i * depth + j - 1], 0, dimension);
 
 				for (int k = 1; k <= (j - 1); k++) {
-					ret[i * N + j - 1] = sub(ret[i * N + j - 1], product(dotProduct(ret[i * N + k - 1], v[i * N + j - 1]), ret[i * N + k - 1]));
+					hyperplanesArr[i * depth + j - 1] = sub(hyperplanesArr[i * depth + j - 1], product(dotProduct(hyperplanesArr[i * depth + k - 1], v[i * depth + j - 1]), hyperplanesArr[i * depth + k - 1]));
 				}
 
-				normalize(ret[i * N + j - 1]);
+				normalize(hyperplanesArr[i * depth + j - 1]);
 
 			}
 		}
 
-		this.hyperplanes = Arrays.stream(ret).map(ArrayRealVector::new).toArray(size -> new RealVector[size]);
+		this.hyperplanes = Arrays.stream(hyperplanesArr).map(ArrayRealVector::new).toArray(size -> new RealVector[size]);
 	}
 
 	/**
@@ -152,6 +154,11 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 			sig[i] = (vector.dotProduct(this.hyperplanes[i]) >= 0);
 		}
 		return sig;
+	}
+
+	@Override
+	public int getDimension() {
+		return this.dimension;
 	}
 
 	/* ---------------------- STATIC ---------------------- */

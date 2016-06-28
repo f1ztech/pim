@@ -4,6 +4,8 @@ import org.apache.commons.math3.linear.RealVector;
 
 public interface SimHashSignatureGenerator {
 
-	public boolean[] createSignature(RealVector vector);
+	boolean[] createSignature(RealVector vector);
+
+	int getDimension();
 	
 }
