@@ -22,7 +22,6 @@ public class Folder extends Tag {
 	@RdfProperty("pim:path")
 	private String path;
 
-
 	public String getPath() {
 		return path;
 	}

@@ -16,6 +16,8 @@ import org.openrdf.query.QueryLanguage;
 import org.openrdf.query.TupleQuery;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import com.complexible.common.util.PrefixMapping;
@@ -23,6 +25,8 @@ import com.complexible.common.util.PrefixMapping;
 import ru.mipt.pim.util.RdfUtils;
 
 public class QueryBuilder {
+
+	private static final Logger logger = LoggerFactory.getLogger(QueryBuilder.class);
 
 	private static class Condition {
 		private String condition;

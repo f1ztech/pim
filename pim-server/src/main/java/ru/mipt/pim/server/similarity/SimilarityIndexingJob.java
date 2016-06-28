@@ -3,6 +3,7 @@ package ru.mipt.pim.server.similarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -36,13 +37,18 @@ public class SimilarityIndexingJob {
 	@Scheduled(cron = "0 0 1 * * *") // every day
 	public void indexSimilarity() {
 		for (User user : userRepository.findAll()) {
-			try {
-				storeSimilarityHashes(user);
-				storeSimilarResources(user);
-			} catch (Exception e) {
-				logger.error("Error while refreshing similarity for user " + user.getId(), e);
-			}
+			storeSimilarity(user);
 		}
+	}
+
+	@Async
+	private void storeSimilarity(User user) {
+		try {
+            storeSimilarityHashes(user);
+            storeSimilarResources(user);
+        } catch (Exception e) {
+            logger.error("Error while refreshing similarity for user " + user.getId(), e);
+        }
 	}
 
 	private void storeSimilarityHashes(User user) throws Exception {

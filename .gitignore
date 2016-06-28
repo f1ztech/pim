@@ -12,3 +12,7 @@
 /pim-fs-common/.classpath
 /pim-fs-common/.settings/
 /pim-fs-common/bin/
+/*.iml
+/pim-fs-common/*.iml
+/pim-fs-adapter/*.iml
+/pim-server/*.iml

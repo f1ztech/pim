@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="pfn" uri="/WEB-INF/tags/pim.tld"%>
+<%@taglib prefix="pfn" uri="pimTagLib"%>
 <%@ attribute name="path" type="java.lang.String"%>
 <%@ attribute name="title" type="java.lang.String"%>
 

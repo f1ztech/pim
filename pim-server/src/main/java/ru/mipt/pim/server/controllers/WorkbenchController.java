@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openrdf.model.URI;
 import org.openrdf.model.Value;
@@ -58,6 +56,7 @@ import ru.mipt.pim.server.services.PermissionService;
 import ru.mipt.pim.server.services.RepositoryService;
 import ru.mipt.pim.server.services.ResourceComparator;
 import ru.mipt.pim.server.services.UserService;
+import ru.mipt.pim.server.similarity.SimilarityService;
 import ru.mipt.pim.util.RdfUtils;
 import ru.mipt.pim.util.Utilities;
 
@@ -190,6 +189,9 @@ public class WorkbenchController {
 	private RecommendationService recommendationService;
 
 	@Autowired
+	private SimilarityService similarityService;
+
+	@Autowired
 	private ContactRepository contactRepository;
 
 	@Autowired
@@ -222,8 +224,8 @@ public class WorkbenchController {
 		pRelated = valueFactory.createURI("http://www.w3.org/2004/02/skos/core#related");
 	}
 
-	String[] PRESENTATION_PROPERTIES = new String[] { "id", "title", "name", "hasNarrowerResources", "uri" };
-	Consumer<BeanWrapper<Resource>> RESOURCE_ADJUSTER = bean -> {
+	String[] presentationProperties = new String[] { "id", "title", "name", "hasNarrowerResources", "uri" };
+	Consumer<BeanWrapper<Resource>> resourceAdjuster = bean -> {
 		String objectUri = RdfUtils.collapseNamespace((String) bean.get("uri"));
 		String classUri = StringUtils.substringBeforeLast(objectUri, ":");
 		Class<? extends Resource> clazz = ModelConfiguration.CLASS_URI_MAP.get(classUri);
@@ -232,14 +234,14 @@ public class WorkbenchController {
 	
 	@RequestMapping(value = "resources", method = RequestMethod.GET)
 	public @ResponseBody List<BeanWrapper<Resource>> findRoots() throws Exception {
-		return resourceRepository.findRootResources(userService.getCurrentUser(), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES);
+		return resourceRepository.findRootResources(userService.getCurrentUser(), resourceAdjuster, presentationProperties);
 	}
 
 	@RequestMapping(value = "narrowerResources", method = RequestMethod.GET)
 	public @ResponseBody List<BeanWrapper<Resource>> findNarrowerResources(@RequestParam("uri") String uri) throws Exception {
 		Resource resource = resourceRepository.find(uri);
 		assertCanManage(resource);
-		return resourceRepository.findNarrower(resource.getId(), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES);
+		return resourceRepository.findNarrower(resource.getId(), resourceAdjuster, presentationProperties);
 	}
 
 	@RequestMapping(value = "broaderResources", method = RequestMethod.GET)
@@ -256,13 +258,13 @@ public class WorkbenchController {
 			path.add(0, currentResource);
 		}
 
-		List<BeanWrapper<Resource>> rootResources = resourceRepository.findRootResources(userService.getCurrentUser(), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES);
+		List<BeanWrapper<Resource>> rootResources = resourceRepository.findRootResources(userService.getCurrentUser(), resourceAdjuster, presentationProperties);
 		List<BeanWrapper<Resource>> narrowerResources = rootResources;
 		for (Resource pathResource : path) {
 			BeanWrapper<Resource> narrowerResource = narrowerResources.stream()
 					.filter(res -> res.get("uri").equals(pathResource.getUri()))
 					.findFirst().orElseThrow(() -> new RuntimeException("resource not found in user repository"));
-			narrowerResource.put("narrowerRrsources", resourceRepository.findNarrower((String) narrowerResource.get("id"), RESOURCE_ADJUSTER, PRESENTATION_PROPERTIES));
+			narrowerResource.put("narrowerResources", resourceRepository.findNarrower((String) narrowerResource.get("id"), resourceAdjuster, presentationProperties));
 		}
 
 		return new BroaderResourcesResponse(path.stream().map(Resource::getId).collect(Collectors.toList()), rootResources);
@@ -387,7 +389,7 @@ public class WorkbenchController {
 	}
 
 	@RequestMapping("activatedResources")
-	public @ResponseBody List<Resource> getAtctivatedResources() {
+	public @ResponseBody List<Resource> getActivatedResources() {
 		return activationService.getTopActivatedResources(userService.getCurrentUser());
 	}
 
@@ -397,6 +399,14 @@ public class WorkbenchController {
 		assertCanManage(resource);
 
 		return recommendationService.getRecommendations(userService.getCurrentUser(), resource);
+	}
+
+	@RequestMapping(value = "{id}/related", method = RequestMethod.GET)
+	public @ResponseBody List<Resource> getRelated(@PathVariable String id) throws Exception {
+		Resource resource = resourceRepository.findById(id);
+		assertCanManage(resource);
+
+		return similarityService.getSimilarResources(resource);
 	}
 
 	@RequestMapping(value = "tags", method=RequestMethod.GET)

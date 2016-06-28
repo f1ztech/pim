@@ -22,6 +22,8 @@ import org.openrdf.query.TupleQueryResult;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
@@ -57,6 +59,8 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 	private RepositoryService repositoryService;
 
 	private Class<T> clazz;
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	public CommonResourceRepository(Class<T> clazz) {
 		super(clazz);
@@ -210,7 +214,7 @@ public class CommonResourceRepository<T extends Resource> extends CommonReposito
 		if (queryConsumer != null) {
 			queryConsumer.accept(qb);
 		}
-		
+
 		// result handling
 		RepositoryConnection connection = repository.getConnection();
 		List<R> ret = new ArrayList<>();

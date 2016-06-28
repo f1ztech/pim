@@ -10,8 +10,6 @@ import javax.annotation.Resource;
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.openrdf.query.MalformedQueryException;
-import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,19 +18,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.cybozu.labs.langdetect.LangDetectException;
-
 import ru.mipt.pim.server.index.IndexingService;
-import ru.mipt.pim.server.model.Contact;
-import ru.mipt.pim.server.model.Email;
-import ru.mipt.pim.server.model.EmailFolder;
-import ru.mipt.pim.server.model.User;
-import ru.mipt.pim.server.model.UserConfigs;
-import ru.mipt.pim.server.repositories.ContactRepository;
-import ru.mipt.pim.server.repositories.EmailRepository;
-import ru.mipt.pim.server.repositories.EmailFolderRepository;
-import ru.mipt.pim.server.repositories.UserRepository;
+import ru.mipt.pim.server.model.*;
+import ru.mipt.pim.server.repositories.*;
 import ru.mipt.pim.server.services.RepositoryService;
+import ru.mipt.pim.util.Exceptions;
 
 @Component
 public class MailSynchronizer {
@@ -59,6 +49,9 @@ public class MailSynchronizer {
 	
 	@Autowired
 	private RepositoryService repositoryService;
+
+	@Autowired
+	private ContactGroupRepository contactGroupRepository;
 
 	@Scheduled(fixedDelay = 1 * 60 * 1000) // every 10 minutes
 	public void synchronizeMail() throws IOException, MailException, MessagingException {
@@ -106,6 +99,9 @@ public class MailSynchronizer {
 
 		MessageQueryResults lastResults = null;
 		Date lastSynchronizedDate = null;
+
+		ContactGroup allContacts = getAllContactsGroup(user);
+
 		while (true) {
 			MessageQueryResults newResults = mailAdapter.findNewMessages(folder, folder.getLastSynchronizedEmailDate(), lastResults, existedMessageIds);
 			if (lastResults == null && !newResults.getMessages().isEmpty()) { // FIXME message may be moved from another folder
@@ -114,14 +110,14 @@ public class MailSynchronizer {
 
 			for (Message newMessage : newResults.getMessages()) {
 				Email email = new Email();
-				email.setFrom(findOrCreateContact(user, newMessage.getFrom()));
+				email.setFrom(findOrCreateContact(user, newMessage.getFrom(), allContacts));
 				email.setSentDate(newMessage.getSentDate());
 				email.setReceivedDate(newMessage.getReceivedDate());
 				email.setThreadId(newMessage.getThreadId());
 				email.setMessageId(newMessage.getMessageId());
 				email.setHtmlContent(newMessage.getBody());
-				email.getRecipients().addAll(findOrCreateContacts(user, newMessage.getRecipients()));
-				email.getSecondaryRecipients().addAll(findOrCreateContacts(user, newMessage.getCc()));
+				email.getRecipients().addAll(findOrCreateContacts(user, newMessage.getRecipients(), allContacts));
+				email.getSecondaryRecipients().addAll(findOrCreateContacts(user, newMessage.getCc(), allContacts));
 				email.setTitle(newMessage.getSubject());
 				email.setOwner(user);
 				emailRepository.save(email);
@@ -140,11 +136,25 @@ public class MailSynchronizer {
 		}
 	}
 
-	private List<Contact> findOrCreateContacts(User user, List<Message.Contact> contacts) throws MessagingException {
-		return contacts.stream().map(c -> findOrCreateContact(user, c)).collect(Collectors.toList());
+	private ContactGroup getAllContactsGroup(User user) {
+		ContactGroup contactGroup = contactGroupRepository.findFirstByName(user, "all");
+		if (contactGroup == null) {
+			contactGroup = new ContactGroup();
+			contactGroup.setName("all");
+			contactGroup.setTitle("Контакты");
+			contactGroup.setOwner(user);
+			contactGroupRepository.save(contactGroup);
+		}
+		return contactGroup;
 	}
 
-	private Contact findOrCreateContact(User user, Message.Contact contact) {
+	private List<Contact> findOrCreateContacts(User user, List<Message.Contact> contacts, ContactGroup allContacts) throws MessagingException {
+		return contacts.stream()
+				.map(Exceptions.wrap(c -> { return findOrCreateContact(user, c, allContacts); }))
+				.collect(Collectors.toList());
+	}
+
+	private Contact findOrCreateContact(User user, Message.Contact contact, ContactGroup allContacts) throws RepositoryException {
 		Contact storedContact = contactRepository.findByEmail(user, contact.getEmail());
 		if (storedContact == null) {
 			storedContact = new Contact();
@@ -152,6 +162,7 @@ public class MailSynchronizer {
 			storedContact.setTitle(ObjectUtils.defaultIfNull(contact.getTitle(), contact.getEmail()));
 			storedContact.setOwner(user);
 			contactRepository.save(storedContact);
+			repositoryService.addNarrowerResource(allContacts, storedContact);
 		}
 		return storedContact;
 	}

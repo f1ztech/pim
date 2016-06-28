@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="/WEB-INF/tags/pim.tld" prefix="pfn"%>
+<%@taglib prefix="pfn" uri="pimTagLib"%>
 
 <%@ attribute name="showSearch" type="java.lang.Object"%>
 

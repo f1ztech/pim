@@ -64,17 +64,17 @@ public class ActivationService {
 			activatedNodes.add(source);
 			long start = System.currentTimeMillis();
 			Statement activationValueTriple = Iterations.asList(connection.getStatements(source, pActivationValue, null, true)).stream().findFirst().orElse(null);
-			logger.debug("spreadActivation:statements " + (System.currentTimeMillis() - start));
+			logger.trace("spreadActivation:statements {}", System.currentTimeMillis() - start);
 			BigDecimal activationValue = BigDecimal.ZERO; 
 			if (activationValueTriple != null) {
 				activationValue = ((Literal) activationValueTriple.getObject()).decimalValue();
 				connection.remove(activationValueTriple);
-				logger.debug("spreadActivation:remove " + (System.currentTimeMillis() - start));
+				logger.trace("spreadActivation:remove {}", System.currentTimeMillis() - start);
 			}
 			
 			float newActivation = activationValue.add(incomingActivation).min(maxActivation).floatValue();
 			connection.add(source, pActivationValue, valueFactory.createLiteral(newActivation));
-			logger.debug("spreadActivation:end " + (System.currentTimeMillis() - start));
+			logger.trace("spreadActivation:end {}", System.currentTimeMillis() - start);
 			
 			if (!resourcesToActivate.isEmpty() && depth < maxDepth) {
 				BigDecimal outgoingActivation = incomingActivation.divide(new BigDecimal(resourcesToActivate.size()), 0, RoundingMode.HALF_UP);
@@ -96,7 +96,7 @@ public class ActivationService {
 			List<Statement> incomingStatements = Iterations.asList(connection.getStatements(null, null, resource, true));
 			incomingStatements.stream().filter(st -> st.getSubject() instanceof Resource && !ignoredPredicates.contains(st.getPredicate()) && !activatedNodes.contains(st.getSubject()))
 								  	   .forEach(st -> ret.add((Resource) st.getSubject()));
-			logger.debug("findResourceProperties " + (System.currentTimeMillis() - start));
+			logger.trace("findResourceProperties {}", System.currentTimeMillis() - start);
 			return ret;			
 		}	
 	}

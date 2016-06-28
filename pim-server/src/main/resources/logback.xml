@@ -33,6 +33,8 @@
 
 <!-- 	<logger name="com.clarkparsia.empire.annotation.RdfGenerator" level="DEBUG" /> -->
 
+	<logger name="ru.mipt.pim" level="TRACE" />
+
 	<root>
 		<level value="INFO" />
 		<appender-ref ref="consoleAppender" />

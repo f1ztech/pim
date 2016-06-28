@@ -92,6 +92,7 @@ angular.module('pimControllers', ['kendo.directives', 'ngResource', 'ngSanitize'
 		$rootScope.workbenchService = workbenchService;
 		$rootScope.inlineEditorTools = ['bold', 'italic', 'undeline'];
 		$rootScope.recommendations = null;
+		$rootScope.relatedResources = null;
 
 	    $scope.$on('kendoWidgetCreated', function(event, widget){
 	        if (widget === $scope.tagsSelect) {
@@ -136,6 +137,9 @@ angular.module('pimControllers', ['kendo.directives', 'ngResource', 'ngSanitize'
 			});
 			workbenchService.getRecommendations(resource).then(function(recommendations) {
 				$rootScope.recommendations = recommendations;
+			});
+			workbenchService.getRelated(resource).then(function(relatedResources) {
+				$rootScope.relatedResources = relatedResources;
 			});
 			$rootScope.size = $filter('number')(resource.publicationFile ? resource.publicationFile.size : resource.size);
 		}

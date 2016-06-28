@@ -260,6 +260,17 @@ angular.module('pimServices', [])
 			}
 		}
 
+		me.getRelated = function(resource) {
+			if (resource.relatedResources) {
+				return $q.when(resource.relatedResources);
+			} else {
+				return $http.get('/workbench/' + resource.id + '/related').then(function(response) {
+					resource.relatedResources = response.data;
+					return response.data;
+				});
+			}
+		}
+
 		me.treeDatasource = new kendo.data.HierarchicalDataSource({
 			data : [],
 			schema : {

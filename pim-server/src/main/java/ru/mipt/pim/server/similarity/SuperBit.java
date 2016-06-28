@@ -52,31 +52,31 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 	private RealVector[] hyperplanes;
 
 	/**
-	 * Initialize SuperBit algorithm. Super-Bit depth N must be [1 .. d] and
+	 * Initialize SuperBit algorithm. Super-Bit depth N must be [1 .. dimension] and
 	 * number of Super-Bit L in [1 .. The resulting code length K = N * L The K
 	 * vectors are orthogonalized in L batches of N vectors
 	 * 
-	 * @param d
+	 * @param dimension
 	 *            data space dimension
 	 * @param N
-	 *            Super-Bit depth [1 .. d]
+	 *            Super-Bit depth [1 .. dimension]
 	 * @param L
 	 *            number of Super-Bit [1 ..
 	 */
-	public SuperBit(int d, int N, int L) {
-		if (d <= 0) {
-			throw new IllegalArgumentException("Dimension d must be >= 1");
+	public SuperBit(int dimension, int N, int L) {
+		if (dimension <= 0) {
+			throw new IllegalArgumentException("Dimension dimension must be >= 1");
 		}
 
-		if (N < 1 || N > d) {
-			throw new IllegalArgumentException("Super-Bit depth N must be 1 <= N <= d");
+		if (N < 1 || N > dimension) {
+			throw new IllegalArgumentException("Super-Bit depth N must be 1 <= N <= dimension");
 		}
 
 		if (L < 1) {
 			throw new IllegalArgumentException("Number of Super-Bit L must be >= 1");
 		}
 
-		// Input: Data space dimension d, Super-Bit depth 1 <= N <= d, number of
+		// Input: Data space dimension dimension, Super-Bit depth 1 <= N <= dimension, number of
 		// Super-Bit L >= 1,
 		// resulting code length K = N * L
 
@@ -86,12 +86,12 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 		// v2, ..., vK].
 		int K = N * L;
 
-		double[][] v = new double[K][d];
+		double[][] v = new double[K][dimension];
 		Random rand = new Random();
 
 		for (int i = 0; i < K; i++) {
-			double[] vector = new double[d];
-			for (int j = 0; j < d; j++) {
+			double[] vector = new double[dimension];
+			for (int j = 0; j < dimension; j++) {
 				vector[j] = rand.nextGaussian();
 			}
 
@@ -110,10 +110,10 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 		// end for
 		// Output: H˜ = [w1, w2, ..., wK]
 
-		double[][] ret = new double[K][d];
+		double[][] ret = new double[K][dimension];
 		for (int i = 0; i <= L - 1; i++) {
 			for (int j = 1; j <= N; j++) {
-				java.lang.System.arraycopy(v[i * N + j - 1], 0, ret[i * N + j - 1], 0, d);
+				java.lang.System.arraycopy(v[i * N + j - 1], 0, ret[i * N + j - 1], 0, dimension);
 
 				for (int k = 1; k <= (j - 1); k++) {
 					ret[i * N + j - 1] = sub(ret[i * N + j - 1], product(dotProduct(ret[i * N + k - 1], v[i * N + j - 1]), ret[i * N + k - 1]));
@@ -129,7 +129,7 @@ public class SuperBit implements Serializable, SimHashSignatureGenerator {
 
 	/**
 	 * Initialize SuperBit algorithm. With code length K = 10000 The K vectors
-	 * are orthogonalized in d batches of 10000/d vectors The resulting mean
+	 * are orthogonalized in dimension batches of 10000/dimension vectors The resulting mean
 	 * error is 0.01
 	 * 
 	 * @param d

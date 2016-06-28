@@ -1,28 +1,22 @@
 package ru.mipt.pim.server.index;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
+import org.apache.lucene.index.*;
+import org.apache.lucene.search.similarities.DefaultSimilarity;
+import org.apache.lucene.search.similarities.TFIDFSimilarity;
+import org.apache.lucene.util.Bits;
+import org.apache.lucene.util.BytesRef;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ru.mipt.pim.server.model.Resource;
+import ru.mipt.pim.server.model.User;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.MultiFields;
-import org.apache.lucene.index.PostingsEnum;
-import org.apache.lucene.index.SlowCompositeReaderWrapper;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.Terms;
-import org.apache.lucene.index.TermsEnum;
-import org.apache.lucene.search.similarities.DefaultSimilarity;
-import org.apache.lucene.search.similarities.TFIDFSimilarity;
-import org.apache.lucene.util.BytesRef;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import ru.mipt.pim.server.model.Resource;
-import ru.mipt.pim.server.model.User;
 
 @Component
 public class TermsStatisticsService {
@@ -44,17 +38,17 @@ public class TermsStatisticsService {
 	// TermsStatistics
 	// ====================================================
 
-	private class TermsStatistics {
+	public static class TermsStatistics {
 		
-		private HashMap<BytesRef, Integer> termIndexes = new HashMap<>();
+		private HashMap<String, Integer> termIndexes = new HashMap<>();
 		private int totalTermsCount;
-		private Map<Integer, Integer> docTermsCount = new HashMap<>();
+		private ConcurrentHashMap<String, ConcurrentHashMap<Integer, Integer>> docTermsByFieldCount = new ConcurrentHashMap<>();
 
-		public HashMap<BytesRef, Integer> getTermIndexes() {
+		public HashMap<String, Integer> getTermIndexes() {
 			return termIndexes;
 		}
 
-		public void setTermIndexes(HashMap<BytesRef, Integer> termIndexes) {
+		public void setTermIndexes(HashMap<String, Integer> termIndexes) {
 			this.termIndexes = termIndexes;
 		}
 
@@ -66,30 +60,36 @@ public class TermsStatisticsService {
 			this.totalTermsCount = totalTermsCount;
 		}
 
-		public Map<Integer, Integer> getDocTermsCount() {
-			return docTermsCount;
+		// Map<fieldName, Map<docId, termsCount>>
+		public ConcurrentHashMap<String, ConcurrentHashMap<Integer, Integer>> getDocTermsByFieldCount() {
+			return docTermsByFieldCount;
 		}
 	}
 	
 	private void populateTermsStatistics(TermsStatistics termsStatistics, User user, String language) throws IOException {
 		IndexReader reader = indexingService.getReader(user, language);
-		
+
 		Terms contentTerms = SlowCompositeReaderWrapper.wrap(reader).terms(IndexingService.CONTENT_FIELD);
 		TermsEnum contentTermsEnum = contentTerms.iterator();
-		
+
 		int termsCount = new Long(contentTerms.size()).intValue();
-		HashMap<BytesRef, Integer> termIndexes = new HashMap<BytesRef, Integer>(termsCount < 0 ? 1 << 10 : termsCount); // use 2^10 as start capacity of hash map if real size is unknown
-		
+		HashMap<String, Integer> termIndexes = new HashMap<>(termsCount < 0 ? 1 << 10 : termsCount); // use 2^10 as start capacity of hash map if real size is unknown
 		int index = 0;
-		while (contentTermsEnum != null) {
-			termIndexes.put(contentTermsEnum.term(), index++);
+
+		// ставим индексы для всех термов из CONTENT_FIELD
+		while (contentTermsEnum.next() != null) {
+			if (contentTermsEnum.term().bytes.length > 0) {
+				termIndexes.put(contentTermsEnum.term().utf8ToString(), index++);
+			}
 		}
-		
+
+		// ставим индексы для всех термов из TITLE_FIELD
 		Terms titleTerms = SlowCompositeReaderWrapper.wrap(reader).terms(IndexingService.TITLE_FIELD);
 		TermsEnum titleTermsEnum = titleTerms.iterator();
-		while (titleTermsEnum != null) {
-			if (!termIndexes.containsKey(titleTermsEnum.term())) {
-				termIndexes.put(titleTermsEnum.term(), index++);
+		while (titleTermsEnum.next() != null) {
+			String termStr = titleTermsEnum.term().utf8ToString();
+			if (!termIndexes.containsKey(termStr)) {
+				termIndexes.put(termStr, index++);
 			}
 		}
 
@@ -103,8 +103,12 @@ public class TermsStatisticsService {
 		TermsStatistics newStatistics = new TermsStatistics();
 		statisticsCache.putIfAbsent(key, newStatistics);
 		TermsStatistics termsStatistics = statisticsCache.get(key);
-		if (termsStatistics == newStatistics) {
-			populateTermsStatistics(newStatistics, user, language);
+
+		// если ктото вызывает метод повторно нужно дождаться наполнения статистики
+		synchronized (termsStatistics) {
+			if (termsStatistics == newStatistics) {
+				populateTermsStatistics(newStatistics, user, language);
+			}
 		}
 		return termsStatistics;
 	}
@@ -143,7 +147,7 @@ public class TermsStatisticsService {
 		PostingsEnum termDocsEnum = MultiFields.getTermDocsEnum(reader, MultiFields.getLiveDocs(reader), field, targetTerm);
 		if (seekToDocument(termDocsEnum, docId)) {
 			seekDocSes += System.nanoTime() - start;
-			double tf = termDocsEnum.freq() / countTermsInDocument(reader, statistics, field, docId);
+			double tf = termDocsEnum.freq() / (double) countTermsInDocument(reader, statistics, field, docId);
 			return new DefaultSimilarity().tf((float) tf);
 		}
 		return 0;
@@ -151,30 +155,32 @@ public class TermsStatisticsService {
 
 	private int countTermsInDocument(IndexReader reader, TermsStatistics statistics, String field, Integer docId) throws IOException {
 		long start = System.nanoTime();
-		Integer count = statistics.getDocTermsCount().get(docId);
-		if (count == null) {
-			count = 0;
+
+		statistics.getDocTermsByFieldCount().putIfAbsent(field, new ConcurrentHashMap<>());
+		Map<Integer, Integer> docTermsCount = statistics.getDocTermsByFieldCount().get(field);
+		if (!docTermsCount.containsKey(docId)) {
 			Terms termVector = reader.getTermVector(docId, field);
-			statistics.getDocTermsCount().put(docId, (int) termVector.getSumTotalTermFreq());
-			
-			// TODO correct?
-			
-//			TermsEnum termsEnum = termVector.iterator();
-//			Bits liveDocs = MultiFields.getLiveDocs(reader);
-//			while (termsEnum.next() != null) {
-//				PostingsEnum termDocsEnum = MultiFields.getTermDocsEnum(reader, liveDocs, field, termsEnum.term());
-//				if (seekToDocument(termDocsEnum, docId)) {
-//					count += termDocsEnum.freq();
-//				}
-//			}
-//			statistics.getDocTermsCount().put(docId, count);
+
+			// always -1...
+//			docTermsCount.put(docId, (int) termVector.getSumTotalTermFreq());
+
+			int count = 0;
+			TermsEnum termsEnum = termVector.iterator();
+			Bits liveDocs = MultiFields.getLiveDocs(reader);
+			while (termsEnum.next() != null) {
+				PostingsEnum termDocsEnum = MultiFields.getTermDocsEnum(reader, liveDocs, field, termsEnum.term());
+				if (seekToDocument(termDocsEnum, docId)) {
+					count += termDocsEnum.freq();
+				}
+			}
+			docTermsCount.put(docId, count);
 		}
 		countTermsSec += System.nanoTime() - start;
-		return count;
+		return docTermsCount.get(docId);
 	}
 
 	public void clearDocTerms(User user, String language) throws IOException {
-		getStatistics(user, language).getDocTermsCount().clear();
+		getStatistics(user, language).getDocTermsByFieldCount().clear();
 	}
 	
 	private boolean seekToDocument(PostingsEnum termDocsEnum, Integer docId) throws IOException {
@@ -197,14 +203,16 @@ public class TermsStatisticsService {
 		TermsStatistics statistics = getStatistics(resource.getOwner(), resource.getLanguage());
 		RealVector tfidf = new ArrayRealVector(statistics.getTotalTermsCount());
 		IndexReader reader = indexingService.getReader(resource);
-		HashMap<BytesRef, Integer> termIndexes = statistics.getTermIndexes();
+		HashMap<String, Integer> termIndexes = statistics.getTermIndexes();
 		
-		int docId = indexFinder.findDocIdByResourceId(resource.getId(), reader);
-		TermsEnum termsEnum = reader.getTermVector(docId, field).iterator();
-		while (termsEnum.next() != null) {
-			tfidf.setEntry(termIndexes.get(termsEnum.term()), computeTfIdf(reader, statistics, docId, field, termsEnum.term()));
+		Integer docId = indexFinder.findDocIdByResourceId(resource.getId(), reader);
+		if (docId != null) {
+			TermsEnum termsEnum = reader.getTermVector(docId, field).iterator();
+			while (termsEnum.next() != null) {
+				tfidf.setEntry(termIndexes.get(termsEnum.term().utf8ToString()), computeTfIdf(reader, statistics, docId, field, termsEnum.term()));
+			}
 		}
-		
+
 		return tfidf;
 	}
 

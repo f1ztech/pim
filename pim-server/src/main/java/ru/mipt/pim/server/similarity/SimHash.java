@@ -10,8 +10,8 @@ public class SimHash {
 
 	private int hashesCount;
 	
-	public SimHash(SimHashSignatureGenerator superBit, int hashesCount) {
-		this.signatureGenerator = superBit;
+	public SimHash(SimHashSignatureGenerator signatureGenerator, int hashesCount) {
+		this.signatureGenerator = signatureGenerator;
 		this.hashesCount = hashesCount;
 	}
 	

@@ -62,8 +62,8 @@ public class ResourceRepository extends CommonResourceRepository<Resource> {
 	
 	public List<BeanWrapper<Resource>> findNarrower(String resourceId, Consumer<BeanWrapper<Resource>> resourceAdjuster, String... properties) throws Exception {
 		QueryBuilder qb = new QueryBuilder().where("?resource skos:narrower ?result")
-				.where("?resource pim:id ??id")
-				.bind("id", resourceId);
+				.where("?resource pim:id ??parentId")
+				.bind("parentId", resourceId);
 		addResourceOrder(qb);
 		
 		return find(qb, BeanWrapper::new, resourceAdjuster, properties);

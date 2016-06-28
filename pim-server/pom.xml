@@ -46,11 +46,64 @@
         <language-level>1.8</language-level>
 	</properties>
 
-	<modules>
-		<module>../pim-fs-common</module>
-	</modules>
+	<repositories>
+		<repository>
+			<id>local</id>
+			<url>file://${project.basedir}/../repo</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>ru.study</groupId>
+			<artifactId>pim-fs-common</artifactId>
+			<version>1.0.0-BUILD-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.cp-common</groupId>
+			<artifactId>openrdf</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.cp-common</groupId>
+			<artifactId>utils</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.crfpp</groupId>
+			<artifactId>crfpp</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.empire</groupId>
+			<artifactId>core</artifactId>
+			<version>0.8.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.empire</groupId>
+			<artifactId>sesame</artifactId>
+			<version>0.8.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.grobid</groupId>
+			<artifactId>core</artifactId>
+			<version>0.2.10</version>
+		</dependency><dependency>
+			<groupId>com.jsonic</groupId>
+			<artifactId>jsonic</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.langdetect</groupId>
+			<artifactId>langdetect</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.lingpipe</groupId>
+			<artifactId>lingpipe</artifactId>
+			<version>3.8.2</version>
+		</dependency>
+
        <!-- Sesame -->
         <dependency>
             <groupId>org.openrdf.sesame</groupId>

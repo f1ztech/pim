@@ -35,7 +35,9 @@ public class LanguageDetector {
 		try {
 			lang = langDetector.detect();
 		} catch (LangDetectException e) {
-			logger.error("Error while detecting language", e);
+			if (!e.getMessage().contains("no features in text")) {
+				logger.debug("Error while detecting language", e);
+			}
 		}
 		return "ru".equals(lang) ? lang : "en";
 	}

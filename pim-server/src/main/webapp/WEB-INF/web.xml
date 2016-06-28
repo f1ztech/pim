@@ -65,4 +65,11 @@
 	  <env-entry-value>F:/Google Drive/аспер/source/PIM/grobid/grobid-home</env-entry-value>
 	</env-entry>
 
+	<jsp-config>
+		<taglib>
+			<taglib-uri>pimTagLib</taglib-uri>
+			<taglib-location>/WEB-INF/tags/pim.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
 </web-app>

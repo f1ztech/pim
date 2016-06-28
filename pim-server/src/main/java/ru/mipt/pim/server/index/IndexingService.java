@@ -243,16 +243,20 @@ public class IndexingService {
 	}
 	
 	public void indexResource(User user, IndexableResource resource) throws IOException, LangDetectException {
+		logger.trace("Indexing {}", resource.getId());
+
 		updateDocument(user, resource.getId(), resource.getLanguage(), document -> {
 			document.add(new StringField(ID_FIELD, resource.getId(), Store.YES));
 			if (resource.getTitle() != null) {
 				document.add(new Field(TITLE_FIELD, resource.getTitle(), createContentFieldType()));
+				logger.trace("Indexing title {}", resource.getTitle());
 			}
 			if (resource.getAbstractText() != null) {
 				document.add(new Field(ABSTRACT_FIELD, resource.getAbstractText(), createContentFieldType()));
 			}
 			if (resource.getContent() != null) {
 				document.add(new Field(CONTENT_FIELD, resource.getContent(), createContentFieldType()));
+				logger.trace("Indexing content {}", resource.getContent());
 			}
 			for (String tagId : resource.getTagIds()) {
 				document.add(new StringField(IndexingService.TAG_FIELD, tagId, Store.YES));

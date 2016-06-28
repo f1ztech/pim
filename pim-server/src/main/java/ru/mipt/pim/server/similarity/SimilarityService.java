@@ -49,7 +49,8 @@ public class SimilarityService {
 			hashes = getSimilarityHashes(resource);
 		}
 	
-		List<Resource> possibleResources = indexFinder.findSimilarHashResources(resource, hashes, 100).stream()
+		List<Resource> possibleResources = indexFinder
+				.findSimilarHashResources(resource, hashes, 100).stream()
 				.map(resourceRepository::findById).collect(Collectors.toList());
 		
 		return possibleResources;
