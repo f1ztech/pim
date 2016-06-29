@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ru.study</groupId>
 	<artifactId>pim-root</artifactId>
-	<name>pim-server</name>
+	<name>pim-root</name>
 	<packaging>pom</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
