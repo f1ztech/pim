@@ -16,3 +16,4 @@
 /pim-fs-common/*.iml
 /pim-fs-adapter/*.iml
 /pim-server/*.iml
+/.idea/
